@@ -24,7 +24,7 @@ export const StepRole = ({onContinue}: Props) => {
       <div className="block md:hidden w-full">
         <select
           value={selected}
-          onChange={e => setSelected(e.target.value)}
+          onChange={e => handleSelect(e.target.value)}
           className="w-full border border-gray-300 rounded-2xl px-4 py-3 text-lg"
         >
           <option value="" disabled>Select a role</option>
