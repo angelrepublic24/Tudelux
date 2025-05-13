@@ -1,6 +1,5 @@
 "use client";
 import { chooseProduct } from "@/utils/chooseProduct";
-import Image from "next/image";
 import React, { useState } from "react";
 import { ChooseProductGrid } from "../ChooseProductGrid";
 

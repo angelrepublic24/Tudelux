@@ -41,7 +41,7 @@ export const ImageRender = ({ url }: Props) => {
 
   if (is3DModel) {
     return (
-      <div className="w-full h-[400px]">
+      <div className="w-full ">
         <Canvas camera={{ position: [3, 2, 5] }}>
           <ambientLight />
           <Suspense fallback={null}>

@@ -6,8 +6,9 @@ import React from "react";
 type Props = {
   setRenderState: React.Dispatch<React.SetStateAction<RenderState>>;
   setIsRenderOpen: (open: boolean) => void;
+  onContinue: () => void;
 };
-export const StepChooseShape = ({ setRenderState, setIsRenderOpen }: Props)=> {
+export const StepChooseShape = ({ setRenderState, setIsRenderOpen, onContinue }: Props)=> {
   return (
     <section className="py-16">
       <div className="flex items-center gap-4 my-10">
@@ -26,6 +27,7 @@ export const StepChooseShape = ({ setRenderState, setIsRenderOpen }: Props)=> {
                 shape: shape.name,
               }));
               setIsRenderOpen(true);
+              onContinue();
             }}
             className="flex flex-col border border-transparent  focus:border-[#ff5100]  rounded-xl items-center bg-gray-100 hover:bg-gray-200 py-8"
           >

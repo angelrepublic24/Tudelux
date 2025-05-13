@@ -2,8 +2,17 @@
 import { stepRole } from "@/utils/role";
 import React, { useState } from "react";
 
-export const StepRole = () => {
+type Props = {
+  onContinue: () => void
+}
+
+export const StepRole = ({onContinue}: Props) => {
   const [selected, setSelected] = useState('');
+
+  const handleSelect = (roleName: string) => {
+    setSelected(roleName);
+    onContinue(); // activa siguiente paso y hace scroll
+  };
   return (
     <div className="py-6 mb-4">
       <div className="flex items-center gap-4 my-10">
@@ -30,7 +39,7 @@ export const StepRole = () => {
        {stepRole.map((role, i) => (
         <button 
         key={i}
-        onClick={() => setSelected(role.name)}
+        onClick={() => handleSelect(role.name)}
         className="px-8 py-6 font-semibold bg-gray-200 rounded-2xl w-full hover:bg-gray-300 text-xl focus:bg-[#ff5100] focus:text-[#ece83a]">{role.name}</button>
        ))}
       </div>

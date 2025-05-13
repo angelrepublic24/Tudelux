@@ -19,10 +19,11 @@ type Props = {
   };
   setRenderState: React.Dispatch<React.SetStateAction<RenderState>>;
   setIsRenderOpen: (open: boolean) => void;
+  onContinue: () => void
 
 };
 
-export const StepKindOfProduct = ({ productType, setRenderState, setIsRenderOpen }: Props) => {
+export const StepKindOfProduct = ({ productType, setRenderState, setIsRenderOpen, onContinue }: Props) => {
   const [selectedType, setSelectedType] = useState<
     (typeof productType.type)[0] | null
   >(null);
@@ -31,17 +32,17 @@ export const StepKindOfProduct = ({ productType, setRenderState, setIsRenderOpen
   return (
     <section className="py-16">
       <div className="flex items-center gap-4 my-10">
-        <h4 className="text-[#ff5100] font-semibold text-4xl  whitespace-nowrap">
+        <h4 className="text-[#ff5100] font-semibold text-2xl lg:text-4xl  whitespace-nowrap">
           <span className="bg-[#ece83a] py-3 px-4 rounded-4xl mr-2">3</span>
           Choose a product
         </h4>
         <div className="flex-1 border-t border-gray-300"></div>
       </div>
       <div
-        className={`flex justify-center gap-10 px-4`}
+        className={`flex flex-col lg:flex-row justify-center items-center gap-10 px-4`}
       >
         {productType.type.map((product, index) => (
-          <div key={index} className="flex flex-col items-center text-center w-1/4">
+          <div key={index} className="flex flex-col items-center text-center w-full lg:w-1/4">
             <div className="mb-12 bg-white w-full flex flex-col items-center justify-start h-[320px] overflow-visible relative rounded-lg shadow">
               <div className="relative w-full bg-[#f0f0f0] h-[320px] flex items-center justify-center">
                 {product.image && (
@@ -101,6 +102,7 @@ export const StepKindOfProduct = ({ productType, setRenderState, setIsRenderOpen
                   renderUrl: product.render,
                 }));
                 setIsRenderOpen(true);
+                onContinue();
               }}
               className="mt-6 bg-[#ff5100] w-[70%] text-white font-semibold py-6 px-10 rounded-2xl hover:opacity-80 transition focus:bg-[#ece83a] focus:text-[#ff5100]"
             >
