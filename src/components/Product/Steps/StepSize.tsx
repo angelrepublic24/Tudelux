@@ -1,7 +1,5 @@
 "use client";
-
 import { useState } from "react";
-import { Title } from "@/components/ui/title/Title";
 import { RenderState } from "@/types";
 
 type Props = {

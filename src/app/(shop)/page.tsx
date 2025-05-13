@@ -4,6 +4,7 @@ import React from 'react'
 export default function HomePage () {
   return (
     <div className='flex justify-center items-center h-screen'>
+        
         <Link href={'/request-quote'} className='font-semibold'>Reques Quote</Link>
     </div>
   )
