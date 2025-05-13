@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    domains: [
+      '24116371.fs1.hubspotusercontent-na1.net',
+      'res.cloudinary.com'
+    ]
+  }
   /* config options here */
 };
 
