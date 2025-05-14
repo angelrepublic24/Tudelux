@@ -6,6 +6,7 @@ export default function HomePage () {
     <div className='flex justify-center items-center h-screen'>
         
         <Link href={'/request-quote'} className='font-semibold'>Reques Quote</Link>
+        <Link href={'/canopy'} className='font-semibold'>Custom Canopy</Link>
     </div>
   )
 }

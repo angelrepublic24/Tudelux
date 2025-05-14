@@ -36,6 +36,7 @@ export type ProductWithTypes = BaseProduct & {
 
 export type RenderState = {
   title?: string;
+  productType?: string;
   renderUrl?: string;
   shape?: string;
   dimensions?: {

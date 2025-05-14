@@ -98,7 +98,7 @@ export const StepKindOfProduct = ({ productType, setRenderState, setIsRenderOpen
               onClick={() => {
                 setRenderState(prev => ({
                   ...prev,
-                  title: product.name,
+                  productType: product.name,
                   renderUrl: product.render,
                 }));
                 setIsRenderOpen(true);

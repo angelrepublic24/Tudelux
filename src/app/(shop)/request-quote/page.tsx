@@ -35,7 +35,7 @@ export default function RequestQuotePage() {
   return (
     <>
       {renderState && (
-        <div className="flex items-center justify-end p-4 sticky top-0 z-[100] bg-white">
+        <div className="flex items-center justify-end p-4 sticky top-0 z-50 bg-white">
           <button
             onClick={() => setIsRenderOpen(!isRenderOpen)}
             className="bg-[#ff5100] text-white px-4 py-2 rounded hover:bg-orange-600 transition"
@@ -55,7 +55,11 @@ export default function RequestQuotePage() {
       <section className="container mx-auto py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 py-16">
           <div>
-            <Title title="Choose what product you need" subTitle="" />
+            <Title title="Let’s get your
+                  Instant Estimate" 
+                  subTitle="Take two easy measurements, click through a few
+simple choices, and get a free instant estimate for
+your custom Tudelü wall." />
           </div>
           <div className="col-span-2">
             <Image src={``} alt="" width={300} height={300} className="" />

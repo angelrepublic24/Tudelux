@@ -10,11 +10,11 @@ type Props = {
 export const RenderHeader = ({ renderState }: Props) => (
   <div className="sticky top-0 z-40 bg-white p-4 shadow-md flex items-center justify-center w-full h-[30vh] overflow-hidden gap-10">
     <div className="">
-      <h2 className="text-lg lg:text-2xl font-bold text-[#ff5100] mb-2">Your Selection</h2>
+      <h2 className="text-lg lg:text-2xl font-bold text-[#ff5100] mb-2">Your {renderState.title}</h2>
       <ul className="text-sm space-y-1">
         {renderState.title && (
           <li>
-            <strong>Product:</strong> {renderState.title}
+            <strong>Product:</strong> {renderState.productType}
           </li>
         )}
         {renderState.shape && (
