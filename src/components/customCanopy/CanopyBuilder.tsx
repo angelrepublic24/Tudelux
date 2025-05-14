@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Grid } from "@react-three/drei";
+import { OrbitControls, Grid, Environment } from "@react-three/drei";
 import ComponentModel from "./ComponentModel";
 import { PreloadModels } from "./preloadGLB";
 
@@ -99,9 +99,11 @@ export default function CanopyBuilder() {
         inst.id === selectedId
           ? {
               ...inst,
-              scale: inst.scale?.map((s, i) =>
-                i === axis ? value : s
-              ) as [number, number, number],
+              scale: inst.scale?.map((s, i) => (i === axis ? value : s)) as [
+                number,
+                number,
+                number
+              ],
             }
           : inst
       )
@@ -137,9 +139,28 @@ export default function CanopyBuilder() {
 
       {/* Canvas */}
       <main className="flex-1 relative">
-        <Canvas camera={{ position: [5, 5, 5], fov: 50 }} onPointerMissed={() => setSelectedId(null)}>
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 10]} intensity={1} />
+        <Canvas
+          camera={{ position: [5, 5, 5], fov: 50 }}
+          onPointerMissed={() => setSelectedId(null)}
+          shadows
+        >
+          <ambientLight intensity={0.3} />
+          <directionalLight
+            intensity={0.8}
+            position={[10, 10, 5]}
+            castShadow
+            shadow-mapSize-width={1024}
+            shadow-mapSize-height={1024}
+          />
+          <spotLight
+            intensity={0.5}
+            position={[5, 15, 5]}
+            angle={0.3}
+            penumbra={1}
+            castShadow
+          />
+          <Environment preset="city" />
+          <color attach="background" args={["#f0f0f0"]} />
           <OrbitControls />
           <Grid args={[10, 10]} cellSize={1} cellThickness={0.5} />
           <PreloadModels />
@@ -186,14 +207,18 @@ export default function CanopyBuilder() {
             <h3 className="mt-6 font-semibold text-gray-700">Rotation</h3>
             {["X", "Y", "Z"].map((axis, i) => (
               <div key={`rot-${axis}`}>
-                <label className="block text-sm mt-2 mb-1">Rotation {axis}</label>
+                <label className="block text-sm mt-2 mb-1">
+                  Rotation {axis}
+                </label>
                 <input
                   type="range"
                   step={0.01}
                   min={0}
                   max={Math.PI * 2}
                   value={selected.rotation?.[i] ?? 0}
-                  onChange={(e) => handleRotationChange(i, parseFloat(e.target.value))}
+                  onChange={(e) =>
+                    handleRotationChange(i, parseFloat(e.target.value))
+                  }
                   className="w-full border rounded px-2 py-1"
                 />
               </div>
@@ -203,14 +228,18 @@ export default function CanopyBuilder() {
             <h3 className="mt-6 font-semibold text-gray-700">Position</h3>
             {["X", "Y", "Z"].map((axis, i) => (
               <div key={`pos-${axis}`}>
-                <label className="block text-sm mt-2 mb-1">Position {axis}</label>
+                <label className="block text-sm mt-2 mb-1">
+                  Position {axis}
+                </label>
                 <input
                   type="number"
                   step={positionStep}
                   min={-5}
                   max={5}
                   value={selected.position?.[i] ?? 0}
-                  onChange={(e) => handlePositionChange(i, parseFloat(e.target.value))}
+                  onChange={(e) =>
+                    handlePositionChange(i, parseFloat(e.target.value))
+                  }
                   className="w-full border rounded px-2 py-1"
                 />
               </div>
@@ -227,7 +256,9 @@ export default function CanopyBuilder() {
                   min={0.01}
                   max={10}
                   value={selected.scale?.[i] ?? 1}
-                  onChange={(e) => handleScaleChange(i, parseFloat(e.target.value))}
+                  onChange={(e) =>
+                    handleScaleChange(i, parseFloat(e.target.value))
+                  }
                   className="w-full border rounded px-2 py-1"
                 />
               </div>
