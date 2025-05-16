@@ -2,22 +2,18 @@ import { chooseDesign } from "@/utils/chooseDesign";
 import React from "react";
 import { ChooseProductGrid } from "../ChooseProductGrid";
 import { RenderState } from "@/types";
+import { StepTitle } from "@/components/ui/StepTitle/StepTitle";
 
 type Props = {
   setRenderState: React.Dispatch<React.SetStateAction<RenderState>>;
+  onContinue : () => void
   setIsRenderOpen?: (open: boolean) => void;
 };
 
-export const StepFrontDesign = ({ setRenderState, setIsRenderOpen }: Props) => {
+export const StepFrontDesign = ({ setRenderState, onContinue, setIsRenderOpen }: Props) => {
   return (
     <section className="py-16">
-      <div className="flex items-center gap-4 my-10">
-        <h4 className="text-[#ff5100] font-semibold text-2xl lg:text-4xl  whitespace-nowrap">
-          <span className="bg-[#ece83a] py-3 px-4 rounded-4xl mr-2">7</span>
-          Choose a product
-        </h4>
-        <div className="flex-1 border-t border-gray-300"></div>
-      </div>
+      <StepTitle step={6} title={'Will your canopy have a front design?'} />
       <div className={`flex flex-col lg:flex-row justify-center gap-10 px-4`}>
         {chooseDesign.map((chooseDesign, index) => (
           <ChooseProductGrid
@@ -29,7 +25,9 @@ export const StepFrontDesign = ({ setRenderState, setIsRenderOpen }: Props) => {
                 frontDesign: chooseDesign.name, // o usa product.title si lo defines así
               }));
               setIsRenderOpen?.(true);
+              onContinue()
             }}
+            className="flex flex-col items-center text-center w-full lg:w-1/4"
           />
         ))}
       </div>

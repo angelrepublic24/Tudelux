@@ -66,3 +66,109 @@ export const availableComponents: ComponentData[] = [
     position: [0, 2, 0],
   },
 ];
+
+
+export const lightingData = [
+  {
+        id: 1,
+        name: "Skylight lighting",
+        description:"Tudelü: Closure is the easiest way to beautify your space while creating the calm, focused environment you need for any task.",
+        image: "",
+        render: "https://24116371.fs1.hubspotusercontent-na1.net/hubfs/24116371/Modulux%20C8SR00.glb",
+        about: {
+          text: "Skylight lighting is:",
+          benefits: [
+            "Retractable",
+            "Occlusive",
+            "Remote-controlled",
+            "Single sided decor finish",
+          ],
+        },
+        cta: "Skylight lighting"
+    },
+    {
+        id: 2,
+        name: "Spotlights",
+        description:"Tudelü: Closure is the easiest way to beautify your space while creating the calm, focused environment you need for any task.",
+        image: "",
+        render: "https://24116371.fs1.hubspotusercontent-na1.net/hubfs/24116371/Modulux%20C8SR00.glb",
+        about: {
+          text: "Spotlights lighting is:",
+          benefits: [
+            "Retractable",
+            "Occlusive",
+            "Remote-controlled",
+            "Single sided decor finish",
+          ],
+        },
+        cta: "Spotlights"
+    },
+    {
+        id: 3,
+        name: "Louver lighting",
+        description:"Tudelü: Closure is the easiest way to beautify your space while creating the calm, focused environment you need for any task.",
+        image: "",
+        render: "https://24116371.fs1.hubspotusercontent-na1.net/hubfs/24116371/Modulux%20C8SR00.glb",
+        about: {
+          text: "Louver lighting is:",
+          benefits: [
+            "Retractable",
+            "Occlusive",
+            "Remote-controlled",
+            "Single sided decor finish",
+          ],
+        },
+        cta: "Louver lighting"
+    },
+    {
+        id: 4,
+        name: "Canopy lighting",
+        description:"Tudelü: Closure is the easiest way to beautify your space while creating the calm, focused environment you need for any task.",
+        image: "",
+        render: "https://24116371.fs1.hubspotusercontent-na1.net/hubfs/24116371/Modulux%20C8SR00.glb",
+        about: {
+          text: "Canopy lighting is:",
+          benefits: [
+            "Retractable",
+            "Occlusive",
+            "Remote-controlled",
+            "Single sided decor finish",
+          ],
+        },
+        cta: "Canopy lighting"
+    },
+    {
+        id: 5,
+        name: "Support lighting",
+        description:"Tudelü: Closure is the easiest way to beautify your space while creating the calm, focused environment you need for any task.",
+        image: "",
+        render: "https://24116371.fs1.hubspotusercontent-na1.net/hubfs/24116371/Modulux%20C8SR00.glb",
+        about: {
+          text: "Support lighting is:",
+          benefits: [
+            "Retractable",
+            "Occlusive",
+            "Remote-controlled",
+            "Single sided decor finish",
+          ],
+        },
+        cta: "Support lighting"
+    },
+     {
+        id: 6,
+        name: "Custom lighting",
+        description:"Tudelü: Closure is the easiest way to beautify your space while creating the calm, focused environment you need for any task.",
+        image: "",
+        render: "https://24116371.fs1.hubspotusercontent-na1.net/hubfs/24116371/Modulux%20C8SR00.glb",
+        about: {
+          text: "Custom lighting is:",
+          benefits: [
+            "Retractable",
+            "Occlusive",
+            "Remote-controlled",
+            "Single sided decor finish",
+          ],
+        },
+        cta: "Custom lighting"
+    },
+]

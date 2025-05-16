@@ -7,6 +7,7 @@ import { IoCarOutline, IoCartOutline, IoMenuOutline, IoSearchOutline } from "rea
 
 export const ShopTopMenu = () => {
   const openMenu = useUIStore(state => state.openSideMenu)
+  const toggleCart = useUIStore(state => state.toggleCart);
   return (
     <nav className="flex px-5 justify-between items-center w-full  bg-[#ff5100]">
       {/* Logo */}
@@ -44,12 +45,12 @@ export const ShopTopMenu = () => {
         <Link className="mx-2" href={`/search`}>
           <IoSearchOutline className="w-5 h-5" />
         </Link>
-        <Link className="mx-2" href={`/cart`}>
+        <button className="mx-2" onClick={toggleCart}>
           <div className="relative">
             <span className="absolute px-1 text-xs rounded-full font-bold -top-2 -right-2 bg-blue-700 text-white">3</span>
             <IoCartOutline className="w-5 h-5" />
           </div>
-        </Link>
+        </button>
 
         <button className="m-2 px-2 rounded-md transition-all hover:bg-gray-100" onClick={openMenu}>
             <IoMenuOutline />

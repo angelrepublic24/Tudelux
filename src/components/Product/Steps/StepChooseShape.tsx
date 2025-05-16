@@ -1,3 +1,4 @@
+import { StepTitle } from "@/components/ui/StepTitle/StepTitle";
 import { RenderState } from "@/types";
 import { chooseShape } from "@/utils/chooseShape";
 import Image from "next/image";
@@ -11,16 +12,11 @@ type Props = {
 export const StepChooseShape = ({ setRenderState, setIsRenderOpen, onContinue }: Props)=> {
   return (
     <section className="py-16">
-      <div className="flex items-center gap-4 my-10">
-        <h4 className="text-[#ff5100] font-semibold text-4xl  whitespace-nowrap">
-          <span className="bg-[#ece83a] py-3 px-4 rounded-4xl mr-2">4</span>
-          Choose a shape
-        </h4>
-        <div className="flex-1 border-t border-gray-300"></div>
-      </div>
+      <StepTitle step={4} title={'Choose a shape'} />
       <div className="grid grid-cols-2 md:grid-cols-3 gap-12">
         {chooseShape.map((shape, i) => (
           <button
+            key={i}
             onClick={() => {
               setRenderState((prev) => ({
                 ...prev,

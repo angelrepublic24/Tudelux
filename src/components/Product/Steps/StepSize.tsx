@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { RenderState } from "@/types";
+import { StepTitle } from "@/components/ui/StepTitle/StepTitle";
 
 type Props = {
   setRenderState: React.Dispatch<React.SetStateAction<RenderState>>;
@@ -8,7 +9,11 @@ type Props = {
   onContinue: () => void;
 };
 
-export const StepSize = ({ setRenderState, setIsRenderOpen, onContinue }: Props) => {
+export const StepSize = ({
+  setRenderState,
+  setIsRenderOpen,
+  onContinue,
+}: Props) => {
   const [width, setWidth] = useState(10);
   const [projection, setProjection] = useState(10);
 
@@ -26,13 +31,7 @@ export const StepSize = ({ setRenderState, setIsRenderOpen, onContinue }: Props)
 
   return (
     <section className="py-10">
-      <div className="flex items-center gap-4 my-10">
-        <h4 className="text-[#ff5100] font-semibold text-2xl lg:text-4xl whitespace-nowrap">
-          <span className="bg-[#ece83a] py-3 px-4 rounded-4xl mr-2">5</span>
-          Give your dimensions
-        </h4>
-        <div className="flex-1 border-t border-gray-300"></div>
-      </div>
+      <StepTitle step={5} title={"Give your dimensions"} />
 
       <div className="flex flex-col lg:flex-row items-center justify-center w-full py-10">
         <div className="flex flex-col lg:flex-row items-center gap-10 w-full justify-start">

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Alexandria } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./provider";
+import {Toaster} from "sonner"
 
 
 
@@ -24,7 +26,10 @@ export default function RootLayout({
       <body
         className={`${alexandria.variable} antialiased`}
       >
-        {children}
+        <Toaster />
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );
