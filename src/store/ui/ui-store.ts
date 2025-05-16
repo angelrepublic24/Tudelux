@@ -7,6 +7,7 @@ type UIState = {
   closeSideMenu: () => void;
   openCart: () => void;
   closeCart: () => void;
+  toggleCart: () => void;
 };
 
 
