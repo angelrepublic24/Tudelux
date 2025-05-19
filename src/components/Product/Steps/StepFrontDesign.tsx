@@ -6,7 +6,7 @@ import { StepTitle } from "@/components/ui/StepTitle/StepTitle";
 
 type Props = {
   setRenderState: React.Dispatch<React.SetStateAction<RenderState>>;
-  onContinue : () => void
+  onContinue : (selectedName?: string) => void
   setIsRenderOpen?: (open: boolean) => void;
 };
 
@@ -25,7 +25,7 @@ export const StepFrontDesign = ({ setRenderState, onContinue, setIsRenderOpen }:
                 frontDesign: chooseDesign.name, // o usa product.title si lo defines así
               }));
               setIsRenderOpen?.(true);
-              onContinue()
+              onContinue(chooseDesign.name)
             }}
             className="flex flex-col items-center text-center w-full lg:w-1/4"
           />

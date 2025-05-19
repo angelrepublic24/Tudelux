@@ -47,3 +47,15 @@ export async function getMaterials(){
         }
     }
 }
+
+export async function getWallColor (){
+    try{
+        const {data} = await axios.get("https://api.hubapi.com/hubdb/api/v2/tables/5650482/rows?portalId=22465736")
+        const colors = data.objects;
+        return colors
+    } catch (error) {
+        if(isAxiosError(error)){
+            throw new Error(error.response?.data)
+        }
+    }
+}

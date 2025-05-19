@@ -56,6 +56,17 @@ export const StepKindOfProduct = ({
                     className="w-full h-full object-contain z-10"
                   />
                 )}
+
+                {!product.image && product.render && (
+                  <video
+                    src={product.render}
+                    muted
+                    autoPlay
+                    loop
+                    playsInline
+                    className="w-full h-full object-contain z-10"
+                  />
+                )}
                 <svg
                   width="60"
                   height="60"
@@ -87,7 +98,7 @@ export const StepKindOfProduct = ({
               </p>
               <div className="bg-white w-full h-[1px]"></div>
               <p className="text-[#ff5100] text-[19px] text-left font-semibold mb-1 py-4">
-                {product.about.text}
+                {product.about.text} {product.name}
               </p>
               <ul className="text-sm text-gray-700 space-y-1">
                 {product.about.benefits.map((benefit, idx) => (

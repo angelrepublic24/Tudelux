@@ -1,21 +1,25 @@
-'use client';
-import { CostSummary, MaterialItem } from '@/types';
-import React from 'react';
-import { IoClose } from 'react-icons/io5';
-
+"use client";
+import { CostSummary, MaterialItem, MaterialItemTable } from "@/types";
+import React from "react";
+import { IoClose } from "react-icons/io5";
 
 type Props = {
-  materials: MaterialItem[];
+  materials: MaterialItemTable[];
   summary: CostSummary;
   projectName: string;
   onClose: () => void;
 };
 
-export const PricingBreakdownModal = ({ materials, summary, projectName, onClose }: Props) => {
-  const today = new Date().toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+export const PricingBreakdownModal = ({
+  materials,
+  summary,
+  projectName,
+  onClose,
+}: Props) => {
+  const today = new Date().toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 
   return (
@@ -28,7 +32,10 @@ export const PricingBreakdownModal = ({ materials, summary, projectName, onClose
             <h2 className="text-2xl font-bold">{projectName}</h2>
             <p className="text-sm text-gray-500">Generated on {today}</p>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-red-500">
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-red-500"
+          >
             <IoClose size={24} />
           </button>
         </div>
@@ -46,20 +53,23 @@ export const PricingBreakdownModal = ({ materials, summary, projectName, onClose
               </tr>
             </thead>
             <tbody>
-  {materials
-    .filter((item) => item.totalPrice > 0)
-    .map((item, i) => (
-      <tr key={i} className="border-t border-slate-200">
-        <td className="py-2 px-3">{item.name}</td>
-        <td className="py-2 px-3">{item.color}</td>
-        <td className="py-2 px-3">
-          {item.quantity} {item.unit}
-        </td>
-        <td className="py-2 px-3">${item.pricePerUnit.toFixed(2)}</td>
-        <td className="py-2 px-3 font-semibold">${item.totalPrice.toFixed(2)}</td>
-      </tr>
-    ))}
-</tbody>
+              {materials
+                .filter((item) => item.total > 0)
+                .map((item, i) => (
+                  <tr key={i} className="border-t border-slate-200">
+                    <td className="py-2 px-3">{item.name}</td>
+                    <td className="py-2 px-3">{item.color}</td>
+                    <td className="py-2 px-3">{item.inches} in</td>
+                    <td className="py-2 px-3">{item.quantity} pcs</td>
+                    <td className="py-2 px-3 font-semibold">
+                      ${item.total.toFixed(2)}
+                      <div className="text-xs text-gray-500">
+                        (${item.pricePerInch.toFixed(2)}/in)
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
           </table>
         </div>
 
@@ -69,7 +79,10 @@ export const PricingBreakdownModal = ({ materials, summary, projectName, onClose
           <SummaryCard label="Cut Cost" value={summary.cutsCost} />
           <SummaryCard label="Material + Cut" value={summary.combinedCost} />
           <SummaryCard label="15% Markup" value={summary.markup} />
-          <SummaryCard label="Subtotal + 15%" value={summary.pricePlus15Markup} />
+          <SummaryCard
+            label="Subtotal + 15%"
+            value={summary.pricePlus15Markup}
+          />
           <SummaryCard label="Final Markup" value={summary.finalMarkup} />
           <SummaryCard label="Total" value={summary.finalTotal} highlight />
         </div>
@@ -88,9 +101,15 @@ const SummaryCard = ({
   highlight?: boolean;
 }) => {
   return (
-    <div className="flex flex-col items-center border rounded-xl p-4 shadow-sm bg-white">
+    <div className="flex flex-col items-center border rounded-xl justify-center shadow-sm bg-white h-16">
       <span className="text-sm text-gray-500">{label}</span>
-      <span className={highlight ? 'text-[#ff5100] font-bold text-xl' : 'text-orange-500 font-semibold text-lg'}>
+      <span
+        className={
+          highlight
+            ? "text-[#ff5100] font-bold text-xl"
+            : "text-orange-500 font-semibold text-lg"
+        }
+      >
         ${value.toFixed(2)}
       </span>
     </div>

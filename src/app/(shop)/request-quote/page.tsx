@@ -1,14 +1,34 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RenderHeader } from "@/components/Render/RenderHeader";
 import { Title } from "@/components/ui/title/Title";
 import { chooseProduct } from "@/utils/chooseProduct";
-import { RenderState } from "@/types"; // asegúrate de exportarlo ahí
+import { CostSummary, MaterialItemTable, RenderState } from "@/types"; // asegúrate de exportarlo ahí
 import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { getAddOn } from "@/api/HubspotAPi";
-import { StepAddiotionalFeatures, StepChooseProduct, StepChooseShape, StepColors, StepComplete, StepCustomLocationOptions, StepFront, StepFrontDesign, StepFullCustomOptions, StepKindOfProduct, StepLighting, StepLouverDetails, StepLouversDirections, StepProfile, StepRole, StepSize, StepSpaceBetweenLouvers, StepStandardColorOptions, StepSupport } from "@/components/Product";
-
+import {
+  StepAddiotionalFeatures,
+  StepChooseProduct,
+  StepChooseShape,
+  StepColors,
+  StepComplete,
+  StepCustomLocationOptions,
+  StepFront,
+  StepFrontDesign,
+  StepFullCustomOptions,
+  StepKindOfProduct,
+  StepLighting,
+  StepLouverDetails,
+  StepLouversDirections,
+  StepProfile,
+  StepRole,
+  StepSize,
+  StepSpaceBetweenLouvers,
+  StepStandardColorOptions,
+  StepSupport,
+} from "@/components/Product";
+import { StepWallColor } from "@/components/Product/Steps/StepWallColor";
 
 export default function RequestQuotePage() {
   const [selectedProduct, setSelectedProduct] = useState<
@@ -17,6 +37,17 @@ export default function RequestQuotePage() {
   const [isRenderOpen, setIsRenderOpen] = useState(false);
   const [renderState, setRenderState] = useState<RenderState>({});
   const [activeStep, setActiveStep] = useState(0);
+  const [materialsData, setMaterialsData] = useState<MaterialItemTable[]>([]);
+  const [costSummary, setCostSummary] = useState<CostSummary>({
+  materialCost: 0,
+  cutsCost: 0,
+  combinedCost: 0,
+  markup: 0,
+  pricePlus15Markup: 0,
+  finalMarkup: 0,
+  finalTotal: 0
+});
+
 
   const chooseProductRef = useRef<HTMLDivElement>(null);
   const kindOfProductRef = useRef<HTMLDivElement>(null);
@@ -33,25 +64,37 @@ export default function RequestQuotePage() {
   const StepLightingRef = useRef<HTMLDivElement>(null);
   const StepColorsRef = useRef<HTMLDivElement>(null);
   const StepColorOptionsRef = useRef<HTMLDivElement>(null);
-  const StepCompleteRef  = useRef<HTMLDivElement>(null);
-
-  const {
-    data: addOns,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryFn: getAddOn,
-    queryKey: ["addOns"],
-  });
-
-  if (isLoading) return "Loading....";
-  if (isError) return "Error loading";
+  const StepCompleteRef = useRef<HTMLDivElement>(null);
 
   const scrollToRef = (ref: React.RefObject<HTMLDivElement | null>) => {
     setTimeout(() => {
       ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
   };
+
+  useEffect(() => {
+  if (materialsData.length === 0) return;
+      console.log({materialsData});
+
+
+  const materialCost = materialsData.reduce((acc, item) => acc + item.total, 0);
+  const cutsCost = 0; // Si necesitas lógica de cortes, puedes añadirla aquí
+  const combinedCost = materialCost + cutsCost;
+  const markup = combinedCost * 0.15;
+  const pricePlus15Markup = combinedCost + markup;
+  const finalMarkup = pricePlus15Markup * 0.15;
+  const finalTotal = pricePlus15Markup + finalMarkup;
+
+  setCostSummary({
+    materialCost,
+    cutsCost,
+    combinedCost,
+    markup,
+    pricePlus15Markup,
+    finalMarkup,
+    finalTotal,
+  });
+}, [materialsData]);
 
   return (
     <>
@@ -131,16 +174,26 @@ your custom Tudelü wall."
         </div>
 
         <div ref={chooseShapeRef}>
-          {activeStep >= 3 && (
-            <StepChooseShape
-              setRenderState={setRenderState}
-              setIsRenderOpen={setIsRenderOpen}
-              onContinue={() => {
-                setActiveStep(4);
-                scrollToRef(sizeRef);
-              }}
-            />
-          )}
+          {activeStep >= 3 &&
+            (renderState.title === "Architectural Canopy" ? (
+              <StepChooseShape
+                setRenderState={setRenderState}
+                setIsRenderOpen={setIsRenderOpen}
+                onContinue={() => {
+                  setActiveStep(4);
+                  scrollToRef(sizeRef);
+                }}
+              />
+            ) : renderState.title === "Partition Walls" ? (
+              <StepWallColor
+                setRenderState={setRenderState}
+                setIsRenderOpen={setIsRenderOpen}
+                onContinue={() => {
+                  setActiveStep(4);
+                  scrollToRef(sizeRef);
+                }}
+              />
+            ) : null)}
         </div>
 
         <div ref={sizeRef}>
@@ -161,31 +214,35 @@ your custom Tudelü wall."
             <StepFrontDesign
               setRenderState={setRenderState}
               setIsRenderOpen={setIsRenderOpen}
-              onContinue={() => {
-                setActiveStep(6);
-                scrollToRef(stepFrontRef);
+              onContinue={(selectedName) => {
+                if (selectedName === "Solid Front") {
+                  setActiveStep(7);
+                  scrollToRef(stepProfileRef);
+                } else {
+                  setActiveStep(6);
+                  scrollToRef(stepFrontRef);
+                }
               }}
             />
           )}
         </div>
 
-        <div ref={stepFrontRef}>
-          {activeStep >= 6 && (
-            <StepFront
-              addOns={addOns}
-              setRenderState={setRenderState}
-              setIsRenderOpen={setIsRenderOpen}
-              onContinue={() => {
-                setActiveStep(7);
-                scrollToRef(stepProfileRef);
-              }}
-            />
-          )}
-        </div>
+        {activeStep >= 6 && renderState.frontDesign !== "Solid Front" && (
+          <StepFront
+            setRenderState={setRenderState}
+            setIsRenderOpen={setIsRenderOpen}
+            onContinue={() => {
+              setActiveStep(7);
+              scrollToRef(stepProfileRef);
+            }}
+          />
+        )}
 
         <div ref={stepProfileRef}>
           {activeStep >= 7 && (
             <StepProfile
+              renderState={renderState}
+              setMaterialsData={setMaterialsData}
               setRenderState={setRenderState}
               setIsRenderOpen={setIsRenderOpen}
               onContinue={() => {
@@ -290,7 +347,7 @@ your custom Tudelü wall."
               setIsRenderOpen={setIsRenderOpen}
               onContinue={() => {
                 setActiveStep(16);
-                scrollToRef(StepCompleteRef)
+                scrollToRef(StepCompleteRef);
                 // scrollTo next step if needed
               }}
             />
@@ -303,7 +360,7 @@ your custom Tudelü wall."
                 setIsRenderOpen={setIsRenderOpen}
                 onContinue={() => {
                   setActiveStep(16);
-                  scrollToRef(StepCompleteRef)
+                  scrollToRef(StepCompleteRef);
                 }}
               />
             )}
@@ -315,7 +372,7 @@ your custom Tudelü wall."
                 setIsRenderOpen={setIsRenderOpen}
                 onContinue={() => {
                   setActiveStep(16);
-                  scrollToRef(StepCompleteRef)
+                  scrollToRef(StepCompleteRef);
                 }}
               />
             )}
@@ -325,11 +382,12 @@ your custom Tudelü wall."
             <StepComplete
               renderState={renderState}
               setRenderState={setRenderState}
+              materials={materialsData}
+              summary={costSummary}
               setIsRenderOpen={setIsRenderOpen}
             />
           )}
         </div>
-
       </section>
     </>
   );

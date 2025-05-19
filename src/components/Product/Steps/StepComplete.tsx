@@ -1,17 +1,19 @@
 import { StepTitle } from "@/components/ui/StepTitle/StepTitle";
 import { useCartStore } from "@/store/useCartStore";
 import { v4 as uuidv4 } from 'uuid';
-import { RenderState } from "@/types";
+import { CostSummary, MaterialItemTable, RenderState } from "@/types";
 import React from "react";
 import { useUIStore } from "@/store/ui/ui-store";
 
 type Props = {
   renderState: RenderState;
   setRenderState: React.Dispatch<React.SetStateAction<RenderState>>;
+  materials: MaterialItemTable[];
+  summary: CostSummary;
   setIsRenderOpen?: (open: boolean) => void;
 };
 
-export const StepComplete = ({renderState, setRenderState, setIsRenderOpen }: Props) => {
+export const StepComplete = ({renderState, setRenderState, materials, summary, setIsRenderOpen }: Props) => {
   const addItem = useCartStore((state) => state.addItem);
   const openCart = useUIStore((state) => state.openCart);
 
@@ -22,18 +24,10 @@ export const StepComplete = ({renderState, setRenderState, setIsRenderOpen }: Pr
     const newItem = {
       id: uuidv4(),
       name: `${renderState.title} - ${renderState.productType}`,
-      price: 1000, // ⚠️ reemplaza esto por un cálculo real si lo tienes
+      price: materials.reduce((acc, item) => acc + item.total, 0), // ⚠️ reemplaza esto por un cálculo real si lo tienes
       quantity: 1,
-      materials: [], // ⚠️ podrías transformar renderState en materiales si lo necesitas
-      costSummary: {
-        materialCost: 800,
-        cutsCost: 50,
-        combinedCost: 850,
-        markup: 127.5,
-        pricePlus15Markup: 977.5,
-        finalMarkup: 22.5,
-        finalTotal: 1000
-      },
+      materials, // ⚠️ podrías transformar renderState en materiales si lo necesitas
+      costSummary: summary,
       dimensions: renderState.dimensions,
       image: renderState.renderUrl,
       color: renderState.color,

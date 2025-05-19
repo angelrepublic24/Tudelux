@@ -5,7 +5,7 @@ import { IoClose } from "react-icons/io5";
 import { useState } from "react";
 import { PricingBreakdownModal } from "../pricingModal/PricingBreakdownModal";
 import { useCartStore } from "@/store/useCartStore";
-import { CostSummary, MaterialItem } from "@/types";
+import { CostSummary, MaterialItem, MaterialItemTable } from "@/types";
 
 export const CartSideBar = () => {
   const isCartOpen = useUIStore((state) => state.isCartOpen);
@@ -13,7 +13,7 @@ export const CartSideBar = () => {
   const items = useCartStore((state) => state.items);
   const total = useCartStore((state) => state.total());
 
-  const [activeMaterials, setActiveMaterials] = useState<MaterialItem[] | null>(
+  const [activeMaterials, setActiveMaterials] = useState<MaterialItemTable[] | null>(
     null
   );
   const [activeSummary, setActiveSummary] = useState<CostSummary | null>(null);

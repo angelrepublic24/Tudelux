@@ -66,8 +66,8 @@ export const chooseProduct = [
       {
         name: "Closure",
         description:"Tudelü: Closure is the easiest way to beautify your space while creating the calm, focused environment you need for any task.",
-        image: "https://...",
-        render: "https://...",
+        image: "",
+        render: "https://22465736.fs1.hubspotusercontent-na1.net/hubfs/22465736/Videos/Full%20Closure.mp4",
         about: {
           text: "Wall is:",
           benefits: [
@@ -80,39 +80,39 @@ export const chooseProduct = [
       },
       {
         name: "Private",
-        description:"Tudelü: Closure is the easiest way to beautify your space while creating the calm, focused environment you need for any task.",
-        image: "https://...",
-        render: "https://...",
+        description:"Tudelü: Private is the smartest way to turn a single room into many, each with its own finished wall that helps reduce noise.",
+        image: "",
+        render: "https://22465736.fs1.hubspotusercontent-na1.net/hubfs/22465736/Videos/Full%20Private.mp4",
         about: {
           text: "Wall is:",
           benefits: [
             "Retractable",
             "Occlusive",
             "Remote-controlled",
-            "Single sided decor finish",
+            "36 STC Sound proof",
           ],
         },
       },
       {
         name: "Secluded",
-        description:"Tudelü: Closure is the easiest way to beautify your space while creating the calm, focused environment you need for any task.",
-        image: "https://...",
-        render: "https://...",
+        description:"Tudelü: Secluded is the perfect way to take back your space, cutting out distractions to give your space the tranquility it needs.",
+        image: "",
+        render: "https://22465736.fs1.hubspotusercontent-na1.net/hubfs/22465736/Videos/Full%20Private.mp4",
         about: {
           text: "Wall is:",
           benefits: [
             "Retractable",
             "Occlusive",
             "Remote-controlled",
-            "Single sided decor finish",
+            "40 STC Sound proof",
           ],
         },
       },
       {
         name: "Mute",
         description:"Tudelü: Closure is the easiest way to beautify your space while creating the calm, focused environment you need for any task.",
-        image: "https://...",
-        render: "https://...",
+        image: "",
+        render: "https://22465736.fs1.hubspotusercontent-na1.net/hubfs/22465736/Videos/Full%20Private.mp4",
         about: {
           text: "Wall is:",
           benefits: [

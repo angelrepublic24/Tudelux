@@ -17,17 +17,22 @@ export const StepSize = ({
   const [width, setWidth] = useState(10);
   const [projection, setProjection] = useState(10);
 
-  const handleContinue = () => {
-    setRenderState((prev) => ({
-      ...prev,
-      dimensions: {
-        width: width.toString(),
-        projection: projection.toString(),
-      },
-    }));
-    setIsRenderOpen?.(true);
-    onContinue();
-  };
+ const handleContinue = () => {
+  const widthInches = width * 12;
+  const projectionInches = projection * 12;
+
+  setRenderState((prev) => ({
+    ...prev,
+    dimensions: {
+      width: width.toString(), // en ft
+      projection: projection.toString(), // en ft
+      widthInches, // en in
+      projectionInches, // en in
+    },
+  }));
+  setIsRenderOpen?.(true);
+  onContinue();
+};
 
   return (
     <section className="py-10">

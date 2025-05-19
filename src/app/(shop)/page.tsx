@@ -7,6 +7,7 @@ export default function HomePage () {
         
         <Link href={'/request-quote'} className='font-semibold'>Request Quote</Link>
         <Link href={'/canopy'} className='font-semibold'>Custom Canopy</Link>
+        <Link href={'/custom-shape'} className='font-semibold'>Custom Shape</Link>
     </div>
   )
 }

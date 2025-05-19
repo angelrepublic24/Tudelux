@@ -33,7 +33,6 @@ export type ProductWithTypes = BaseProduct & {
   }[];
 };
 
-
 export type RenderState = {
   title?: string;
   productType?: string;
@@ -42,6 +41,8 @@ export type RenderState = {
   dimensions?: {
     width?: string;
     projection?: string;
+    widthInches?: number;      // ✅ nuevo campo en in
+    projectionInches?: number;
   };
   frontDesign?: string;
   fontTypeDesign?: string
@@ -103,6 +104,16 @@ export type MaterialItem = {
   totalPrice: number;
 };
 
+export type MaterialItemTable = {
+  name: string;
+  color: string;
+  inches: number;
+  quantity: number;
+  pricePerInch: number;
+  total: number;
+};
+
+
 export type CostSummary = {
   materialCost: number;
   cutsCost: number;
@@ -118,7 +129,7 @@ export type CartItem = {
   name: string;
   price: number;
   quantity: number;
-  materials: MaterialItem[];
+  materials: MaterialItemTable[];
   costSummary: CostSummary;
   dimensions?: {
     width?: string;

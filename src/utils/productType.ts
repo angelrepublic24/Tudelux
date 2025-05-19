@@ -3,31 +3,33 @@ export const productTypes = [
     name: "Motorized Wall",
     description: "",
     image: "",
+    video: "",
     url: "wall",
     type: [
       {
         name: "Closure",
         description: "",
         image: "",
-      },
-      {
-        name: "Mute",
-        description: "",
-        image: "",
-        render: ""
+        video: "https://22465736.fs1.hubspotusercontent-na1.net/hubfs/22465736/Videos/Full%20Closure.mp4"
       },
       {
         name: "Seclude",
         description: "",
         image: "",
-        render: ""
+        video: "https://22465736.fs1.hubspotusercontent-na1.net/hubfs/22465736/Videos/Full%20Private.mp4"
       },
       {
         name: "Private",
         description: "",
         image: "",
-        render: ""
-      }
+        video: "https://22465736.fs1.hubspotusercontent-na1.net/hubfs/22465736/Videos/Full%20Private.mp4"
+      },
+      {
+        name: "Mute",
+        description: "",
+        image: "",
+        video: "https://22465736.fs1.hubspotusercontent-na1.net/hubfs/22465736/Videos/Full%20Private.mp4"
+      },
     ]
   },
   {
