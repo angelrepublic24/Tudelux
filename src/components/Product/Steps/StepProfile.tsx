@@ -88,12 +88,13 @@ export const StepProfile = ({
               );
 
               setMaterialsData((prev) => [...prev, ...newMaterials]);
+              console.log(newMaterials);
 
               setRenderState((prev) => ({
                 ...prev,
                 profile: selectedProfile,
               }));
-              console.log(newMaterials);
+              
             }}
             value={profile.name}
             className="bg-gray-100 border border-transparent hover:bg-gray-200 focus:border-black focus:border-dotted text-center w-full font-semibold text-xl rounded-xl py-4"

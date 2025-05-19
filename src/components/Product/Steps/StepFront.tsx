@@ -38,10 +38,10 @@ export const StepFront = ({setRenderState, onContinue, setIsRenderOpen,}: Props)
     <section>
       <StepTitle step={7} title={'Design Front'} />
       <div className="grid grid-cols-3 gap-10 mb-6">
-        {addOns.filter((addon) => {
+        {addOns.filter((addon: any) => {
             const name = addon.values[1];
             return allowedAddOnNames.includes(name)
-        }).map((addon: RawAddOn, i) => {
+        }).map((addon: RawAddOn, i: any) => {
           const addOnValue = {
             name: addon.values[1],
             color: addon.values[2],
