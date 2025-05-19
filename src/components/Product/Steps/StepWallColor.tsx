@@ -30,7 +30,7 @@ export const StepWallColor = ({setRenderState, onContinue, setIsRenderOpen}: Pro
   if (isLoading) return "Loading....";
   if (isError) return "Error loading";
 
-  const groupColors: ColorProps[] = colors.map(color => {
+  const groupColors: ColorProps[] = colors.map((color: any) => {
     const colorValue = color.values
     return {
         colorName: colorValue[1],
