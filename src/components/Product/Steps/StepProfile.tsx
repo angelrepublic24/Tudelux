@@ -1,6 +1,6 @@
 import { getProfile } from "@/api/HubspotAPi";
 import { StepTitle } from "@/components/ui/StepTitle/StepTitle";
-import { MaterialItemTable, RenderState } from "@/types";
+import { MaterialItemTable, ProfileVariant, RenderState } from "@/types";
 import { groupProfilesByName } from "@/utils/groupProfile";
 import { useQuery } from "@tanstack/react-query";
 
@@ -31,77 +31,68 @@ export const StepProfile = ({
   if (isError) return "Error loading";
 
   const handleProfilePrice = (
-    profileName: string,
-    color: string,
-    profiles: any[],
-    widthInches: number,
-    projectionInches: number
-  ) => {
-    const matched = profiles.find(
-      (p) => p.values[1] === profileName && p.values[2] === color
-    );
+  variant: ProfileVariant,
+  widthInches: number,
+  projectionInches: number
+): MaterialItemTable[] => {
+  const pricePerInch = variant.pricePerInch || 0;
 
-    if (!matched) return [];
-
-    const pricePerInch = parseFloat(matched.values[3]) || 0;
-
-    return [
-      {
-        name: `width ${profileName}`,
-        color,
-        inches: widthInches,
-        quantity: 2,
-        pricePerInch,
-        total: parseFloat((widthInches * pricePerInch * 2).toFixed(2)),
-      },
-      {
-        name: `projection ${profileName}`,
-        color,
-        inches: projectionInches,
-        quantity: 2,
-        pricePerInch,
-        total: parseFloat((projectionInches * pricePerInch * 2).toFixed(2)),
-      },
-    ];
-  };
+  return [
+    {
+      name: `width ${variant.name}`,
+      color: variant.color,
+      inches: widthInches,
+      quantity: 2,
+      pricePerInch,
+      total: parseFloat((widthInches * pricePerInch * 2).toFixed(2)),
+    },
+    {
+      name: `projection ${variant.name}`,
+      color: variant.color,
+      inches: projectionInches,
+      quantity: 2,
+      pricePerInch,
+      total: parseFloat((projectionInches * pricePerInch * 2).toFixed(2)),
+    },
+  ];
+};
 
   const groupedProfiles = groupProfilesByName(profiles);
   return (
     <section>
       <StepTitle step={8} title={"What's the fascia size"} />
       <div className="grid grid-cols-3 gap-5">
-        {groupedProfiles.map((profile, i) => (
-          <button
-            onClick={() => {
-              const selectedProfile = profile.name;
-              const color = "Anodized Black";
-              const widthInches = renderState.dimensions?.widthInches || 0;
-              const projectionInches =
-                renderState.dimensions?.projectionInches || 0;
+        {groupedProfiles.map((profile) => {
+          const variant = profile.variants[0]; // tomamos el primer color por defecto
 
-              const newMaterials = handleProfilePrice(
-                selectedProfile,
-                color,
-                profiles,
-                widthInches,
-                projectionInches
-              );
+          return (
+            <button
+              key={variant.id}
+              onClick={() => {
+                const widthInches = renderState.dimensions?.widthInches || 0;
+                const projectionInches =
+                  renderState.dimensions?.projectionInches || 0;
 
-              setMaterialsData((prev) => [...prev, ...newMaterials]);
-              console.log(newMaterials);
+                const newMaterials = handleProfilePrice(
+                  variant,
+                  widthInches,
+                  projectionInches
+                );
 
-              setRenderState((prev) => ({
-                ...prev,
-                profile: selectedProfile,
-              }));
-              
-            }}
-            value={profile.name}
-            className="bg-gray-100 border border-transparent hover:bg-gray-200 focus:border-black focus:border-dotted text-center w-full font-semibold text-xl rounded-xl py-4"
-          >
-            {profile.name}
-          </button>
-        ))}
+                setMaterialsData((prev) => [...prev, ...newMaterials]);
+                setRenderState((prev) => ({
+                  ...prev,
+                  profile: variant.name,
+                }));
+
+                console.log("newMaterials", newMaterials);
+              }}
+              className="bg-gray-100 border border-transparent hover:bg-gray-200 focus:border-black focus:border-dotted text-center w-full font-semibold text-xl rounded-xl py-4"
+            >
+              {variant.name}
+            </button>
+          );
+        })}
       </div>
 
       <div className="flex justify-end">
