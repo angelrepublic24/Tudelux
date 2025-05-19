@@ -39,15 +39,14 @@ export default function RequestQuotePage() {
   const [activeStep, setActiveStep] = useState(0);
   const [materialsData, setMaterialsData] = useState<MaterialItemTable[]>([]);
   const [costSummary, setCostSummary] = useState<CostSummary>({
-  materialCost: 0,
-  cutsCost: 0,
-  combinedCost: 0,
-  markup: 0,
-  pricePlus15Markup: 0,
-  finalMarkup: 0,
-  finalTotal: 0
-});
-
+    materialCost: 0,
+    cutsCost: 0,
+    combinedCost: 0,
+    markup: 0,
+    pricePlus15Markup: 0,
+    finalMarkup: 0,
+    finalTotal: 0,
+  });
 
   const chooseProductRef = useRef<HTMLDivElement>(null);
   const kindOfProductRef = useRef<HTMLDivElement>(null);
@@ -73,28 +72,30 @@ export default function RequestQuotePage() {
   };
 
   useEffect(() => {
-  if (materialsData.length === 0) return;
-      console.log({materialsData});
+    if (materialsData.length === 0) return;
+    console.log({ materialsData });
 
+    const materialCost = materialsData.reduce(
+      (acc, item) => acc + item.total,
+      0
+    );
+    const cutsCost = 0; // Si necesitas lógica de cortes, puedes añadirla aquí
+    const combinedCost = materialCost + cutsCost;
+    const markup = combinedCost * 0.15;
+    const pricePlus15Markup = combinedCost + markup;
+    const finalMarkup = pricePlus15Markup * 0.15;
+    const finalTotal = pricePlus15Markup + finalMarkup;
 
-  const materialCost = materialsData.reduce((acc, item) => acc + item.total, 0);
-  const cutsCost = 0; // Si necesitas lógica de cortes, puedes añadirla aquí
-  const combinedCost = materialCost + cutsCost;
-  const markup = combinedCost * 0.15;
-  const pricePlus15Markup = combinedCost + markup;
-  const finalMarkup = pricePlus15Markup * 0.15;
-  const finalTotal = pricePlus15Markup + finalMarkup;
-
-  setCostSummary({
-    materialCost,
-    cutsCost,
-    combinedCost,
-    markup,
-    pricePlus15Markup,
-    finalMarkup,
-    finalTotal,
-  });
-}, [materialsData]);
+    setCostSummary({
+      materialCost,
+      cutsCost,
+      combinedCost,
+      markup,
+      pricePlus15Markup,
+      finalMarkup,
+      finalTotal,
+    });
+  }, [materialsData]);
 
   return (
     <>
@@ -229,6 +230,8 @@ your custom Tudelü wall."
 
         {activeStep >= 6 && renderState.frontDesign !== "Solid Front" && (
           <StepFront
+            renderState={renderState}
+            setMaterialsData={setMaterialsData}
             setRenderState={setRenderState}
             setIsRenderOpen={setIsRenderOpen}
             onContinue={() => {

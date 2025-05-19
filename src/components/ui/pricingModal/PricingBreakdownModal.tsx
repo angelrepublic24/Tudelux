@@ -25,7 +25,7 @@ export const PricingBreakdownModal = ({
   return (
     <>
       <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose} />
-      <div className="fixed top-1/2 left-1/2 z-50 w-full max-w-3xl bg-white rounded-xl shadow-xl p-6 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="fixed top-1/2 left-1/2 z-80 w-full max-w-3xl bg-white rounded-xl shadow-xl p-6 transform -translate-x-1/2 -translate-y-1/2">
         {/* Header */}
         <div className="flex justify-between items-start mb-4">
           <div>
@@ -41,7 +41,7 @@ export const PricingBreakdownModal = ({
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto">
+        <div className="overflow-y-auto h-[60vh]">
           <table className="w-full text-sm border border-slate-300 rounded-md overflow-hidden">
             <thead className="bg-slate-100 text-left">
               <tr>

@@ -79,7 +79,7 @@ export const StepProfile = ({
                   projectionInches
                 );
 
-                setMaterialsData((prev) => [...prev, ...newMaterials]);
+                setMaterialsData((prev) => [ ...newMaterials, ...prev]);
                 setRenderState((prev) => ({
                   ...prev,
                   profile: variant.name,

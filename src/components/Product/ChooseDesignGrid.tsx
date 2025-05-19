@@ -1,11 +1,13 @@
+'use client'
 import { BaseProduct, ParsedAddOn, RenderState } from "@/types";
 import { chooseProduct } from "@/utils/chooseProduct";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
+import { IoCheckmark } from "react-icons/io5";
 
 type Props= {
   addOn: ParsedAddOn | Record<string, any>,
-  handleState: (selectedBtn: string) => void,
+  handleState: (selectedBtn: string[]) => void,
   buttonToShow?: string[]
   isSelected?: boolean;
   className?: string
@@ -13,6 +15,17 @@ type Props= {
 
 export function ChooseDesignGrid({addOn, handleState, isSelected, buttonToShow, className
 }: Props) {
+
+  const [selectedButtons, setSelectedButtons] = useState<string[]>([]);
+
+  const toggleSelection = (btn: string) => {
+    const newSelection = selectedButtons.includes(btn)
+      ? selectedButtons.filter((b) => b !== btn)
+      : [...selectedButtons, btn];
+
+    setSelectedButtons(newSelection);
+    handleState(newSelection); // pasa los seleccionados al padre
+  };
   return (
     <div  className={`flex flex-col items-center text-center ${className}`}>
       <div className="mb-12 bg-white w-full flex flex-col items-center justify-start h-[320px] overflow-visible relative rounded-lg shadow">
@@ -55,14 +68,29 @@ export function ChooseDesignGrid({addOn, handleState, isSelected, buttonToShow, 
         <p className=" text-black mb-2 text-[19px] py-8 text-left">
           {addOn.description}
         </p>
-        <div className="flex flex-col items-center justify-center p-2 space-y-4">
-          {buttonToShow && buttonToShow.map((btnAdd, i) => (
-            <button
-            onClick={() => {
-              handleState(btnAdd)
-            }}
-            className="bg-[#ff5100] px-6 py-3 text-white hover:opacity-80 rounded-2xl w-full">{btnAdd}</button>
-          ))}
+         <div className="flex flex-col items-center justify-center p-2 space-y-4">
+          {buttonToShow &&
+            buttonToShow.map((btn) => {
+              const isActive = selectedButtons.includes(btn);
+              return (
+                <div key={btn} className="w-full flex gap-2">
+                  <button
+                    onClick={() => toggleSelection(btn)}
+                    className={`flex-1 px-4 py-3 rounded-2xl font-semibold text-white transition ${
+                      isActive ? "bg-orange-700" : "bg-[#ff5100] hover:opacity-80"
+                    }`}
+                  >
+                    {btn}
+                  </button>
+
+                  {isActive && (
+                    <div className="w-[50px] flex items-center justify-center rounded-2xl bg-yellow-300 text-black text-xl font-bold">
+                      <IoCheckmark />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
         </div>
       </div>
     </div>

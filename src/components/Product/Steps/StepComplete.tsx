@@ -24,7 +24,7 @@ export const StepComplete = ({renderState, setRenderState, materials, summary, s
     const newItem = {
       id: uuidv4(),
       name: `${renderState.title} - ${renderState.productType}`,
-      price: materials.reduce((acc, item) => acc + item.total, 0), // ⚠️ reemplaza esto por un cálculo real si lo tienes
+      price: summary.finalTotal, // ⚠️ reemplaza esto por un cálculo real si lo tienes
       quantity: 1,
       materials, // ⚠️ podrías transformar renderState en materiales si lo necesitas
       costSummary: summary,

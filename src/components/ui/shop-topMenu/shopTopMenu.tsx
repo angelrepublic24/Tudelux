@@ -23,11 +23,11 @@ export const ShopTopMenu = () => {
       <div className="hidden sm:block text-white ">
         <Link
           className="m-2 p-2 rounded-md transition-all hover:text-[#ece83a]"
-          href={`/category/men`}
+          href={`/products/men`}
         >
           Products
         </Link>
-        <Link
+        {/* <Link
           className="m-2 p-2 rounded-md transition-all hover:text-[#ece83a]"
           href={`/category/women`}
         >
@@ -38,7 +38,7 @@ export const ShopTopMenu = () => {
           href={`/category/kid`}
         >
           Kids
-        </Link>
+        </Link> */}
       </div>
 
       <div className="flex items-center">
