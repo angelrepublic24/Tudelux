@@ -1,101 +1,259 @@
 "use client";
-import { useState } from "react";
-import { RenderState } from "@/types";
+
+import { useEffect, useState } from "react";
+import { MaterialItemTable, RenderState } from "@/types";
 import { StepTitle } from "@/components/ui/StepTitle/StepTitle";
 
 type Props = {
+  renderState: RenderState;
+  setMaterialsData: React.Dispatch<React.SetStateAction<MaterialItemTable[]>>;
   setRenderState: React.Dispatch<React.SetStateAction<RenderState>>;
   setIsRenderOpen?: (open: boolean) => void;
   onContinue: () => void;
 };
 
 export const StepSize = ({
+  renderState,
   setRenderState,
   setIsRenderOpen,
   onContinue,
 }: Props) => {
+  const shape = renderState.shape;
+  const isFrontHex = shape === "Front Hex";
+  const isLeftWall = shape === "Left Wall";
+  const isRightWall = shape === "Right Wall";
+
   const [width, setWidth] = useState(10);
   const [projection, setProjection] = useState(10);
+  const [frontWidth, setFrontWidth] = useState(10);
+  const [backWidth, setBackWidth] = useState(9);
+  const [corners, setCorners] = useState(1);
+  const [middleWidthFrame, setMiddleWidthFrame] = useState(1);
+  const [sideProjection, setSideProjection] = useState(9);
+  const [middleProjection, setMiddleProjection] = useState(1);
 
- const handleContinue = () => {
-  const widthInches = width * 12;
-  const projectionInches = projection * 12;
+  useEffect(() => {
+    if (isFrontHex) {
+      const calculatedFront = backWidth - (2 * corners) / 2;
+      setFrontWidth(parseFloat(calculatedFront.toFixed(2)));
+    }
+  }, [backWidth, corners]);
 
-  setRenderState((prev) => ({
-    ...prev,
-    dimensions: {
-      width: width.toString(), // en ft
-      projection: projection.toString(), // en ft
-      widthInches, // en in
-      projectionInches, // en in
-    },
-  }));
-  setIsRenderOpen?.(true);
-  onContinue();
-};
+  useEffect(() => {
+    if (isLeftWall || isRightWall) {
+      if (backWidth + middleWidthFrame !== frontWidth) {
+        setBackWidth(Math.max(frontWidth - middleWidthFrame, 1));
+      }
+    }
+  }, [middleWidthFrame]);
+
+  useEffect(() => {
+    if (isLeftWall || isRightWall) {
+      if (backWidth >= frontWidth) {
+        setBackWidth(frontWidth - 1);
+        setMiddleWidthFrame(1);
+      } else {
+        setMiddleWidthFrame(Math.max(frontWidth - backWidth, 1));
+      }
+    }
+  }, [backWidth, frontWidth]);
+
+  useEffect(() => {
+    if (isLeftWall) {
+      if (sideProjection + middleProjection !== projection) {
+        setMiddleProjection(Math.max(projection - sideProjection, 1));
+      }
+    }
+  }, [sideProjection]);
+
+  useEffect(() => {
+    if (isRightWall) {
+      if (sideProjection + middleProjection !== projection) {
+        setMiddleProjection(Math.max(projection - sideProjection, 1));
+      }
+    }
+  }, [sideProjection]);
+
+  const handleContinue = () => {
+    if (isFrontHex) {
+      setRenderState((prev) => ({
+        ...prev,
+        dimensions: {
+          frontWidth: frontWidth.toString(),
+          backWidth: backWidth.toString(),
+          projection: projection.toString(),
+          corners: corners.toString(),
+          frontWidthInches: frontWidth * 12,
+          backWidthInches: backWidth * 12,
+          projectionInches: projection * 12,
+          cornersInches: corners * 12,
+        },
+      }));
+    } else if (isLeftWall) {
+      setRenderState((prev) => ({
+        ...prev,
+        dimensions: {
+          frontWidth: frontWidth.toString(),
+          backWidth: backWidth.toString(),
+          middleWidthFrame: middleWidthFrame.toString(),
+          projection: projection.toString(),
+          leftProjectionInches: sideProjection * 12,
+          rightProjectionInches: middleProjection * 12,
+          middleProjectionInches: middleProjection * 12,
+          frontWidthInches: frontWidth * 12,
+          backWidthInches: backWidth * 12,
+          middleWidthInches: middleWidthFrame * 12,
+          projectionInches: projection * 12,
+        },
+      }));
+    } else if (isRightWall) {
+      setRenderState((prev) => ({
+        ...prev,
+        dimensions: {
+          frontWidth: frontWidth.toString(),
+          backWidth: backWidth.toString(),
+          middleWidthFrame: middleWidthFrame.toString(),
+          projection: projection.toString(),
+          leftProjectionInches: middleProjection * 12,
+          rightProjectionInches: sideProjection * 12,
+          middleProjectionInches: middleProjection * 12,
+          frontWidthInches: frontWidth * 12,
+          backWidthInches: backWidth * 12,
+          middleWidthInches: middleWidthFrame * 12,
+          projectionInches: projection * 12,
+        },
+      }));
+    } else {
+      setRenderState((prev) => ({
+        ...prev,
+        dimensions: {
+          width: width.toString(),
+          projection: projection.toString(),
+          widthInches: width * 12,
+          projectionInches: projection * 12,
+        },
+      }));
+    }
+
+    setIsRenderOpen?.(true);
+    onContinue();
+  };
 
   return (
     <section className="py-10">
       <StepTitle step={5} title={"Give your dimensions"} />
+      <div className="flex flex-col gap-8 py-10">
+        {isFrontHex && (
+          <>
+            <DimensionInput
+              label="Front Width"
+              value={frontWidth}
+              onChange={setFrontWidth}
+            />
+            <DimensionInput
+              label="Back Width"
+              value={backWidth}
+              onChange={setBackWidth}
+            />
+            <DimensionInput
+              label="Corners"
+              value={corners}
+              onChange={setCorners}
+            />
+            <DimensionInput
+              label="Projection"
+              value={projection}
+              onChange={setProjection}
+            />
+          </>
+        )}
 
-      <div className="flex flex-col lg:flex-row items-center justify-center w-full py-10">
-        <div className="flex flex-col lg:flex-row items-center gap-10 w-full justify-start">
-          {/* Width */}
-          <div className="flex flex-col lg:flex-row items-center space-x-4">
-            <label className="mb-2 text-lg">The Canopies width</label>
-            <div className="flex items-center gap-4">
-              <input
-                type="number"
-                value={width}
-                onChange={(e) => setWidth(Number(e.target.value))}
-                className="w-32 text-center py-3 bg-gray-100 rounded-xl text-lg font-semibold"
-              />
-              <span className="text-base font-medium">ft</span>
-              <input
-                type="number"
-                placeholder="in"
-                disabled
-                className="w-32 text-center py-3 bg-gray-100 rounded-xl text-gray-400 text-lg font-semibold"
-              />
-              <span className="text-base font-medium">in</span>
-            </div>
-          </div>
+        {!isFrontHex && !isLeftWall && !isRightWall && (
+          <>
+            <DimensionInput label="Width" value={width} onChange={setWidth} />
+            <DimensionInput
+              label="Projection"
+              value={projection}
+              onChange={setProjection}
+            />
+          </>
+        )}
 
-          {/* Divider */}
-          <div className="hidden lg:block border-l border-gray-400 h-12" />
+        {(isLeftWall || isRightWall) && (
+          <>
+            <DimensionInput
+              label="Front Width"
+              value={frontWidth}
+              onChange={setFrontWidth}
+            />
+            <DimensionInput
+              label="Back Width"
+              value={backWidth}
+              onChange={setBackWidth}
+            />
+            <DimensionInput
+              label="Middle Width Frame"
+              value={middleWidthFrame}
+              onChange={setMiddleWidthFrame}
+            />
+            <DimensionInput
+              label="Side Projection"
+              value={sideProjection}
+              onChange={setSideProjection}
+            />
+            <DimensionInput
+              label="Middle Projection"
+              value={middleProjection}
+              onChange={setMiddleProjection}
+            />
+            <DimensionInput
+              label="Total Projection"
+              value={projection}
+              onChange={setProjection}
+            />
+          </>
+        )}
+      </div>
 
-          {/* Projection */}
-          <div className="flex flex-col lg:flex-row space-x-4 items-center">
-            <label className="mb-2 text-lg">The Canopies Projection</label>
-            <div className="flex items-center gap-4">
-              <input
-                type="number"
-                value={projection}
-                onChange={(e) => setProjection(Number(e.target.value))}
-                className="w-32 text-center py-3 bg-gray-100 rounded-xl text-lg font-semibold"
-              />
-              <span className="text-base font-medium">ft</span>
-              <input
-                type="number"
-                placeholder="in"
-                disabled
-                className="w-32 text-center py-3 bg-gray-100 rounded-xl text-lg text-gray-400 font-semibold"
-              />
-              <span className="text-base font-medium">in</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Continue button */}
-        <div className="lg:h-44 flex items-end">
-          <button
-            onClick={handleContinue}
-            className="mt-10 bg-[#ff5100] text-yellow-300 font-bold px-10 py-4 rounded-2xl hover:bg-orange-600 transition"
-          >
-            Continue
-          </button>
-        </div>
+      <div className="flex justify-center">
+        <button
+          onClick={handleContinue}
+          className="mt-10 bg-[#ff5100] text-yellow-300 font-bold px-10 py-4 rounded-2xl hover:bg-orange-600 transition"
+        >
+          Continue
+        </button>
       </div>
     </section>
   );
 };
+
+const DimensionInput = ({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: number;
+  onChange: (val: number) => void;
+}) => (
+  <div className="flex flex-col lg:flex-row items-center space-x-4">
+    <label className="mb-2 text-lg w-40">{label}</label>
+    <div className="flex items-center gap-4">
+      <input
+        type="number"
+        min={1}
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        className="w-32 text-center py-3 bg-gray-100 rounded-xl text-lg font-semibold"
+      />
+      <span className="text-base font-medium">ft</span>
+      <input
+        type="number"
+        placeholder={`${(value * 12).toFixed(0)}`}
+        disabled
+        className="w-32 text-center py-3 bg-gray-100 rounded-xl text-gray-400 text-lg font-semibold"
+      />
+      <span className="text-base font-medium">in</span>
+    </div>
+  </div>
+);

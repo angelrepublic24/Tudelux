@@ -14,7 +14,7 @@ export const StepSupport = ({setRenderState, onContinue, setIsRenderOpen}: Props
   return (
     <section>
         <StepTitle step={13} title="Support" />
-        <div className='grid grid-cols-4 gap-4'>
+        <div className='grid gid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
             {supportsData.map(support => (
                 <ChooseProductGrid 
                 product={support}

@@ -16,7 +16,7 @@ export const StepAddiotionalFeatures = ({setRenderState, onContinue, setIsRender
     <section>
       <StepTitle step={9} title={'Addiotional features'} />
 
-      <div className='flex justify-between gap-10 mb-4'>
+      <div className='flex flex-col lg:flex-row  justify-between gap-10 mb-4'>
         {extraFeatures.map(extra => (
           <ChooseProductGrid key={extra.id} product={extra} className='w-md' handleState={() => 
                     setRenderState((prev) => ({

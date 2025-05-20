@@ -1,6 +1,7 @@
 import { getProfile } from "@/api/HubspotAPi";
 import { StepTitle } from "@/components/ui/StepTitle/StepTitle";
 import { MaterialItemTable, ProfileVariant, RenderState } from "@/types";
+import { generateMaterialsFromDimensions } from "@/utils/generateMaterialsFromDimensions";
 import { groupProfilesByName } from "@/utils/groupProfile";
 import { useQuery } from "@tanstack/react-query";
 
@@ -30,32 +31,32 @@ export const StepProfile = ({
   if (isLoading) return "Loading....";
   if (isError) return "Error loading";
 
-  const handleProfilePrice = (
-  variant: ProfileVariant,
-  widthInches: number,
-  projectionInches: number
-): MaterialItemTable[] => {
-  const pricePerInch = variant.pricePerInch || 0;
+  //   const handleProfilePrice = (
+  //   variant: ProfileVariant,
+  //   widthInches: number,
+  //   projectionInches: number
+  // ): MaterialItemTable[] => {
+  //   const pricePerInch = variant.pricePerInch || 0;
 
-  return [
-    {
-      name: `width ${variant.name}`,
-      color: variant.color,
-      inches: widthInches,
-      quantity: 2,
-      pricePerInch,
-      total: parseFloat((widthInches * pricePerInch * 2).toFixed(2)),
-    },
-    {
-      name: `projection ${variant.name}`,
-      color: variant.color,
-      inches: projectionInches,
-      quantity: 2,
-      pricePerInch,
-      total: parseFloat((projectionInches * pricePerInch * 2).toFixed(2)),
-    },
-  ];
-};
+  //   return [
+  //     {
+  //       name: `width ${variant.name}`,
+  //       color: variant.color,
+  //       inches: widthInches,
+  //       quantity: 2,
+  //       pricePerInch,
+  //       total: parseFloat((widthInches * pricePerInch * 2).toFixed(2)),
+  //     },
+  //     {
+  //       name: `projection ${variant.name}`,
+  //       color: variant.color,
+  //       inches: projectionInches,
+  //       quantity: 2,
+  //       pricePerInch,
+  //       total: parseFloat((projectionInches * pricePerInch * 2).toFixed(2)),
+  //     },
+  //   ];
+  // };
 
   const groupedProfiles = groupProfilesByName(profiles);
   return (
@@ -69,23 +70,21 @@ export const StepProfile = ({
             <button
               key={variant.id}
               onClick={() => {
-                const widthInches = renderState.dimensions?.widthInches || 0;
-                const projectionInches =
-                  renderState.dimensions?.projectionInches || 0;
-
-                const newMaterials = handleProfilePrice(
-                  variant,
-                  widthInches,
-                  projectionInches
-                );
-
-                setMaterialsData((prev) => [ ...newMaterials, ...prev]);
-                setRenderState((prev) => ({
-                  ...prev,
+                const updatedState = {
+                  ...renderState,
                   profile: variant.name,
-                }));
+                  color: variant.color,
+                };
 
-                console.log("newMaterials", newMaterials);
+                setRenderState(updatedState);
+                setMaterialsData((prev) => {
+                  const preservedAddOns = prev.filter((item) =>
+                    item.name.includes(" - ")
+                  );
+                  const newBaseStructure =
+                    generateMaterialsFromDimensions(updatedState);
+                  return [...preservedAddOns, ...newBaseStructure]; // <-- mantiene estructura arriba y addons abajo
+                });
               }}
               className="bg-gray-100 border border-transparent hover:bg-gray-200 focus:border-black focus:border-dotted text-center w-full font-semibold text-xl rounded-xl py-4"
             >

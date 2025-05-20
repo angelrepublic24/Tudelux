@@ -67,7 +67,7 @@ export const CartSideBar = () => {
                     </button>
                   </div>
                   <button
-                    className="text-red-500"
+                    className="text-red-400 hover:text-red-600 cursor-pointer"
                     onClick={() => useCartStore.getState().removeItem(item.id)}
                   >
                     Remove

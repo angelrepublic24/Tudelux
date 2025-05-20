@@ -19,7 +19,6 @@ export type BaseProduct = {
   }[];
 };
 
-
 export type ProductWithTypes = BaseProduct & {
   type: {
     name: string;
@@ -41,12 +40,24 @@ export type RenderState = {
   dimensions?: {
     width?: string;
     projection?: string;
-    widthInches?: number;      // ✅ nuevo campo en in
+    widthInches?: number; // ✅ nuevo campo en in
     projectionInches?: number;
+
+    frontWidth?: string;
+    backWidth?: string;
+    corners?: string;
+    frontWidthInches?: number;
+    backWidthInches?: number;
+    cornersInches?: number;
+
+    leftProjectionInches?: number;
+    rightProjectionInches?: number;
+    middleProjectionInches?: number;
+    middleWidthInches?: number;
   };
   frontDesign?: string;
-  fontTypeDesign?: string
-  profile?:string;
+  fontTypeDesign?: string;
+  profile?: string;
   extraF?: string;
   directions?: string;
   details?: string;
@@ -55,8 +66,6 @@ export type RenderState = {
   lighting?: string;
   color?: string;
 };
-
-
 
 export type RawAddOn = {
   id: number;
@@ -112,7 +121,6 @@ export type MaterialItemTable = {
   pricePerInch: number;
   total: number;
 };
-
 
 export type CostSummary = {
   materialCost: number;

@@ -59,3 +59,12 @@ export async function getWallColor (){
         }
     }
 }
+
+export async function getWallAdOns() {
+  const res = await fetch('/api/hubspot/addons');
+  if (!res.ok) {
+    throw new Error('Failed to fetch wall add-ons');
+  }
+  console.log(res);
+  return res.json();
+}

@@ -5,8 +5,6 @@ import { Title } from "@/components/ui/title/Title";
 import { chooseProduct } from "@/utils/chooseProduct";
 import { CostSummary, MaterialItemTable, RenderState } from "@/types"; // asegúrate de exportarlo ahí
 import Image from "next/image";
-import { useQuery } from "@tanstack/react-query";
-import { getAddOn } from "@/api/HubspotAPi";
 import {
   StepAddiotionalFeatures,
   StepChooseProduct,
@@ -29,6 +27,7 @@ import {
   StepSupport,
 } from "@/components/Product";
 import { StepWallColor } from "@/components/Product/Steps/StepWallColor";
+import { StepWallAddons } from "@/components/Product/Steps/StepWallAddons";
 
 export default function RequestQuotePage() {
   const [selectedProduct, setSelectedProduct] = useState<
@@ -100,7 +99,7 @@ export default function RequestQuotePage() {
   return (
     <>
       {renderState && (
-        <div className="flex items-center justify-end p-4 sticky top-0 z-50 bg-white">
+        <div className="flex items-center justify-end p-4 sticky top-0 z-50">
           <button
             onClick={() => setIsRenderOpen(!isRenderOpen)}
             className="bg-[#ff5100] text-white px-4 py-2 rounded hover:bg-orange-600 transition"
@@ -200,6 +199,8 @@ your custom Tudelü wall."
         <div ref={sizeRef}>
           {activeStep >= 4 && (
             <StepSize
+              renderState={renderState}
+              setMaterialsData={setMaterialsData}
               setRenderState={setRenderState}
               setIsRenderOpen={setIsRenderOpen}
               onContinue={() => {
@@ -210,7 +211,10 @@ your custom Tudelü wall."
           )}
         </div>
 
-        <div ref={frontDesignRef}>
+        {
+          renderState.title === 'Architectural Canopy' && (
+            <>
+              <div ref={frontDesignRef}>
           {activeStep >= 5 && (
             <StepFrontDesign
               setRenderState={setRenderState}
@@ -228,18 +232,20 @@ your custom Tudelü wall."
           )}
         </div>
 
-        {activeStep >= 6 && renderState.frontDesign !== "Solid Front" && (
-          <StepFront
-            renderState={renderState}
-            setMaterialsData={setMaterialsData}
-            setRenderState={setRenderState}
-            setIsRenderOpen={setIsRenderOpen}
-            onContinue={() => {
-              setActiveStep(7);
-              scrollToRef(stepProfileRef);
-            }}
-          />
-        )}
+        <div ref={stepFrontRef}>
+          {activeStep >= 6 && renderState.frontDesign !== "Solid Front" && (
+            <StepFront
+              renderState={renderState}
+              setMaterialsData={setMaterialsData}
+              setRenderState={setRenderState}
+              setIsRenderOpen={setIsRenderOpen}
+              onContinue={() => {
+                setActiveStep(7);
+                scrollToRef(stepProfileRef);
+              }}
+            />
+          )}
+        </div>
 
         <div ref={stepProfileRef}>
           {activeStep >= 7 && (
@@ -380,6 +386,18 @@ your custom Tudelü wall."
               />
             )}
         </div>
+            </>
+          )
+        }
+
+        {
+          renderState.title === 'Partition Walls' && (
+            <>
+              <StepWallAddons />
+            </>
+          )
+        }
+        
         <div ref={StepCompleteRef}>
           {activeStep >= 16 && (
             <StepComplete
@@ -387,6 +405,8 @@ your custom Tudelü wall."
               setRenderState={setRenderState}
               materials={materialsData}
               summary={costSummary}
+              setMaterialsData={setMaterialsData} // ✅
+              setActiveStep={setActiveStep}
               setIsRenderOpen={setIsRenderOpen}
             />
           )}

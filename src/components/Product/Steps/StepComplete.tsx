@@ -10,10 +10,12 @@ type Props = {
   setRenderState: React.Dispatch<React.SetStateAction<RenderState>>;
   materials: MaterialItemTable[];
   summary: CostSummary;
+  setMaterialsData: React.Dispatch<React.SetStateAction<MaterialItemTable[]>>; // ✅ nuevo
+  setActiveStep: React.Dispatch<React.SetStateAction<number>>;
   setIsRenderOpen?: (open: boolean) => void;
 };
 
-export const StepComplete = ({renderState, setRenderState, materials, summary, setIsRenderOpen }: Props) => {
+export const StepComplete = ({renderState, setRenderState, materials, summary, setMaterialsData, setActiveStep, setIsRenderOpen }: Props) => {
   const addItem = useCartStore((state) => state.addItem);
   const openCart = useUIStore((state) => state.openCart);
 
@@ -35,6 +37,11 @@ export const StepComplete = ({renderState, setRenderState, materials, summary, s
 
     addItem(newItem);
     openCart();
+
+    setRenderState({});
+    setMaterialsData([]);
+    setActiveStep(0);
+    setIsRenderOpen?.(false);
   };
   return (
     <section>

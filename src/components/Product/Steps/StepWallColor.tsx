@@ -38,9 +38,7 @@ export const StepWallColor = ({setRenderState, onContinue, setIsRenderOpen}: Pro
         description: colorValue[3] || ""
     }
   });
-  console.log(groupColors);
   return (
-
     <section>
       <StepTitle step={4} title="Choose your colors" />
 

@@ -57,12 +57,12 @@ export const StepStandardColorOptions = ({setRenderState, onContinue, setIsRende
     <section>
         <StepTitle step={16} title='Standard colors' />
 
-        <div className='flex justify-center gap-20'>
+        <div className='flex flex-col lg:flex-row justify-center gap-20'>
             {colorOptionData.map((color, i) => (
                 
                 <ChooseColorOption 
                 color={color} 
-                className='w-1/3'
+                className='lg:w-1/3'
                 key={i} 
                 handleState={(selectedBtn) => {
                 setRenderState((prev) => ({

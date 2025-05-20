@@ -53,11 +53,11 @@ export const StepLouversDirections = ({setRenderState, onContinue, setIsRenderOp
   return (
     <section>
         <StepTitle step={10} title={"Louvers direction"} />
-        <div className='flex justify-center gap-10 mb-5'>
+        <div className='flex flex-col lg:flex-row  justify-center gap-10 mb-5'>
             {louversDirectionData.map(louverD => (
                 <ChooseProductGrid 
                 product={louverD} 
-                className='w-1/3'
+                className='lg:w-1/3'
                 handleState={() => 
                     setRenderState((prev) => ({
                         ...prev,
