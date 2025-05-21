@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/pin-input": "^2.1.0",
+    "@headlessui/react": "^2.2.4",
+    "@heroicons/react": "^2.2.0",
+    "@hookform/resolvers": "^5.0.1",
     "@react-three/drei": "^10.0.7",
     "@react-three/fiber": "^9.1.2",
     "@tanstack/react-query": "^5.76.1",
@@ -20,7 +24,7 @@
     "next": "15.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-hook-form": "^7.56.3",
+    "react-hook-form": "^7.56.4",
     "react-icons": "^5.5.0",
     "react-toastify": "^11.0.5",
     "sonner": "^2.0.3",
@@ -29,7 +33,7 @@
     "three": "^0.176.0",
     "three-stdlib": "^2.36.0",
     "uuid": "^11.1.0",
-    "zod": "^3.24.4",
+    "zod": "^3.25.17",
     "zustand": "^5.0.4"
   },
   "devDependencies": {

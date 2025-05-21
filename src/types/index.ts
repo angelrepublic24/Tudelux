@@ -146,3 +146,31 @@ export type CartItem = {
   color?: string;
   image?: string;
 };
+
+export type IUser = {
+  id: number,
+  name: string,
+  lName: string,
+  email: string,
+  password: string,
+  roles?: string[]
+}
+
+export type RegisterFormType = Omit<IUser, 'id' >& {
+  password_confirmation: string
+}
+
+export type RegisterDistributorFormType = Omit<IUser, 'id'> & {
+  password_confirmation: string;
+  phone: string;
+  company: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
+  };
+  roles: ['distributor']; // opcional si ya está fijo desde el backend
+};
+
+export type LoginFormType = Pick<IUser, 'email' | 'password'>
