@@ -22,6 +22,7 @@ export const StepSize = ({
   const isFrontHex = shape === "Front Hex";
   const isLeftWall = shape === "Left Wall";
   const isRightWall = shape === "Right Wall";
+  const isRectangular = shape === "Rectangular";
 
   const [width, setWidth] = useState(10);
   const [projection, setProjection] = useState(10);
@@ -32,6 +33,9 @@ export const StepSize = ({
   const [sideProjection, setSideProjection] = useState(9);
   const [middleProjection, setMiddleProjection] = useState(1);
 
+  const MIN_INCHES = 1;
+  const MIN_DIFF = 1; // 12 inches
+
   useEffect(() => {
     if (isFrontHex) {
       const calculatedFront = backWidth - (2 * corners) / 2;
@@ -41,38 +45,28 @@ export const StepSize = ({
 
   useEffect(() => {
     if (isLeftWall || isRightWall) {
-      if (backWidth + middleWidthFrame !== frontWidth) {
-        setBackWidth(Math.max(frontWidth - middleWidthFrame, 1));
+      const expected = frontWidth;
+      const newMiddle = Math.max(expected - backWidth, MIN_DIFF / 12);
+      if (Math.abs(newMiddle - middleWidthFrame) > 0.001) {
+        setMiddleWidthFrame(newMiddle);
       }
     }
-  }, [middleWidthFrame]);
+  }, [frontWidth]);
 
   useEffect(() => {
-    if (isLeftWall || isRightWall) {
-      if (backWidth >= frontWidth) {
-        setBackWidth(frontWidth - 1);
-        setMiddleWidthFrame(1);
+    const max = projection - MIN_DIFF / 12;
+    const total = sideProjection + middleProjection;
+
+    if (total > max) {
+      if (sideProjection > middleProjection) {
+        const adjusted = max - middleProjection;
+        if (Math.abs(sideProjection - adjusted) > 0.001) setSideProjection(adjusted);
       } else {
-        setMiddleWidthFrame(Math.max(frontWidth - backWidth, 1));
+        const adjusted = max - sideProjection;
+        if (Math.abs(middleProjection - adjusted) > 0.001) setMiddleProjection(adjusted);
       }
     }
-  }, [backWidth, frontWidth]);
-
-  useEffect(() => {
-    if (isLeftWall) {
-      if (sideProjection + middleProjection !== projection) {
-        setMiddleProjection(Math.max(projection - sideProjection, 1));
-      }
-    }
-  }, [sideProjection]);
-
-  useEffect(() => {
-    if (isRightWall) {
-      if (sideProjection + middleProjection !== projection) {
-        setMiddleProjection(Math.max(projection - sideProjection, 1));
-      }
-    }
-  }, [sideProjection]);
+  }, [projection]);
 
   const handleContinue = () => {
     if (isFrontHex) {
@@ -97,8 +91,8 @@ export const StepSize = ({
           backWidth: backWidth.toString(),
           middleWidthFrame: middleWidthFrame.toString(),
           projection: projection.toString(),
-          leftProjectionInches: sideProjection * 12,
-          rightProjectionInches: middleProjection * 12,
+          leftProjectionInches: projection * 12,
+          rightProjectionInches: sideProjection * 12,
           middleProjectionInches: middleProjection * 12,
           frontWidthInches: frontWidth * 12,
           backWidthInches: backWidth * 12,
@@ -114,8 +108,8 @@ export const StepSize = ({
           backWidth: backWidth.toString(),
           middleWidthFrame: middleWidthFrame.toString(),
           projection: projection.toString(),
-          leftProjectionInches: middleProjection * 12,
-          rightProjectionInches: sideProjection * 12,
+          leftProjectionInches: sideProjection * 12,
+          rightProjectionInches: projection * 12,
           middleProjectionInches: middleProjection * 12,
           frontWidthInches: frontWidth * 12,
           backWidthInches: backWidth * 12,
@@ -123,7 +117,7 @@ export const StepSize = ({
           projectionInches: projection * 12,
         },
       }));
-    } else {
+    } else if (isRectangular) {
       setRenderState((prev) => ({
         ...prev,
         dimensions: {
@@ -141,76 +135,43 @@ export const StepSize = ({
 
   return (
     <section className="py-10">
-      <StepTitle step={5} title={"Give your dimensions"} />
+      <StepTitle step={5} title="Give your dimensions" />
       <div className="flex flex-col gap-8 py-10">
         {isFrontHex && (
           <>
-            <DimensionInput
-              label="Front Width"
-              value={frontWidth}
-              onChange={setFrontWidth}
-            />
-            <DimensionInput
-              label="Back Width"
-              value={backWidth}
-              onChange={setBackWidth}
-            />
-            <DimensionInput
-              label="Corners"
-              value={corners}
-              onChange={setCorners}
-            />
-            <DimensionInput
-              label="Projection"
-              value={projection}
-              onChange={setProjection}
-            />
+            <DimensionInput label="Front Width" value={frontWidth} onChange={setFrontWidth} />
+            <DimensionInput label="Back Width" value={backWidth} onChange={setBackWidth} />
+            <DimensionInput label="Corners" value={corners} onChange={setCorners} />
+            <DimensionInput label="Projection" value={projection} onChange={setProjection} />
           </>
         )}
 
-        {!isFrontHex && !isLeftWall && !isRightWall && (
+        {isRectangular && (
           <>
             <DimensionInput label="Width" value={width} onChange={setWidth} />
-            <DimensionInput
-              label="Projection"
-              value={projection}
-              onChange={setProjection}
-            />
+            <DimensionInput label="Projection" value={projection} onChange={setProjection} />
           </>
         )}
 
-        {(isLeftWall || isRightWall) && (
+        {isLeftWall && (
           <>
-            <DimensionInput
-              label="Front Width"
-              value={frontWidth}
-              onChange={setFrontWidth}
-            />
-            <DimensionInput
-              label="Back Width"
-              value={backWidth}
-              onChange={setBackWidth}
-            />
-            <DimensionInput
-              label="Middle Width Frame"
-              value={middleWidthFrame}
-              onChange={setMiddleWidthFrame}
-            />
-            <DimensionInput
-              label="Side Projection"
-              value={sideProjection}
-              onChange={setSideProjection}
-            />
-            <DimensionInput
-              label="Middle Projection"
-              value={middleProjection}
-              onChange={setMiddleProjection}
-            />
-            <DimensionInput
-              label="Total Projection"
-              value={projection}
-              onChange={setProjection}
-            />
+            <DimensionInput label="Front Width" value={frontWidth} onChange={setFrontWidth} />
+            <DimensionInput label="Back Width" value={backWidth} onChange={setBackWidth} />
+            <DimensionInput label="Middle Width Frame" value={middleWidthFrame} onChange={setMiddleWidthFrame} />
+            <DimensionInput label="Side Projection" value={sideProjection} onChange={setSideProjection} />
+            <DimensionInput label="Middle Projection" value={middleProjection} onChange={setMiddleProjection} />
+            <DimensionInput label="Total Projection" value={projection} onChange={setProjection} />
+          </>
+        )}
+
+        {isRightWall && (
+          <>
+            <DimensionInput label="Front Width" value={frontWidth} onChange={setFrontWidth} />
+            <DimensionInput label="Back Width" value={backWidth} onChange={setBackWidth} />
+            <DimensionInput label="Middle Width Frame" value={middleWidthFrame} onChange={setMiddleWidthFrame} />
+            <DimensionInput label="Side Projection" value={sideProjection} onChange={setSideProjection} />
+            <DimensionInput label="Middle Projection" value={middleProjection} onChange={setMiddleProjection} />
+            <DimensionInput label="Total Projection" value={projection} onChange={setProjection} />
           </>
         )}
       </div>

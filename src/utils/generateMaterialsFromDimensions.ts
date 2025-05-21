@@ -74,14 +74,14 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
       });
   }
 
-  else if (shape === "Left Wall" || shape === "Right Wall") {
+  else if (shape === "Left Wall") {
     const fw = dimensions.frontWidthInches || 0;
     const bw = dimensions.backWidthInches || 0;
     const mw = dimensions.middleWidthInches || Math.max(fw - bw, 12);
 
-    const leftP = dimensions.leftProjectionInches || 0;
-    const rightP = dimensions.rightProjectionInches || 0;
-    const mp = dimensions.middleProjectionInches || Math.max(dimensions.projectionInches! - leftP - rightP, 12);
+    const lp = dimensions.leftProjectionInches || 0; // left wall is the longest side
+    const rp = dimensions.rightProjectionInches || 0;
+    const mp = dimensions.middleProjectionInches || Math.max(lp - rp, 12);
 
     // Widths
     if (fw)
@@ -114,24 +114,94 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
     });
 
     // Projections
-    if (leftP)
+    if (lp)
       items.push({
         name: `Projection Left ${p}`,
         color: c,
-        inches: leftP,
+        inches: lp,
         quantity: 1,
         pricePerInch: PRICE_PER_INCH,
-        total: leftP * PRICE_PER_INCH,
+        total: lp * PRICE_PER_INCH,
       });
 
-    if (rightP)
+    if (rp)
       items.push({
         name: `Projection Right ${p}`,
         color: c,
-        inches: rightP,
+        inches: rp,
         quantity: 1,
         pricePerInch: PRICE_PER_INCH,
-        total: rightP * PRICE_PER_INCH,
+        total: rp * PRICE_PER_INCH,
+      });
+
+    items.push({
+      name: `Projection Middle ${p}`,
+      color: c,
+      inches: mp,
+      quantity: 1,
+      pricePerInch: PRICE_PER_INCH,
+      total: mp * PRICE_PER_INCH,
+    });
+  }
+
+  else if (shape === "Right Wall") {
+    const fw = dimensions.frontWidthInches || 0;
+    const bw = dimensions.backWidthInches || 0;
+    const mw = dimensions.middleWidthInches || Math.max(fw - bw, 12);
+
+    const rp = dimensions.rightProjectionInches || 0; // right wall is the longest side
+    const lp = dimensions.leftProjectionInches || 0;
+    const mp = dimensions.middleProjectionInches || Math.max(rp - lp, 12);
+
+    // Widths
+    if (fw)
+      items.push({
+        name: `Width Front Frame ${p}`,
+        color: c,
+        inches: fw,
+        quantity: 1,
+        pricePerInch: PRICE_PER_INCH,
+        total: fw * PRICE_PER_INCH,
+      });
+
+    if (bw)
+      items.push({
+        name: `Width Back Frame ${p}`,
+        color: c,
+        inches: bw,
+        quantity: 1,
+        pricePerInch: PRICE_PER_INCH,
+        total: bw * PRICE_PER_INCH,
+      });
+
+    items.push({
+      name: `Width Middle ${p}`,
+      color: c,
+      inches: mw,
+      quantity: 1,
+      pricePerInch: PRICE_PER_INCH,
+      total: mw * PRICE_PER_INCH,
+    });
+
+    // Projections
+    if (rp)
+      items.push({
+        name: `Projection Right ${p}`,
+        color: c,
+        inches: rp,
+        quantity: 1,
+        pricePerInch: PRICE_PER_INCH,
+        total: rp * PRICE_PER_INCH,
+      });
+
+    if (lp)
+      items.push({
+        name: `Projection Left ${p}`,
+        color: c,
+        inches: lp,
+        quantity: 1,
+        pricePerInch: PRICE_PER_INCH,
+        total: lp * PRICE_PER_INCH,
       });
 
     items.push({
