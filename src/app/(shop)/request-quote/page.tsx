@@ -236,6 +236,7 @@ your custom Tudelü wall."
           {activeStep >= 6 && renderState.frontDesign !== "Solid Front" && (
             <StepFront
               renderState={renderState}
+              materialsData={materialsData}
               setMaterialsData={setMaterialsData}
               setRenderState={setRenderState}
               setIsRenderOpen={setIsRenderOpen}

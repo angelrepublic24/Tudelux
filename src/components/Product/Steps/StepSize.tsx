@@ -36,6 +36,60 @@ export const StepSize = ({
   const MIN_INCHES = 1;
   const MIN_DIFF = 1; // 12 inches
 
+  const updateSideProjection = (newSide: number) => {
+    const adjustedMiddle = Math.max(projection - newSide, 0);
+    setSideProjection(newSide);
+    setMiddleProjection(adjustedMiddle);
+  };
+
+  const updateMiddleProjection = (newMiddle: number) => {
+    const adjustedSide = Math.max(projection - newMiddle, 0);
+    setMiddleProjection(newMiddle);
+    setSideProjection(adjustedSide);
+  };
+
+  const updateTotalProjection = (newProjection: number) => {
+    const total = sideProjection + middleProjection;
+    if (total === 0) {
+      setProjection(newProjection);
+      return;
+    }
+
+    const ratioSide = sideProjection / total;
+    const ratioMiddle = middleProjection / total;
+
+    setProjection(newProjection);
+    setSideProjection(parseFloat((newProjection * ratioSide).toFixed(2)));
+    setMiddleProjection(parseFloat((newProjection * ratioMiddle).toFixed(2)));
+  };
+
+  const updateBackWidth = (newBack: number) => {
+    const adjustedMiddle = Math.max(frontWidth - newBack, 0);
+    setBackWidth(parseFloat(newBack.toFixed(2)));
+    setMiddleWidthFrame(parseFloat(adjustedMiddle.toFixed(2)));
+  };
+
+  const updateMiddleWidth = (newMiddle: number) => {
+    const adjustedBack = Math.max(frontWidth - newMiddle, 0);
+    setMiddleWidthFrame(parseFloat(newMiddle.toFixed(2)));
+    setBackWidth(parseFloat(adjustedBack.toFixed(2)));
+  };
+
+  const updateFrontWidth = (newFront: number) => {
+    const total = backWidth + middleWidthFrame;
+    if (total === 0) {
+      setFrontWidth(parseFloat(newFront.toFixed(2)));
+      return;
+    }
+
+    const ratioBack = backWidth / total;
+    const ratioMiddle = middleWidthFrame / total;
+
+    setFrontWidth(parseFloat(newFront.toFixed(2)));
+    setBackWidth(parseFloat((newFront * ratioBack).toFixed(2)));
+    setMiddleWidthFrame(parseFloat((newFront * ratioMiddle).toFixed(2)));
+  };
+
   useEffect(() => {
     if (isFrontHex) {
       const calculatedFront = backWidth - (2 * corners) / 2;
@@ -54,16 +108,28 @@ export const StepSize = ({
   }, [frontWidth]);
 
   useEffect(() => {
+  if ((isLeftWall || isRightWall) && sideProjection + middleProjection === 0) {
+    const side = Math.ceil(projection / 2);
+    const middle = projection - side;
+    setSideProjection(side);
+    setMiddleProjection(middle);
+  }
+}, [projection, isLeftWall, isRightWall]);
+
+
+  useEffect(() => {
     const max = projection - MIN_DIFF / 12;
     const total = sideProjection + middleProjection;
 
     if (total > max) {
       if (sideProjection > middleProjection) {
         const adjusted = max - middleProjection;
-        if (Math.abs(sideProjection - adjusted) > 0.001) setSideProjection(adjusted);
+        if (Math.abs(sideProjection - adjusted) > 0.001)
+          setSideProjection(adjusted);
       } else {
         const adjusted = max - sideProjection;
-        if (Math.abs(middleProjection - adjusted) > 0.001) setMiddleProjection(adjusted);
+        if (Math.abs(middleProjection - adjusted) > 0.001)
+          setMiddleProjection(adjusted);
       }
     }
   }, [projection]);
@@ -139,39 +205,109 @@ export const StepSize = ({
       <div className="flex flex-col gap-8 py-10">
         {isFrontHex && (
           <>
-            <DimensionInput label="Front Width" value={frontWidth} onChange={setFrontWidth} />
-            <DimensionInput label="Back Width" value={backWidth} onChange={setBackWidth} />
-            <DimensionInput label="Corners" value={corners} onChange={setCorners} />
-            <DimensionInput label="Projection" value={projection} onChange={setProjection} />
+            <DimensionInput
+              label="Front Width"
+              value={frontWidth}
+              onChange={setFrontWidth}
+            />
+            <DimensionInput
+              label="Back Width"
+              value={backWidth}
+              onChange={setBackWidth}
+            />
+            <DimensionInput
+              label="Corners"
+              value={corners}
+              onChange={setCorners}
+            />
+            <DimensionInput
+              label="Projection"
+              value={projection}
+              onChange={setProjection}
+            />
           </>
         )}
 
         {isRectangular && (
           <>
             <DimensionInput label="Width" value={width} onChange={setWidth} />
-            <DimensionInput label="Projection" value={projection} onChange={setProjection} />
+            <DimensionInput
+              label="Projection"
+              value={projection}
+              onChange={setProjection}
+            />
           </>
         )}
 
         {isLeftWall && (
           <>
-            <DimensionInput label="Front Width" value={frontWidth} onChange={setFrontWidth} />
-            <DimensionInput label="Back Width" value={backWidth} onChange={setBackWidth} />
-            <DimensionInput label="Middle Width Frame" value={middleWidthFrame} onChange={setMiddleWidthFrame} />
-            <DimensionInput label="Side Projection" value={sideProjection} onChange={setSideProjection} />
-            <DimensionInput label="Middle Projection" value={middleProjection} onChange={setMiddleProjection} />
-            <DimensionInput label="Total Projection" value={projection} onChange={setProjection} />
+            <DimensionInput
+              label="Front Width"
+              value={frontWidth}
+              onChange={updateFrontWidth}
+            />
+            <DimensionInput
+              label="Back Width"
+              value={backWidth}
+              onChange={updateBackWidth}
+            />
+            <DimensionInput
+              label="Middle Width Frame"
+              value={middleWidthFrame}
+              onChange={updateMiddleWidth}
+            />
+
+            <DimensionInput
+              label="Side Projection"
+              value={sideProjection}
+              onChange={updateSideProjection}
+            />
+            <DimensionInput
+              label="Middle Projection"
+              value={middleProjection}
+              onChange={updateMiddleProjection}
+            />
+            <DimensionInput
+              label="Total Projection"
+              value={projection}
+              onChange={updateTotalProjection}
+            />
           </>
         )}
 
         {isRightWall && (
           <>
-            <DimensionInput label="Front Width" value={frontWidth} onChange={setFrontWidth} />
-            <DimensionInput label="Back Width" value={backWidth} onChange={setBackWidth} />
-            <DimensionInput label="Middle Width Frame" value={middleWidthFrame} onChange={setMiddleWidthFrame} />
-            <DimensionInput label="Side Projection" value={sideProjection} onChange={setSideProjection} />
-            <DimensionInput label="Middle Projection" value={middleProjection} onChange={setMiddleProjection} />
-            <DimensionInput label="Total Projection" value={projection} onChange={setProjection} />
+            <DimensionInput
+              label="Front Width"
+              value={frontWidth}
+              onChange={updateFrontWidth}
+            />
+            <DimensionInput
+              label="Back Width"
+              value={backWidth}
+              onChange={updateBackWidth}
+            />
+            <DimensionInput
+              label="Middle Width Frame"
+              value={middleWidthFrame}
+              onChange={updateMiddleWidth}
+            />
+
+            <DimensionInput
+              label="Side Projection"
+              value={sideProjection}
+              onChange={updateSideProjection}
+            />
+            <DimensionInput
+              label="Middle Projection"
+              value={middleProjection}
+              onChange={updateMiddleProjection}
+            />
+            <DimensionInput
+              label="Total Projection"
+              value={projection}
+              onChange={updateTotalProjection}
+            />
           </>
         )}
       </div>

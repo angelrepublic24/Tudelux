@@ -1,24 +1,40 @@
-'use client'
+"use client";
 import { BaseProduct, ParsedAddOn, RenderState } from "@/types";
 import { chooseProduct } from "@/utils/chooseProduct";
 import Image from "next/image";
 import React, { useState } from "react";
 import { IoCheckmark } from "react-icons/io5";
+import { toast } from "react-toastify";
 
-type Props= {
-  addOn: ParsedAddOn | Record<string, any>,
-  handleState: (selectedBtn: string[]) => void,
-  buttonToShow?: string[]
+type Props = {
+  addOn: ParsedAddOn | Record<string, any>;
+  handleState: (selectedBtn: string[]) => void;
+  validateCombo: (btn: string) => boolean; // ✅ nueva prop
+  buttonToShow?: string[];
   isSelected?: boolean;
-  className?: string
+  className?: string;
 };
 
-export function ChooseDesignGrid({addOn, handleState, isSelected, buttonToShow, className
+export function ChooseDesignGrid({
+  addOn,
+  validateCombo,
+  handleState,
+  isSelected,
+  buttonToShow,
+  className,
 }: Props) {
-
   const [selectedButtons, setSelectedButtons] = useState<string[]>([]);
 
   const toggleSelection = (btn: string) => {
+    const isDisabled = !validateCombo(btn);
+
+    if (isDisabled) {
+      toast.error(
+        `"${addOn.name}" cannot be placed on "${btn}" due to a conflict with an existing add-on.`
+      );
+      return;
+    }
+
     const newSelection = selectedButtons.includes(btn)
       ? selectedButtons.filter((b) => b !== btn)
       : [...selectedButtons, btn];
@@ -27,7 +43,7 @@ export function ChooseDesignGrid({addOn, handleState, isSelected, buttonToShow, 
     handleState(newSelection); // pasa los seleccionados al padre
   };
   return (
-    <div  className={`flex flex-col items-center text-center ${className}`}>
+    <div className={`flex flex-col items-center text-center ${className}`}>
       <div className="mb-12 bg-white w-full flex flex-col items-center justify-start h-[320px] overflow-visible relative rounded-lg shadow">
         <div className="relative w-full bg-[#f0f0f0] h-[320px] flex items-center justify-center">
           {addOn.image && (
@@ -68,17 +84,29 @@ export function ChooseDesignGrid({addOn, handleState, isSelected, buttonToShow, 
         <p className=" text-black mb-2 text-[19px] py-8 text-left">
           {addOn.description}
         </p>
-         <div className="flex flex-col items-center justify-center p-2 space-y-4">
+        <div className="flex flex-col items-center justify-center p-2 space-y-4">
           {buttonToShow &&
             buttonToShow.map((btn) => {
+              const isDisabled = !validateCombo(btn);
               const isActive = selectedButtons.includes(btn);
+
               return (
                 <div key={btn} className="w-full flex gap-2">
                   <button
                     onClick={() => toggleSelection(btn)}
-                    className={`flex-1 px-4 py-3 rounded-2xl font-semibold text-white transition ${
-                      isActive ? "bg-orange-700" : "bg-[#ff5100] hover:opacity-80"
-                    }`}
+                    className={`flex-1 px-4 py-3 rounded-2xl font-semibold text-white transition 
+                       ${
+                         isDisabled
+                           ? "bg-[#ff5100] opacity-50 cursor-not-allowed"
+                           : isActive
+                           ? "bg-orange-700"
+                           : "bg-[#ff5100] hover:opacity-80"
+                       }
+                      ${
+                        isActive
+                          ? "bg-orange-700"
+                          : "bg-[#ff5100] hover:opacity-80"
+                      }`}
                   >
                     {btn}
                   </button>

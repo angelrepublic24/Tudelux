@@ -42,20 +42,13 @@ export async function confirmAccount(token: string) {
   }
 }
 
-export async function login(formData: LoginFormType) {
+export async function login(formData: LoginFormType){
   try {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      throw new Error(data.error || "Login failed");
-    }
-    return data;
+    const {data} = await Api.post('/auth/login', formData, {
+      withCredentials: true
+    })
+    console.log(data)
+    return data
   } catch (error) {
     console.log(error);
     if (isAxiosError(error) && error.response) {
@@ -63,6 +56,28 @@ export async function login(formData: LoginFormType) {
     }
   }
 }
+
+// export async function login(formData: LoginFormType) {
+//   try {
+//     const res = await fetch("/api/auth/login", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(formData),
+//     });
+//     const data = await res.json();
+//     if (!res.ok) {
+//       throw new Error(data.error || "Login failed");
+//     }
+//     return data;
+//   } catch (error) {
+//     console.log(error);
+//     if (isAxiosError(error) && error.response) {
+//       throw new Error(error.response.data.message);
+//     }
+//   }
+// }
 
 export async function profile (){
   try {
