@@ -38,62 +38,56 @@ export const StepSize = ({
 
   const updateSideProjection = (newSide: number) => {
     const adjustedMiddle = Math.max(projection - newSide, 0);
-    setSideProjection(newSide);
-    setMiddleProjection(adjustedMiddle);
+    setSideProjection(Math.round(newSide));
+    setMiddleProjection(Math.round(adjustedMiddle));
   };
 
   const updateMiddleProjection = (newMiddle: number) => {
     const adjustedSide = Math.max(projection - newMiddle, 0);
-    setMiddleProjection(newMiddle);
-    setSideProjection(adjustedSide);
+    setMiddleProjection(Math.round(newMiddle));
+    setSideProjection(Math.round(adjustedSide));
   };
 
   const updateTotalProjection = (newProjection: number) => {
-    const total = sideProjection + middleProjection;
-    if (total === 0) {
-      setProjection(newProjection);
-      return;
-    }
-
-    const ratioSide = sideProjection / total;
-    const ratioMiddle = middleProjection / total;
-
-    setProjection(newProjection);
-    setSideProjection(parseFloat((newProjection * ratioSide).toFixed(2)));
-    setMiddleProjection(parseFloat((newProjection * ratioMiddle).toFixed(2)));
+    const rounded = Math.round(newProjection);
+    setProjection(rounded);
+    const side = Math.ceil(rounded / 2);
+    const middle = rounded - side;
+    setSideProjection(side);
+    setMiddleProjection(middle);
   };
 
   const updateBackWidth = (newBack: number) => {
     const adjustedMiddle = Math.max(frontWidth - newBack, 0);
-    setBackWidth(parseFloat(newBack.toFixed(2)));
-    setMiddleWidthFrame(parseFloat(adjustedMiddle.toFixed(2)));
+    setBackWidth(Math.round(newBack));
+    setMiddleWidthFrame(Math.round(adjustedMiddle));
   };
 
   const updateMiddleWidth = (newMiddle: number) => {
     const adjustedBack = Math.max(frontWidth - newMiddle, 0);
-    setMiddleWidthFrame(parseFloat(newMiddle.toFixed(2)));
-    setBackWidth(parseFloat(adjustedBack.toFixed(2)));
+    setMiddleWidthFrame(Math.round(newMiddle));
+    setBackWidth(Math.round(adjustedBack));
   };
 
   const updateFrontWidth = (newFront: number) => {
     const total = backWidth + middleWidthFrame;
     if (total === 0) {
-      setFrontWidth(parseFloat(newFront.toFixed(2)));
+      setFrontWidth(Math.round(newFront));
       return;
     }
 
     const ratioBack = backWidth / total;
     const ratioMiddle = middleWidthFrame / total;
 
-    setFrontWidth(parseFloat(newFront.toFixed(2)));
-    setBackWidth(parseFloat((newFront * ratioBack).toFixed(2)));
-    setMiddleWidthFrame(parseFloat((newFront * ratioMiddle).toFixed(2)));
+    setFrontWidth(Math.round(newFront));
+    setBackWidth(Math.round(newFront * ratioBack));
+    setMiddleWidthFrame(Math.round(newFront * ratioMiddle));
   };
 
   useEffect(() => {
     if (isFrontHex) {
       const calculatedFront = backWidth - (2 * corners) / 2;
-      setFrontWidth(parseFloat(calculatedFront.toFixed(2)));
+      setFrontWidth(Math.round(calculatedFront));
     }
   }, [backWidth, corners]);
 
@@ -102,20 +96,22 @@ export const StepSize = ({
       const expected = frontWidth;
       const newMiddle = Math.max(expected - backWidth, MIN_DIFF / 12);
       if (Math.abs(newMiddle - middleWidthFrame) > 0.001) {
-        setMiddleWidthFrame(newMiddle);
+        setMiddleWidthFrame(Math.round(newMiddle));
       }
     }
   }, [frontWidth]);
 
   useEffect(() => {
-  if ((isLeftWall || isRightWall) && sideProjection + middleProjection === 0) {
-    const side = Math.ceil(projection / 2);
-    const middle = projection - side;
-    setSideProjection(side);
-    setMiddleProjection(middle);
-  }
-}, [projection, isLeftWall, isRightWall]);
-
+    if ((isLeftWall || isRightWall)) {
+      const total = sideProjection + middleProjection;
+      if (total === 0) {
+        const side = Math.ceil(projection / 2);
+        const middle = projection - side;
+        setSideProjection(side);
+        setMiddleProjection(middle);
+      }
+    }
+  }, [projection, isLeftWall, isRightWall]);
 
   useEffect(() => {
     const max = projection - MIN_DIFF / 12;
@@ -125,11 +121,11 @@ export const StepSize = ({
       if (sideProjection > middleProjection) {
         const adjusted = max - middleProjection;
         if (Math.abs(sideProjection - adjusted) > 0.001)
-          setSideProjection(adjusted);
+          setSideProjection(Math.round(adjusted));
       } else {
         const adjusted = max - sideProjection;
         if (Math.abs(middleProjection - adjusted) > 0.001)
-          setMiddleProjection(adjusted);
+          setMiddleProjection(Math.round(adjusted));
       }
     }
   }, [projection]);
