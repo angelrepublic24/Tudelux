@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 type Props = {
   addOn: ParsedAddOn | Record<string, any>;
   handleState: (selectedBtn: string[]) => void;
-  validateCombo: (btn: string) => boolean; // ✅ nueva prop
+  validateCombo?: (btn: string) => boolean; // ✅ nueva prop
   buttonToShow?: string[];
   isSelected?: boolean;
   className?: string;
@@ -24,9 +24,9 @@ export function ChooseDesignGrid({
   className,
 }: Props) {
   const [selectedButtons, setSelectedButtons] = useState<string[]>([]);
-
+  const isValid = validateCombo ?? (() => true);
   const toggleSelection = (btn: string) => {
-    const isDisabled = !validateCombo(btn);
+    const isDisabled = !isValid(btn);
 
     if (isDisabled) {
       toast.error(
@@ -87,7 +87,7 @@ export function ChooseDesignGrid({
         <div className="flex flex-col items-center justify-center p-2 space-y-4">
           {buttonToShow &&
             buttonToShow.map((btn) => {
-              const isDisabled = !validateCombo(btn);
+              const isDisabled = !isValid(btn);
               const isActive = selectedButtons.includes(btn);
 
               return (

@@ -5,7 +5,8 @@ import { redirect } from 'next/navigation';
 import { cache } from 'react';
 
 export const verifySession = cache(async () => {
-  const cookieHeader = await headers()
+ try {
+   const cookieHeader = await headers()
   const cookies = cookieHeader.get('cookie');
 
   const { data } = await Api.get("/auth/profile", {
@@ -23,4 +24,7 @@ export const verifySession = cache(async () => {
     user: result.data,
     isAuth: true,
   };
+ } catch (error) {
+  redirect("/auth/login");
+ }
 });
