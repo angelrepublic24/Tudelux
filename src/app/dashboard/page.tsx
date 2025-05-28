@@ -10,11 +10,11 @@ export default async function () {
   }
 
   if (user.roles.includes("seller")) {
-    redirect("/seller/dashboard");
+    redirect("/seller");
   }
 
   if (user.roles.includes("distributor")) {
-    redirect("/distributor/dashboard");
+    redirect("/distributor");
   }
 
   redirect("/auth/login");

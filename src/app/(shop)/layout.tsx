@@ -15,7 +15,7 @@ export default function ShopLayout({
       <Sidebar />
       <CartSideBar />
 
-      <div className="">{children}</div>
+      <div className="container  mx-auto px-4 sm:px-6 lg:px-12">{children}</div>
       <ToastNotification />
     </main>
   );

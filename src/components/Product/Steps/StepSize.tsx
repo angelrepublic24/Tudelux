@@ -308,10 +308,10 @@ export const StepSize = ({
         )}
       </div>
 
-      <div className="flex justify-center">
+      <div className="flex justify-center mt-10">
         <button
           onClick={handleContinue}
-          className="mt-10 bg-[#ff5100] text-yellow-300 font-bold px-10 py-4 rounded-2xl hover:bg-orange-600 transition"
+          className="bg-[#ff5100] text-yellow-300 font-bold px-10 py-4 rounded-2xl hover:bg-orange-600 transition"
         >
           Continue
         </button>

@@ -11,17 +11,16 @@ export default async function AdminLayout({
   const { user } = await verifySession();
   if (!user.roles.includes("admin")) {
     redirect("/auth/login");
-  } else {
-    return (
-      <div className="flex h-screen">
-        <AdminSideBar />
-
-        <div className="flex-1 overflow-auto pl-[280px]">
-          <AdminTopBar user={user} />
-
-          <main className="pt-16 px-6">{children}</main>
-        </div>
-      </div>
-    );
   }
+  return (
+    <div className="flex h-screen">
+      <AdminSideBar />
+
+      <div className="flex-1 overflow-auto pl-[280px]">
+        <AdminTopBar user={user} />
+
+        <main className="pt-16 px-6">{children}</main>
+      </div>
+    </div>
+  );
 }

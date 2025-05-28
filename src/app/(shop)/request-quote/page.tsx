@@ -116,7 +116,7 @@ export default function RequestQuotePage() {
         />
       )}
 
-      <section className="container mx-auto py-16">
+      <section className="">
         <div className="grid grid-cols-1 md:grid-cols-3 py-16">
           <div>
             <Title
@@ -211,194 +211,187 @@ your custom Tudelü wall."
           )}
         </div>
 
-        {
-          renderState.title === 'Architectural Canopy' && (
-            <>
-              <div ref={frontDesignRef}>
-          {activeStep >= 5 && (
-            <StepFrontDesign
-              setRenderState={setRenderState}
-              setIsRenderOpen={setIsRenderOpen}
-              onContinue={(selectedName) => {
-                if (selectedName === "Solid Front") {
-                  setActiveStep(7);
-                  scrollToRef(stepProfileRef);
-                } else {
-                  setActiveStep(6);
-                  scrollToRef(stepFrontRef);
-                }
-              }}
-            />
-          )}
-        </div>
+        {renderState.title === "Architectural Canopy" && (
+          <>
+            <div ref={frontDesignRef}>
+              {activeStep >= 5 && (
+                <StepFrontDesign
+                  setRenderState={setRenderState}
+                  setMaterialsData={setMaterialsData}
+                  renderState={renderState}
+                  setIsRenderOpen={setIsRenderOpen}
+                  onContinue={() => {
+                    setActiveStep(7);
+                    scrollToRef(stepProfileRef);
+                  }}
+                />
+              )}
+            </div>
 
-        <div ref={stepFrontRef}>
-          {activeStep >= 6 && renderState.frontDesign !== "Solid Front" && (
-            <StepFront
-              renderState={renderState}
-              materialsData={materialsData}
-              setMaterialsData={setMaterialsData}
-              setRenderState={setRenderState}
-              setIsRenderOpen={setIsRenderOpen}
-              onContinue={() => {
-                setActiveStep(7);
-                scrollToRef(stepProfileRef);
-              }}
-            />
-          )}
-        </div>
+            {/* <div ref={stepFrontRef}>
+              {activeStep >= 6 && renderState.frontDesign !== "Solid Front" && (
+                <StepFront
+                  renderState={renderState}
+                  materialsData={materialsData}
+                  setMaterialsData={setMaterialsData}
+                  setRenderState={setRenderState}
+                  setIsRenderOpen={setIsRenderOpen}
+                  onContinue={() => {
+                    setActiveStep(7);
+                    scrollToRef(stepProfileRef);
+                  }}
+                />
+              )}
+            </div> */}
 
-        <div ref={stepProfileRef}>
-          {activeStep >= 7 && (
-            <StepProfile
-              renderState={renderState}
-              setMaterialsData={setMaterialsData}
-              setRenderState={setRenderState}
-              setIsRenderOpen={setIsRenderOpen}
-              onContinue={() => {
-                setActiveStep(8);
-                scrollToRef(StepAddiotionalFeaturesRef);
-              }}
-            />
-          )}
-        </div>
+            <div ref={stepProfileRef}>
+              {activeStep >= 7 && (
+                <StepProfile
+                  renderState={renderState}
+                  setMaterialsData={setMaterialsData}
+                  setRenderState={setRenderState}
+                  setIsRenderOpen={setIsRenderOpen}
+                  onContinue={() => {
+                    setActiveStep(8);
+                    scrollToRef(StepAddiotionalFeaturesRef);
+                  }}
+                />
+              )}
+            </div>
 
-        <div ref={StepAddiotionalFeaturesRef}>
-          {activeStep >= 8 && (
-            <StepAddiotionalFeatures
-              setRenderState={setRenderState}
-              setIsRenderOpen={setIsRenderOpen}
-              onContinue={() => {
-                setActiveStep(9);
-                scrollToRef(StepLouversDirectionsRef);
-              }}
-            />
-          )}
-        </div>
+            <div ref={StepAddiotionalFeaturesRef}>
+              {activeStep >= 8 && (
+                <StepAddiotionalFeatures
+                  setRenderState={setRenderState}
+                  setIsRenderOpen={setIsRenderOpen}
+                  onContinue={() => {
+                    setActiveStep(9);
+                    scrollToRef(StepLouversDirectionsRef);
+                  }}
+                />
+              )}
+            </div>
 
-        <div ref={StepLouversDirectionsRef}>
-          {activeStep >= 9 && (
-            <StepLouversDirections
-              setRenderState={setRenderState}
-              setIsRenderOpen={setIsRenderOpen}
-              onContinue={() => {
-                setActiveStep(10);
-                scrollToRef(StepLouverDetailsRef);
-              }}
-            />
-          )}
-        </div>
+            <div ref={StepLouversDirectionsRef}>
+              {activeStep >= 9 && (
+                <StepLouversDirections
+                  setRenderState={setRenderState}
+                  setIsRenderOpen={setIsRenderOpen}
+                  onContinue={() => {
+                    setActiveStep(10);
+                    scrollToRef(StepLouverDetailsRef);
+                  }}
+                />
+              )}
+            </div>
 
-        <div ref={StepLouverDetailsRef}>
-          {activeStep >= 10 && (
-            <StepLouverDetails
-              setRenderState={setRenderState}
-              setIsRenderOpen={setIsRenderOpen}
-              onContinue={() => {
-                setActiveStep(11);
-                scrollToRef(StepSpaceBetweenLouversRef);
-              }}
-            />
-          )}
-        </div>
+            <div ref={StepLouverDetailsRef}>
+              {activeStep >= 10 && (
+                <StepLouverDetails
+                  setRenderState={setRenderState}
+                  setIsRenderOpen={setIsRenderOpen}
+                  onContinue={() => {
+                    setActiveStep(11);
+                    scrollToRef(StepSpaceBetweenLouversRef);
+                  }}
+                />
+              )}
+            </div>
 
-        <div ref={StepSpaceBetweenLouversRef}>
-          {activeStep >= 11 && (
-            <StepSpaceBetweenLouvers
-              setRenderState={setRenderState}
-              setIsRenderOpen={setIsRenderOpen}
-              onContinue={() => {
-                setActiveStep(12);
-                scrollToRef(StepSupportRef);
-              }}
-            />
-          )}
-        </div>
-        <div ref={StepSupportRef}>
-          {activeStep >= 12 && (
-            <StepSupport
-              setRenderState={setRenderState}
-              setIsRenderOpen={setIsRenderOpen}
-              onContinue={() => {
-                setActiveStep(13);
-                scrollToRef(StepLightingRef);
-              }}
-            />
-          )}
-        </div>
-        <div ref={StepLightingRef}>
-          {activeStep >= 13 && (
-            <StepLighting
-              setRenderState={setRenderState}
-              setIsRenderOpen={setIsRenderOpen}
-              onContinue={() => {
-                setActiveStep(14);
-                scrollToRef(StepColorsRef);
-              }}
-            />
-          )}
-        </div>
-        <div ref={StepColorsRef}>
-          {activeStep >= 14 && (
-            <StepColors
-              setRenderState={setRenderState}
-              setIsRenderOpen={setIsRenderOpen}
-              onContinue={() => {
-                setActiveStep(15);
-                scrollToRef(StepColorOptionsRef);
-              }}
-            />
-          )}
-        </div>
-        <div ref={StepColorOptionsRef}>
-          {activeStep >= 15 && renderState.color === "Standars color" && (
-            <StepStandardColorOptions
-              setRenderState={setRenderState}
-              setIsRenderOpen={setIsRenderOpen}
-              onContinue={() => {
-                setActiveStep(16);
-                scrollToRef(StepCompleteRef);
-                // scrollTo next step if needed
-              }}
-            />
-          )}
+            <div ref={StepSpaceBetweenLouversRef}>
+              {activeStep >= 11 && (
+                <StepSpaceBetweenLouvers
+                  setRenderState={setRenderState}
+                  setIsRenderOpen={setIsRenderOpen}
+                  onContinue={() => {
+                    setActiveStep(12);
+                    scrollToRef(StepSupportRef);
+                  }}
+                />
+              )}
+            </div>
+            <div ref={StepSupportRef}>
+              {activeStep >= 12 && (
+                <StepSupport
+                  setRenderState={setRenderState}
+                  setIsRenderOpen={setIsRenderOpen}
+                  onContinue={() => {
+                    setActiveStep(13);
+                    scrollToRef(StepLightingRef);
+                  }}
+                />
+              )}
+            </div>
+            <div ref={StepLightingRef}>
+              {activeStep >= 13 && (
+                <StepLighting
+                  setRenderState={setRenderState}
+                  setIsRenderOpen={setIsRenderOpen}
+                  onContinue={() => {
+                    setActiveStep(14);
+                    scrollToRef(StepColorsRef);
+                  }}
+                />
+              )}
+            </div>
+            <div ref={StepColorsRef}>
+              {activeStep >= 14 && (
+                <StepColors
+                  setRenderState={setRenderState}
+                  setIsRenderOpen={setIsRenderOpen}
+                  onContinue={() => {
+                    setActiveStep(15);
+                    scrollToRef(StepColorOptionsRef);
+                  }}
+                />
+              )}
+            </div>
+            <div ref={StepColorOptionsRef}>
+              {activeStep >= 15 && renderState.color === "Standars color" && (
+                <StepStandardColorOptions
+                  setRenderState={setRenderState}
+                  setIsRenderOpen={setIsRenderOpen}
+                  onContinue={() => {
+                    setActiveStep(16);
+                    scrollToRef(StepCompleteRef);
+                    // scrollTo next step if needed
+                  }}
+                />
+              )}
 
-          {activeStep >= 15 &&
-            renderState.color === "Standars color custom locations" && (
-              <StepCustomLocationOptions
-                setRenderState={setRenderState}
-                setIsRenderOpen={setIsRenderOpen}
-                onContinue={() => {
-                  setActiveStep(16);
-                  scrollToRef(StepCompleteRef);
-                }}
-              />
-            )}
+              {activeStep >= 15 &&
+                renderState.color === "Standars color custom locations" && (
+                  <StepCustomLocationOptions
+                    setRenderState={setRenderState}
+                    setIsRenderOpen={setIsRenderOpen}
+                    onContinue={() => {
+                      setActiveStep(16);
+                      scrollToRef(StepCompleteRef);
+                    }}
+                  />
+                )}
 
-          {activeStep >= 15 &&
-            renderState.color === "Custom colors custom location" && (
-              <StepFullCustomOptions
-                setRenderState={setRenderState}
-                setIsRenderOpen={setIsRenderOpen}
-                onContinue={() => {
-                  setActiveStep(16);
-                  scrollToRef(StepCompleteRef);
-                }}
-              />
-            )}
-        </div>
-            </>
-          )
-        }
+              {activeStep >= 15 &&
+                renderState.color === "Custom colors custom location" && (
+                  <StepFullCustomOptions
+                    setRenderState={setRenderState}
+                    setIsRenderOpen={setIsRenderOpen}
+                    onContinue={() => {
+                      setActiveStep(16);
+                      scrollToRef(StepCompleteRef);
+                    }}
+                  />
+                )}
+            </div>
+          </>
+        )}
 
-        {
-          renderState.title === 'Partition Walls' && (
-            <>
-              <StepWallAddons />
-            </>
-          )
-        }
-        
+        {renderState.title === "Partition Walls" && (
+          <>
+            <StepWallAddons />
+          </>
+        )}
+
         <div ref={StepCompleteRef}>
           {activeStep >= 16 && (
             <StepComplete

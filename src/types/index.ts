@@ -120,6 +120,7 @@ export type MaterialItemTable = {
   quantity: number;
   pricePerInch: number;
   total: number;
+  sourceStep?: string;
 };
 
 export type CostSummary = {
@@ -171,6 +172,16 @@ export type RegisterDistributorFormType = Omit<IUser, 'id'> & {
     zip: string;
   };
   roles: ['distributor']; // opcional si ya está fijo desde el backend
+};
+
+export type ProfileType = Omit<IUser, 'id' | 'password' | 'roles' | 'email'> & {
+  phone: string;
+  address: {
+    address_street: string;
+    address_city: string;
+    address_state: string;
+    address_zip: string;
+  };
 };
 
 export type LoginFormType = Pick<IUser, 'email' | 'password'>

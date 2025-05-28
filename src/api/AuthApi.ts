@@ -57,28 +57,6 @@ export async function login(formData: LoginFormType){
   }
 }
 
-// export async function login(formData: LoginFormType) {
-//   try {
-//     const res = await fetch("/api/auth/login", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(formData),
-//     });
-//     const data = await res.json();
-//     if (!res.ok) {
-//       throw new Error(data.error || "Login failed");
-//     }
-//     return data;
-//   } catch (error) {
-//     console.log(error);
-//     if (isAxiosError(error) && error.response) {
-//       throw new Error(error.response.data.message);
-//     }
-//   }
-// }
-
 export async function profile (){
   try {
     const {data} = await Api.get('/auth/profile', {
@@ -110,3 +88,34 @@ export async function logout() {
     console.error("Logout error:", error);
   }
 }
+
+export async function findSellers(limit = 10, page = 1) {
+  try {
+    const { data } = await Api.get(`/auth?role=seller&limit=${limit}&page=${page}`, {
+      withCredentials: true,
+    });
+    return data;
+  } catch (error) {
+    console.error('Error fetching sellers:', error);
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.message || 'Error fetching sellers');
+    }
+    throw new Error('Unexpected error occurred');
+  }
+}
+
+export async function findDistributors(limit = 10, page = 1) {
+  try {
+    const { data } = await Api.get(`/auth?role=distributor&limit=${limit}&page=${page}`, {
+      withCredentials: true,
+    });
+    return data;
+  } catch (error) {
+    console.error('Error fetching distributors:', error);
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.message || 'Error fetching distributors');
+    }
+    throw new Error('Unexpected error occurred');
+  }
+}
+

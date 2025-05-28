@@ -2,27 +2,30 @@
 
 import Link from 'next/link';
 import {
+  IoFolderOpenOutline,
   IoSettingsOutline,
   IoTicketOutline
 } from 'react-icons/io5';
 import { HiOutlineUsers } from 'react-icons/hi';
 import { AiOutlineProduct, AiOutlineShop } from 'react-icons/ai';
 import { FaWarehouse } from 'react-icons/fa6';
+import { RxDashboard } from "react-icons/rx";
 import { MdOutlineRequestQuote, MdHomeRepairService } from 'react-icons/md';
 
 
 export const DistributorSideBar = () => {
+  const base = "/distributor";
   return (
 <nav className="fixed left-0 top-0 w-[280px] h-screen bg-white z-50 shadow-xl p-5">
-      <h2 className="text-xl font-bold text-[#ff5100] mb-10">Admin Panel</h2>
+      <h2 className="text-xl text-center font-bold text-[#ff5100] mb-10">Tudelu</h2>
 
-      <div className="flex flex-col gap-5">
-        <SidebarLink href="/admin/products" icon={<AiOutlineProduct  size={20} />} label="Products" />
-        <SidebarLink href="/admin/quotes" icon={<MdOutlineRequestQuote size={20} />} label="Quotes" />
-        <SidebarLink href="/admin/installations" icon={<MdHomeRepairService size={20} />} label="Installations" />
-        <SidebarLink href="/admin/customers" icon={<HiOutlineUsers size={20} />} label="Customers" />
-        <SidebarLink href="/admin/orders" icon={<IoTicketOutline size={20} />} label="Orders" />
-        {/* <SidebarLink href="/admin/settings" icon={<IoSettingsOutline size={20} />} label="Settings" /> */}
+     <div className="flex flex-col gap-5">
+        <SidebarLink href={`${base}`} icon={<RxDashboard size={20} />} label="Dashboard" />
+        <SidebarLink href={`${base}/quotes`} icon={<MdOutlineRequestQuote size={20} />} label="Quotes" />
+        <SidebarLink href={`${base}/installations`} icon={<MdHomeRepairService size={20} />} label="Installation Jobs" />
+        <SidebarLink href={`${base}/customers`} icon={<HiOutlineUsers size={20} />} label="Customers" />
+        <SidebarLink href={`${base}/library`} icon={<IoFolderOpenOutline size={20} />} label="File Library" />
+        <SidebarLink href={`${base}/orders`} icon={<IoTicketOutline size={20} />} label="Orders" />
       </div>
     </nav>
   );

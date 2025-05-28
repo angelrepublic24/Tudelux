@@ -1,0 +1,58 @@
+export const orders = [
+  {
+    title: "Partition Wall for Acme Corp",
+    client: "Smith Johnson",
+    amount: 28505,
+    date: "2022-09-03",
+    status: "Pending",
+  },
+  {
+    title: "Pergolas for Garden Center",
+    client: "Construction",
+    amount: 43500,
+    date: "2022-09-15",
+    status: "Pending",
+  },
+  {
+    title: "Canopies for Cisco Soxes",
+    client: "John Clemen",
+    amount: 51500,
+    date: "2022-09-14",
+    status: "Approved",
+  },
+  {
+    title: "Accociated Floor Systems",
+    client: "Technicom Soxes",
+    amount: 61500,
+    date: "2022-09-22",
+    status: "In Review",
+  },
+  {
+    title: "Pergolas for Okelta Corp",
+    client: "Goggle Wail",
+    amount: 54000,
+    date: "2022-10-19",
+    status: "Pending",
+  },
+  {
+    title: "Torebo bs for Snaduwortt",
+    client: "Penhouse Center",
+    amount: 36500,
+    date: "2022-11-22",
+    status: "Rejected",
+  },
+  {
+    title: "Polar lays for Employees",
+    client: "Nathary Lakes",
+    amount: 49000,
+    date: "2023-01-31",
+    status: "Denied",
+  },
+  {
+    title: "Chiorellas for Colorado",
+    client: "Targo Palls",
+    amount: 78000,
+    date: "2022-09-20",
+    status: "Pending",
+  },
+];
