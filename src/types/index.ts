@@ -148,14 +148,37 @@ export type CartItem = {
   image?: string;
 };
 
-export type IUser = {
-  id: number,
-  name: string,
-  lName: string,
-  email: string,
-  password: string,
-  roles?: string[]
+// export type IUser = {
+//   id: number,
+//   name: string,
+//   lName: string,
+//   email: string,
+//   password: string,
+//   roles?: string[]
+// }
+
+export interface IUser {
+  id: string;
+  name: string;
+  lName: string;
+  email: string;
+  password: string;
+  roles: string[];
+  status: boolean;
+  createdAt: string;
+  updatedAt: string;
+  address?: {
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
+  };
+  phone?: string;
+  company?: {
+    name: string;
+  }
 }
+
 
 export type RegisterFormType = Omit<IUser, 'id' >& {
   password_confirmation: string
@@ -174,6 +197,22 @@ export type RegisterDistributorFormType = Omit<IUser, 'id'> & {
   roles: ['distributor']; // opcional si ya está fijo desde el backend
 };
 
+export type CompanyType = {
+  id: number;
+  name: string;
+  address_street?: string;
+  address_city?: string;
+  address_state?: string;
+  address_zip?: string;
+  phone?: string;
+  users?: {
+    id: string;
+    name: string;
+    email: string;
+  }[];
+};
+
+
 export type ProfileType = Omit<IUser, 'id' | 'password' | 'roles' | 'email'> & {
   phone: string;
   address: {
@@ -185,3 +224,6 @@ export type ProfileType = Omit<IUser, 'id' | 'password' | 'roles' | 'email'> & {
 };
 
 export type LoginFormType = Pick<IUser, 'email' | 'password'>
+ export type CompanyFormType = Omit<CompanyType, "id">
+
+export type DistributorAndSeller = Pick<IUser, 'id' | 'name' | 'email' | 'address' | 'company' | 'createdAt' | 'status'>;

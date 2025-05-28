@@ -89,24 +89,39 @@ export async function logout() {
   }
 }
 
-export async function findSellers(limit = 10, page = 1) {
+
+export async function findDistributors(limit = 10, page = 1) {
+  const parsedLimit = Number(limit);
+  const parsedPage = Number(page);
+
+  if (isNaN(parsedLimit) || isNaN(parsedPage)) {
+    throw new Error('Invalid pagination values');
+  }
+
   try {
-    const { data } = await Api.get(`/auth?role=seller&limit=${limit}&page=${page}`, {
+    const { data } = await Api.get(`/auth/distributors?limit=${parsedLimit}&page=${parsedPage}`, {
       withCredentials: true,
     });
     return data;
   } catch (error) {
-    console.error('Error fetching sellers:', error);
+    console.error('Error fetching distributors:', error);
     if (isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.message || 'Error fetching sellers');
+      throw new Error(error.response.data.message || 'Error fetching distributors');
     }
     throw new Error('Unexpected error occurred');
   }
 }
 
-export async function findDistributors(limit = 10, page = 1) {
+export async function findSellers(limit = 10, page = 1) {
+  const parsedLimit = Number(limit);
+  const parsedPage = Number(page);
+
+  if (isNaN(parsedLimit) || isNaN(parsedPage)) {
+    throw new Error('Invalid pagination values');
+  }
+
   try {
-    const { data } = await Api.get(`/auth?role=distributor&limit=${limit}&page=${page}`, {
+    const { data } = await Api.get(`/auth/sellers?limit=${parsedLimit}&page=${parsedPage}`, {
       withCredentials: true,
     });
     return data;

@@ -1,19 +1,16 @@
 'use client';
 
+import { GetSeller } from '@/components/auth/GetSellers';
 import { useState } from 'react';
-import { useSellers } from '@/hooks/useSellers';
 
-export default function SellersPage() {
+export default function DistributorsPage() {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
-
-  const { data, isLoading, isError, error } = useSellers(limit, page);
-  const sellers = data?.data || [];
 
   return (
     <section className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-[#ff5100]">Sellers</h1>
+        <h1 className="text-2xl font-bold text-[#ff5100]">Distributors</h1>
         <div>
           <label className="text-sm mr-2 text-gray-600">Rows per page:</label>
           <select
@@ -31,51 +28,7 @@ export default function SellersPage() {
         </div>
       </div>
 
-      {isLoading && <p className="text-gray-600">Loading sellers...</p>}
-      {isError && <p className="text-red-500">{(error as Error).message}</p>}
-
-      {!isLoading && !sellers.length && (
-        <p className="text-gray-500 italic">No sellers found.</p>
-      )}
-
-      {!isLoading && sellers.length > 0 && (
-        <div className="overflow-auto border rounded-lg shadow-sm">
-          <table className="min-w-full bg-white">
-            <thead className="bg-gray-100 text-sm text-gray-700 uppercase">
-              <tr>
-                <th className="px-4 py-2 text-left">Name</th>
-                <th className="px-4 py-2 text-left">Email</th>
-                <th className="px-4 py-2 text-left">Company</th>
-                <th className="px-4 py-2 text-left">Status</th>
-                <th className="px-4 py-2 text-left">Created</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sellers.map((seller) => (
-                <tr key={seller.id} className="border-t hover:bg-gray-50 transition">
-                  <td className="px-4 py-2 font-medium">{seller.name}</td>
-                  <td className="px-4 py-2">{seller.email}</td>
-                  <td className="px-4 py-2">{seller.company?.name || '—'}</td>
-                  <td className="px-4 py-2">
-                    <span
-                      className={`inline-block px-2 py-1 text-xs rounded-full ${
-                        seller.status
-                          ? 'bg-green-100 text-green-700'
-                          : 'bg-red-100 text-red-600'
-                      }`}
-                    >
-                      {seller.status ? 'Active' : 'Inactive'}
-                    </span>
-                  </td>
-                  <td className="px-4 py-2 text-sm text-gray-500">
-                    {new Date(seller.createdAt).toLocaleDateString()}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+      <GetSeller limit={limit} page={page} setPage={setPage} />
     </section>
   );
 }
