@@ -224,6 +224,6 @@ export type ProfileType = Omit<IUser, 'id' | 'password' | 'roles' | 'email'> & {
 };
 
 export type LoginFormType = Pick<IUser, 'email' | 'password'>
- export type CompanyFormType = Omit<CompanyType, "id">
+export type CompanyFormType = Omit<CompanyType, 'id' | 'users'>;
 
 export type DistributorAndSeller = Pick<IUser, 'id' | 'name' | 'email' | 'address' | 'company' | 'createdAt' | 'status'>;
