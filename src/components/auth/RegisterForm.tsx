@@ -5,13 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { register as registerRequest } from "@/api/AuthApi"; // ajusta si tienes otra ruta
 import { useForm } from "react-hook-form";
 import { RegisterSchema } from "@/schemas";
-import type { RegisterFormType } from "@/types";
 import { ErrorMessage } from "../ui/ErrorMessage/ErrorMessage";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
+import { RegisterFormType } from "@/types";
 
 export default function RegisterForm() {
-  type RegisterFormType = z.infer<typeof RegisterSchema>;
 
   const ref = useRef<HTMLFormElement>(null);
   const [formError, setFormError] = useState("");

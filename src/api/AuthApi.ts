@@ -1,6 +1,7 @@
 import axios, { isAxiosError } from "axios";
-import type { LoginFormType, RegisterDistributorFormType, RegisterFormType } from "./../types/index";
+import type { LoginFormType, RegisterFormType } from "./../types/index";
 import { Api } from "@/global/Global";
+import { RegisterDistributorFormType } from "@/schemas";
 
 export async function register(formData: RegisterFormType) {
   try {

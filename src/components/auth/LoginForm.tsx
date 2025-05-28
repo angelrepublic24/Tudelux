@@ -12,8 +12,6 @@ import {useRouter } from "next/navigation";
 export default function LoginForm() {
   const router = useRouter();
 
-  type LoginFormType = z.infer<typeof LoginSchema>;
-
   const {
     register,
     handleSubmit,

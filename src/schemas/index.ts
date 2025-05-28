@@ -50,16 +50,9 @@ export const LoginSchema = z.object({
     .min(6, { message: "The password is too short, min 6 characters" }),
 });
 
-export const UserSchema = z.object({
+export const CompanySchemaForm = z.object({
   id: z.number(),
-  name: z.string(),
-  lName: z.string(),
-  email: z.string().email(),
-  roles: z.array(z.string()),
-});
-
-export const CompanySchema = z.object({
-  name: z.string().min(1, 'Name is required'),
+  name: z.string().min(1, "Name is required"),
   phone: z.string().optional(),
   address_street: z.string().optional(),
   address_city: z.string().optional(),
@@ -67,6 +60,26 @@ export const CompanySchema = z.object({
   address_zip: z.string().optional(),
 });
 
-export type User = z.infer<typeof UserSchema>
+
+
+export const UserSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  lName: z.string(),
+  email: z.string().email(),
+  roles: z.array(z.string()),
+  company: CompanySchemaForm.optional(), // 👈 hazlo opcional
+});
+export const CompanySchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  phone: z.string().optional(),
+  address_street: z.string().optional(),
+  address_city: z.string().optional(),
+  address_state: z.string().optional(),
+  address_zip: z.string().optional(),
+});
+
+export type User = z.infer<typeof UserSchema>;
 export type Company = z.infer<typeof CompanySchema>;
+export type RegisterDistributorFormType = z.infer<typeof RegisterDistributorSchema>;
 

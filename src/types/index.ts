@@ -1,3 +1,6 @@
+import { LoginSchema, RegisterSchema } from "@/schemas";
+import { z } from "zod";
+
 export type BaseProduct = {
   name: string;
   image: string;
@@ -180,22 +183,18 @@ export interface IUser {
 }
 
 
-export type RegisterFormType = Omit<IUser, 'id' >& {
-  password_confirmation: string
-}
-
-export type RegisterDistributorFormType = Omit<IUser, 'id'> & {
-  password_confirmation: string;
-  phone: string;
-  company: string;
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    zip: string;
-  };
-  roles: ['distributor']; // opcional si ya está fijo desde el backend
-};
+// export type RegisterDistributorFormType = Omit<IUser, 'id'> & {
+//   password_confirmation: string;
+//   phone: string;
+//   company: string;
+//   address: {
+//     street: string;
+//     city: string;
+//     state: string;
+//     zip: string;
+//   };
+//   roles: ['distributor']; // opcional si ya está fijo desde el backend
+// };
 
 export type CompanyType = {
   id: number;
@@ -223,7 +222,10 @@ export type ProfileType = Omit<IUser, 'id' | 'password' | 'roles' | 'email'> & {
   };
 };
 
-export type LoginFormType = Pick<IUser, 'email' | 'password'>
 export type CompanyFormType = Omit<CompanyType, 'id' | 'users'>;
 
 export type DistributorAndSeller = Pick<IUser, 'id' | 'name' | 'email' | 'address' | 'company' | 'createdAt' | 'status'>;
+export type LoginFormType = z.infer<typeof LoginSchema>;
+export type RegisterFormType = z.infer<typeof RegisterSchema>;
+
+

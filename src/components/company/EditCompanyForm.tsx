@@ -1,16 +1,28 @@
-'use client'
-import { Company, CompanySchema, CompanySchemaForm } from "@/schemas";
+import { Company, CompanySchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 
-type CompanyType = z.infer<typeof CompanySchemaForm>;
+export const EditCompanyForm = ({company}: {company: Company & { id: number }}) => {
+     const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<Company>({
+    resolver: zodResolver(CompanySchema),
+    defaultValues: company,
+  });
 
-export default function CompanyPage() {
-  const {register, handleSubmit, formState: {errors}} = useForm<Company>({resolver: zodResolver(CompanySchema)})
-  const onSubmit = () => {}
+
+  useEffect(() => {
+    reset(company);
+  }, [company, reset]);
+
+  const onSubmit = (data: Company) => {
+  };
   return (
-    <div>
+    <>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <input
           {...register("name")}
@@ -49,11 +61,12 @@ export default function CompanyPage() {
 
         <button
           type="submit"
+          disabled={isSubmitting}
           className="bg-[#ff5100] text-white px-6 py-2 rounded-md font-semibold hover:bg-orange-600 disabled:opacity-50"
         >
-          Save Company Info
+          {isSubmitting ? "Saving..." : "Save Company Info"}
         </button>
-      </form>{" "}
-    </div>
+      </form>
+    </>
   );
-}
+};
