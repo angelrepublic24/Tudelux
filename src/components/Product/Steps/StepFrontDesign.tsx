@@ -26,7 +26,9 @@ export const StepFrontDesign = ({
   setIsRenderOpen,
 }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedAddOnName, setSelectedAddOnName] = useState<string | null>(null);
+  const [selectedAddOnName, setSelectedAddOnName] = useState<string | null>(
+    null
+  );
   const [selectedAddOn, setSelectedAddOn] = useState<RawAddOn | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const [selectedButtons, setSelectedButtons] = useState<string[]>([]);
@@ -72,11 +74,13 @@ export const StepFrontDesign = ({
             <div className="flex gap-6">
               <div className="w-1/3 space-y-3">
                 {[
-                  "Tube",
-                  "Channel",
-                  "Crown",
-                  `3\" Extender`
-                ].map((type) => (
+                  { type: "Tube", image: "/tube.png" },
+                  { type: "Channel", image: "/channel.png" },
+                  { type: "Crown", image: "/crown.png" },
+                  { type: `1" In`, image: "/1up.png" },
+                  { type: `1" Out`, image: "/1down.png" },
+                  { type: `3" Extender`, image: "/3extender.png" },
+                ].map(({ type, image }) => (
                   <button
                     key={type}
                     onClick={() => {
@@ -87,18 +91,23 @@ export const StepFrontDesign = ({
                         setShowTooltip(true);
                       }
                     }}
-                    className={`w-full py-2 px-4 rounded text-left border ${
+                    className={`w-1/2 py-4 px-2 rounded text-center border flex flex-col items-center gap-2 ${
                       selectedAddOnName === type
                         ? "bg-[#ff5100] text-white border-[#ff5100]"
                         : "bg-white text-gray-700 border-gray-300"
                     }`}
                   >
-                    Add {type}
+                    <img
+                      src={image}
+                      alt={type}
+                      className="w-full h-10 object-contain"
+                    />
+                    <span className="font-small text-sm">Add {type}</span>
                   </button>
                 ))}
               </div>
-              <div className="flex-1 flex flex-col justify-between items-center relative">
-                <div className="mb-4">
+              <div className="flex-1 flex flex-col justify-around items-center relative">
+                <div className="mb-4 h-1/2 w-full">
                   <ImageRender url={renderState.renderUrl || ""} />
                 </div>
 
@@ -120,7 +129,12 @@ export const StepFrontDesign = ({
                   <div className="absolute top-0 left-0">
                     <AddOnTooltip
                       title={`Select position for ${selectedAddOnName}`}
-                      buttons={["Top inside", "Top outside", "Bottom inside", "Bottom outside"]}
+                      buttons={[
+                        "Top inside",
+                        "Top outside",
+                        "Bottom inside",
+                        "Bottom outside",
+                      ]}
                       selected={selectedButtons}
                       onToggle={(btn) => {
                         setSelectedButtons((prev) =>
@@ -142,11 +156,16 @@ export const StepFrontDesign = ({
                             selectedButtons,
                             renderState
                           );
-                          setMaterialsData((prev) => [...prev, ...newMaterials]);
+                          setMaterialsData((prev) => [
+                            ...prev,
+                            ...newMaterials,
+                          ]);
 
                           setRenderState((prev) => ({
                             ...prev,
-                            fontTypeDesign: `${selectedAddOnName} - ${selectedButtons.join(", ")}`,
+                            fontTypeDesign: `${selectedAddOnName} - ${selectedButtons.join(
+                              ", "
+                            )}`,
                           }));
 
                           setShowTooltip(false);
