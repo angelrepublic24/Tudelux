@@ -17,14 +17,13 @@ interface Props {
   quoteDate: string;
 }
 
-export const QuoteView = ({
+export const QuoteBreakDown = ({
   materials,
   summary,
   customerInfo,
   quoteNumber,
   quoteDate,
 }: Props) => {
-  console.log(materials);
   return (
     <div className=" text-black font-sans text-sm">
       {/* Header */}
@@ -32,32 +31,29 @@ export const QuoteView = ({
 
       {/* Product Table */}
       <div className="bg-white w">
-        <div className=" overflow-hidden mb-2 max-w-5xl mx-auto p-10">
+        <div className=" overflow-hidden mb-8 max-w-5xl mx-auto p-10">
         <table className="min-w-full text-sm">
-          <thead className="text-white text-left border border-b-gray-200">
+          <thead className="text-white text-left">
             <tr>
-              <th className="px-3 py-5 text-[#ff5100] text-lg">Product</th>
-              {/* <th className="px-3 py-5 text-[#ff5100] text-lg">Color</th>
-              <th className="px-3 py-5 text-[#ff5100] text-lg">Size</th> */}
-              <th className="px-3 py-5 text-[#ff5100] text-lg">Qty</th>
-              <th className="px-3 py-5 text-[#ff5100] text-lg text-right">Price</th>
+              <th className="p-3 text-[#ff5100]">Material</th>
+              <th className="p-3 text-[#ff5100]">Color</th>
+              <th className="p-3 text-[#ff5100]">Size</th>
+              <th className="p-3 text-[#ff5100]">Qty</th>
+              <th className="p-3 text-[#ff5100] text-right">Price</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {/* {materials.map((item, i) => ( */}
-              <tr  className="hover:bg-gray-50">
-                <td className="px-3 py-5">
-                  <h4>{materials.product} - {materials.product_type}</h4>
-
-                </td>
-                {/* <td className="px-3 py-5">{item.color}</td>
-                <td className="px-3 py-5">{item.size} in</td> */}
-                <td className="px-3 py-5">1</td>
-                <td className="px-3 py-5 text-right font-semibold">
-                  ${Number(materials.subtotal).toFixed(2)}
+            {materials.map((item, i) => (
+              <tr key={i} className="hover:bg-gray-50">
+                <td className="p-3">{item.material}</td>
+                <td className="p-3">{item.color}</td>
+                <td className="p-3">{item.size} in</td>
+                <td className="p-3">{item.qty}</td>
+                <td className="p-3 text-right font-semibold">
+                  ${Number(item.price).toFixed(2)}
                 </td>
               </tr>
-            {/* ))} */}
+            ))}
           </tbody>
         </table>
       </div>
@@ -93,7 +89,7 @@ const SummaryLine = ({
   value: number;
   highlight?: boolean;
 }) => (
-  <div className="flex justify-between border-b py-5">
+  <div className="flex justify-between border-b pb-1">
     <span className={`text-gray-600 ${highlight ? "font-bold text-base" : ""}`}>{label}</span>
     <span className={highlight ? "text-[#ff5100] font-bold text-base" : "text-gray-800"}>
       ${value.toFixed(2)}

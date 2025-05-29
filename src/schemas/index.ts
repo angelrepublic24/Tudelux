@@ -86,6 +86,13 @@ export const QuoteSchema = z.object({
   address_city: z.string().optional(),
   address_state: z.string().optional(),
   address_zip: z.string().optional(),
+
+  product: z.string().optional(), // 👈 nuevo campo
+  product_type: z.string().optional(), // 👈 nuevo campo
+  shape: z.string().optional(), // 👈 nuevo campo
+  addOns: z.array(z.string()).optional(), // 👈 nuevo campo
+  dimensions: z.record(z.number()).optional(),
+
   materials: z.array(
     z.object({
       material: z.string(),

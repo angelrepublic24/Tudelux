@@ -19,7 +19,7 @@ export default async function AdminLayout({
       <div className="flex-1 overflow-auto pl-[280px]">
         <AdminTopBar user={user} />
 
-        <main className="pt-16 px-6">{children}</main>
+        <main className="pt-16">{children}</main>
       </div>
     </div>
   );

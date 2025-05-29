@@ -9,6 +9,7 @@ export function getAddOnMaterials(
   const name = addOn.values[1];
   const color = addOn.values[2];
   const pricePerInch = parseFloat(String(addOn.values[3]));
+  const cutPrice = Number(addOn.values[5]);
 
   const shape = renderState.shape;
   const width = renderState.dimensions?.widthInches || 0;
@@ -35,6 +36,7 @@ export function getAddOnMaterials(
         quantity: 1,
         pricePerInch,
         total: parseFloat((pricePerInch * width).toFixed(2)),
+        cutPrice
       });
 
       newMaterials.push({
@@ -44,6 +46,7 @@ export function getAddOnMaterials(
         quantity: 2,
         pricePerInch,
         total: parseFloat((pricePerInch * projection * 2).toFixed(2)),
+        cutPrice
       });
     } else if (shape === "Front Hex") {
       newMaterials.push({
@@ -53,6 +56,7 @@ export function getAddOnMaterials(
         quantity: 2,
         pricePerInch,
         total: parseFloat((pricePerInch * projection * 2).toFixed(2)),
+        cutPrice
       });
 
       newMaterials.push({
@@ -62,6 +66,7 @@ export function getAddOnMaterials(
         quantity: 2,
         pricePerInch,
         total: parseFloat((pricePerInch * corners * 2).toFixed(2)),
+        cutPrice
       });
 
       newMaterials.push({
@@ -71,6 +76,7 @@ export function getAddOnMaterials(
         quantity: 1,
         pricePerInch,
         total: parseFloat((pricePerInch * front).toFixed(2)),
+        cutPrice
       });
     } else if (shape === "Left Wall" || shape === "Right Wall") {
       newMaterials.push({
@@ -80,6 +86,7 @@ export function getAddOnMaterials(
         quantity: 1,
         pricePerInch,
         total: parseFloat((pricePerInch * leftP).toFixed(2)),
+        cutPrice
       });
 
       newMaterials.push({
@@ -89,6 +96,7 @@ export function getAddOnMaterials(
         quantity: 1,
         pricePerInch,
         total: parseFloat((pricePerInch * rightP).toFixed(2)),
+        cutPrice
       });
 
       newMaterials.push({
@@ -98,6 +106,7 @@ export function getAddOnMaterials(
         quantity: 1,
         pricePerInch,
         total: parseFloat((pricePerInch * middleP).toFixed(2)),
+        cutPrice
       });
 
       newMaterials.push({
@@ -107,6 +116,7 @@ export function getAddOnMaterials(
         quantity: 1,
         pricePerInch,
         total: parseFloat((pricePerInch * frontW).toFixed(2)),
+        cutPrice
       });
 
       newMaterials.push({
@@ -116,6 +126,7 @@ export function getAddOnMaterials(
         quantity: 1,
         pricePerInch,
         total: parseFloat((pricePerInch * middleW).toFixed(2)),
+        cutPrice
       });
 
       newMaterials.push({
@@ -125,6 +136,7 @@ export function getAddOnMaterials(
         quantity: 1,
         pricePerInch,
         total: parseFloat((pricePerInch * backW).toFixed(2)),
+        cutPrice
       });
     }
   });

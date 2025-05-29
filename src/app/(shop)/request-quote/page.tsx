@@ -78,11 +78,16 @@ export default function RequestQuotePage() {
       (acc, item) => acc + item.total,
       0
     );
-    const cutsCost = 0; // Si necesitas lógica de cortes, puedes añadirla aquí
+    const cutsCost = materialsData.reduce((acc, item) => {
+      if (item.cutPrice && item.cutPrice > 0) {
+        return acc + 2 * item.quantity * item.cutPrice;
+      }
+      return acc;
+    }, 0);
     const combinedCost = materialCost + cutsCost;
     const markup = combinedCost * 0.15;
     const pricePlus15Markup = combinedCost + markup;
-    const finalMarkup = pricePlus15Markup * 0.15;
+    const finalMarkup = pricePlus15Markup * 1.5;
     const finalTotal = pricePlus15Markup + finalMarkup;
 
     setCostSummary({

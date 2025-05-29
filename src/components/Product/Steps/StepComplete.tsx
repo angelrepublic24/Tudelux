@@ -33,6 +33,10 @@ export const StepComplete = ({renderState, setRenderState, materials, summary, s
       dimensions: renderState.dimensions,
       image: renderState.renderUrl,
       color: renderState.color,
+
+      product: renderState.title,
+    productType: renderState.productType,
+    shape: renderState.shape,
     };
 
     addItem(newItem);

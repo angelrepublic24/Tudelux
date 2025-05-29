@@ -9,7 +9,9 @@ import { CostSummary, MaterialItem, MaterialItemTable } from "@/types";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { createQuote } from "@/api/QuoteApi";
+import { uniq } from "lodash"; // opcional, para evitar add-ons duplicados
 import { toast } from "react-toastify";
+import { calculateCostSummary } from "@/utils/calculateCostSummary";
 import {
   CreateQuotePayload,
   QuoteClientInfoPayload,
@@ -48,33 +50,94 @@ export const CartSideBar = () => {
   });
 
   const quoteMaterials = useQuoteStore((state) => state.quoteMaterials);
-const quoteSummary = useQuoteStore((state) => state.quoteSummary);
+  const quoteSummary = useQuoteStore((state) => state.quoteSummary);
 
-const onSubmit = (formData: QuoteClientInfoPayload) => {
-  if (!quoteMaterials || !quoteSummary) {
-    toast.error("No quote data available");
-    return;
+  const onSubmit = (formData: QuoteClientInfoPayload) => {
+    if (!quoteMaterials || !quoteSummary) {
+      toast.error("No quote data available");
+      return;
+    }
+    // Derivar AddOns escaneando los materiales
+    const validAddOns = [
+  "Crown",
+  "Tube",
+  "Channel",
+  '1" In',
+  '1" Out',
+  '3" Extender',
+];
+    const derivedAddOns = uniq(
+  quoteMaterials
+    .filter((m) =>
+      validAddOns.some((addon) =>
+        m.name.toLowerCase().includes(addon.toLowerCase())
+      )
+    )
+    .map((m) =>
+      validAddOns.find((addon) =>
+        m.name.toLowerCase().includes(addon.toLowerCase())
+      )
+    )
+    .filter(Boolean) // Elimina null/undefined
+);
+
+    // Derivar dimensiones desde materiales tipo "fascia"
+    const dimensions: Record<string, number> = {};
+quoteMaterials.forEach((m) => {
+  const name = m.name.toLowerCase();
+
+  if (name.includes("front") && name.includes("width")) {
+    dimensions.frontWidth = m.inches;
+  } else if (name.includes("back") && name.includes("width")) {
+    dimensions.backWidth = m.inches;
+  } else if (name.includes("middle") && name.includes("width")) {
+    dimensions.middleWidth = m.inches;
   }
 
-  const payload: CreateQuotePayload = {
-    ...formData,
-    materials: quoteMaterials.map((m) => ({
-      material: m.name,
-      color: m.color,
-      size: `${m.inches} in`,
-      qty: m.quantity,
-      price: m.total,
-    })),
-    materialCost: quoteSummary.materialCost,
-    cutCost: quoteSummary.cutsCost,
-    markup: quoteSummary.finalMarkup,
-    subtotal: quoteSummary.pricePlus15Markup,
-    total: quoteSummary.finalTotal,
-    additionalInfo: {},
-  };
+  if (name.includes("left") && name.includes("projection")) {
+    dimensions.leftProjection = m.inches;
+  } else if (name.includes("right") && name.includes("projection")) {
+    dimensions.rightProjection = m.inches;
+  } else if (name.includes("middle") && name.includes("projection")) {
+    dimensions.middleProjection = m.inches;
+  }
 
-  quoteMutation.mutate(payload);
-};
+  // Fallback para rectangular
+  if (name.includes("fascia") && name.includes("width") && !dimensions.width) {
+    dimensions.width = m.inches;
+  }
+  if (name.includes("fascia") && name.includes("projection") && !dimensions.projection) {
+    dimensions.projection = m.inches;
+  }
+});
+
+    // Usar el primer item del carrito como referencia de contexto
+    const firstItem = items[0];
+    const payload: CreateQuotePayload = {
+      ...formData,
+      product: firstItem?.product || "Custom", // ejemplo: "Canopy"
+      product_type: firstItem?.productType || "Custom Type", // ejemplo: "Custom Canopy"
+      shape: firstItem?.shape || "Rectangular", // ejemplo: "Left Wall"
+      addOns: derivedAddOns,
+      dimensions,
+
+      materials: quoteMaterials.map((m) => ({
+        material: m.name,
+        color: m.color,
+        size: `${m.inches} in`,
+        qty: m.quantity,
+        price: m.total,
+      })),
+      materialCost: quoteSummary.materialCost,
+      cutCost: quoteSummary.cutsCost,
+      markup: quoteSummary.finalMarkup,
+      subtotal: quoteSummary.pricePlus15Markup,
+      total: quoteSummary.finalTotal,
+      additionalInfo: {},
+    };
+
+    quoteMutation.mutate(payload);
+  };
 
   if (!isCartOpen) return null;
 
@@ -176,9 +239,14 @@ const onSubmit = (formData: QuoteClientInfoPayload) => {
                     </p>
                     <button
                       onClick={() => {
-                        if (item.materials && item.costSummary) {
+                        if (item.materials) {
+                          const summary = calculateCostSummary(
+                            item.materials,
+                            item.costSummary.finalMarkup // fixedFinalMarkup si aplica
+                          );
+
                           setActiveMaterials(item.materials);
-                          setActiveSummary(item.costSummary);
+                          setActiveSummary(summary);
                           setShowModal(true);
                         }
                       }}

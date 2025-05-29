@@ -4,6 +4,7 @@ export async function getAddOn(){
     try{
         const {data} = await axios.get('https://api.hubapi.com/hubdb/api/v2/tables/116656395/rows?portalId=22465736');
         const addOns = data.objects;
+        console.log({addOns});
         return addOns
     }catch(e){
         if(isAxiosError(e)){
@@ -28,6 +29,7 @@ export async function getProfile(){
     try {
         const {data} = await axios.get('https://api.hubapi.com/hubdb/api/v2/tables/116565778/rows?portalId=22465736');
         const profile = data.objects;
+        console.log({profile});
         return profile        
     } catch (error) {
         if(isAxiosError(error)){

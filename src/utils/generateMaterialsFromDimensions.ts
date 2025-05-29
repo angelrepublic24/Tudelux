@@ -5,6 +5,8 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
   if (!dimensions) return [];
 
   const PRICE_PER_INCH = 1.25;
+    const cutPrice = renderState.cutPrice ?? 15; // 👈 AQUÍ
+
   const c = color || "Standard";
   const p = profile?.trim() || "";
 
@@ -19,6 +21,7 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
         quantity: 2,
         pricePerInch: PRICE_PER_INCH,
         total: dimensions.projectionInches * PRICE_PER_INCH,
+        cutPrice
       });
 
     if (dimensions.backWidthInches)
@@ -29,6 +32,8 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
         quantity: 1,
         pricePerInch: PRICE_PER_INCH,
         total: dimensions.backWidthInches * PRICE_PER_INCH,
+        cutPrice
+
       });
 
     if (dimensions.frontWidthInches)
@@ -39,6 +44,8 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
         quantity: 1,
         pricePerInch: PRICE_PER_INCH,
         total: dimensions.frontWidthInches * PRICE_PER_INCH,
+        cutPrice
+
       });
 
     if (dimensions.cornersInches)
@@ -49,6 +56,7 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
         quantity: 2,
         pricePerInch: PRICE_PER_INCH,
         total: dimensions.cornersInches * 2 * PRICE_PER_INCH,
+        cutPrice
       });
   }
 
@@ -61,6 +69,7 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
         quantity: 2,
         pricePerInch: PRICE_PER_INCH,
         total: dimensions.widthInches * 2 * PRICE_PER_INCH,
+        cutPrice
       });
 
     if (dimensions.projectionInches)
@@ -71,6 +80,7 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
         quantity: 2,
         pricePerInch: PRICE_PER_INCH,
         total: dimensions.projectionInches * 2 * PRICE_PER_INCH,
+        cutPrice
       });
   }
 
@@ -92,6 +102,7 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
         quantity: 1,
         pricePerInch: PRICE_PER_INCH,
         total: fw * PRICE_PER_INCH,
+        cutPrice
       });
 
     if (bw)
@@ -102,6 +113,7 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
         quantity: 1,
         pricePerInch: PRICE_PER_INCH,
         total: bw * PRICE_PER_INCH,
+        cutPrice
       });
 
     items.push({
@@ -111,6 +123,7 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
       quantity: 1,
       pricePerInch: PRICE_PER_INCH,
       total: mw * PRICE_PER_INCH,
+      cutPrice
     });
 
     // Projections
@@ -122,6 +135,7 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
         quantity: 1,
         pricePerInch: PRICE_PER_INCH,
         total: lp * PRICE_PER_INCH,
+        cutPrice
       });
 
     if (rp)
@@ -132,6 +146,7 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
         quantity: 1,
         pricePerInch: PRICE_PER_INCH,
         total: rp * PRICE_PER_INCH,
+        cutPrice
       });
 
     items.push({
@@ -141,6 +156,7 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
       quantity: 1,
       pricePerInch: PRICE_PER_INCH,
       total: mp * PRICE_PER_INCH,
+      cutPrice
     });
   }
 
@@ -162,6 +178,7 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
         quantity: 1,
         pricePerInch: PRICE_PER_INCH,
         total: fw * PRICE_PER_INCH,
+        cutPrice
       });
 
     if (bw)
@@ -172,6 +189,7 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
         quantity: 1,
         pricePerInch: PRICE_PER_INCH,
         total: bw * PRICE_PER_INCH,
+        cutPrice
       });
 
     items.push({
@@ -181,6 +199,7 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
       quantity: 1,
       pricePerInch: PRICE_PER_INCH,
       total: mw * PRICE_PER_INCH,
+      cutPrice
     });
 
     // Projections
@@ -192,6 +211,7 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
         quantity: 1,
         pricePerInch: PRICE_PER_INCH,
         total: rp * PRICE_PER_INCH,
+        cutPrice
       });
 
     if (lp)
@@ -202,6 +222,7 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
         quantity: 1,
         pricePerInch: PRICE_PER_INCH,
         total: lp * PRICE_PER_INCH,
+        cutPrice
       });
 
     items.push({
@@ -211,6 +232,7 @@ export function generateMaterialsFromDimensions(renderState: RenderState): Mater
       quantity: 1,
       pricePerInch: PRICE_PER_INCH,
       total: mp * PRICE_PER_INCH,
+      cutPrice
     });
   }
 

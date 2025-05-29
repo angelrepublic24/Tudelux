@@ -26,9 +26,9 @@ export default function QuoteDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
+    <div className="min-h-screen bg-gray-100 ">
       <QuoteView
-        materials={data.materials}
+        materials={data}
         summary={{
           materialCost: data.materialCost,
           cutsCost: data.cutCost,

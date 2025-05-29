@@ -68,6 +68,7 @@ export type RenderState = {
   support?: string;
   lighting?: string;
   color?: string;
+  cutPrice?: number;
 };
 
 export type RawAddOn = {
@@ -99,7 +100,7 @@ export type ProfileVariant = {
   pricePerInch: number;
   unitLength: number;
   roofProjection: number;
-  cuts: number;
+  cutPrice: number;
 };
 
 export type GroupedProfile = {
@@ -123,6 +124,18 @@ export type MaterialItemTable = {
   quantity: number;
   pricePerInch: number;
   total: number;
+  cutPrice?: number;
+  sourceStep?: string;
+  
+};
+
+export type MaterialQuote = {
+  material: string;
+  color: string;
+  size: number;
+  qty: number;
+  pricePerInch: number;
+  price: number;
   sourceStep?: string;
 };
 
@@ -149,6 +162,10 @@ export type CartItem = {
   };
   color?: string;
   image?: string;
+
+  product?: string;         // Ej: 'Canopy'
+  productType?: string;    // Ej: 'Custom Canopy'
+  shape?: string;  
 };
 
 // export type IUser = {

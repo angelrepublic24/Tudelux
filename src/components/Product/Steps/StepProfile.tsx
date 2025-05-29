@@ -31,33 +31,6 @@ export const StepProfile = ({
   if (isLoading) return "Loading....";
   if (isError) return "Error loading";
 
-  //   const handleProfilePrice = (
-  //   variant: ProfileVariant,
-  //   widthInches: number,
-  //   projectionInches: number
-  // ): MaterialItemTable[] => {
-  //   const pricePerInch = variant.pricePerInch || 0;
-
-  //   return [
-  //     {
-  //       name: `width ${variant.name}`,
-  //       color: variant.color,
-  //       inches: widthInches,
-  //       quantity: 2,
-  //       pricePerInch,
-  //       total: parseFloat((widthInches * pricePerInch * 2).toFixed(2)),
-  //     },
-  //     {
-  //       name: `projection ${variant.name}`,
-  //       color: variant.color,
-  //       inches: projectionInches,
-  //       quantity: 2,
-  //       pricePerInch,
-  //       total: parseFloat((projectionInches * pricePerInch * 2).toFixed(2)),
-  //     },
-  //   ];
-  // };
-
   const groupedProfiles = groupProfilesByName(profiles);
   return (
     <section>
@@ -74,6 +47,7 @@ export const StepProfile = ({
                   ...renderState,
                   profile: variant.name,
                   color: variant.color,
+                  cutPrice: variant.cutPrice
                 };
 
                 setRenderState(updatedState);
