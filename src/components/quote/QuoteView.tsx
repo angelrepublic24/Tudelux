@@ -17,6 +17,7 @@ interface Props {
   quoteDate: string;
 }
 
+
 export const QuoteView = ({
   materials,
   summary,
@@ -24,6 +25,14 @@ export const QuoteView = ({
   quoteNumber,
   quoteDate,
 }: Props) => {
+
+  const formattedMaterials = materials.map((item) => ({
+  material: item.name,
+  color: item.color,
+  size: item.inches,
+  qty: item.quantity,
+  price: item.total,
+}));
   console.log(materials);
   return (
     <div className="max-w-5xl mx-auto bg-[#f2f2f2] p-10 text-black">
@@ -74,7 +83,7 @@ export const QuoteView = ({
       </tr>
     </thead>
     <tbody className="divide-y divide-gray-100">
-      {materials.map((item, i) => (
+      {formattedMaterials.map((item, i) => (
         <tr
           key={i}
           className="hover:bg-gray-50 transition-colors duration-200"
