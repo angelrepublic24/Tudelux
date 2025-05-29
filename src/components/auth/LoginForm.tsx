@@ -21,7 +21,6 @@ export default function LoginForm() {
     mutationFn: login,
     onSuccess: (data) => {
       router.push('/dashboard');
-      console.log(data)
     },
     onError: (error) => {
       toast.error(error.message);

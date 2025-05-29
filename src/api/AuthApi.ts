@@ -48,7 +48,6 @@ export async function login(formData: LoginFormType){
     const {data} = await Api.post('/auth/login', formData, {
       withCredentials: true
     })
-    console.log(data)
     return data
   } catch (error) {
     console.log(error);

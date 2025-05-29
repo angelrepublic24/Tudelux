@@ -8,7 +8,7 @@ export function getAddOnMaterials(
 ): MaterialItemTable[] {
   const name = addOn.values[1];
   const color = addOn.values[2];
-const pricePerInch = parseFloat(String(addOn.values[3]));
+  const pricePerInch = parseFloat(String(addOn.values[3]));
 
   const shape = renderState.shape;
   const width = renderState.dimensions?.widthInches || 0;
@@ -22,8 +22,7 @@ const pricePerInch = parseFloat(String(addOn.values[3]));
   const frontW = renderState.dimensions?.frontWidthInches || 0;
   const backW = renderState.dimensions?.backWidthInches || 0;
   const middleW =
-    renderState.dimensions?.middleWidthInches ||
-    Math.max(frontW - backW, 12);
+    renderState.dimensions?.middleWidthInches || Math.max(frontW - backW, 12);
 
   const newMaterials: MaterialItemTable[] = [];
 
@@ -117,6 +116,15 @@ const pricePerInch = parseFloat(String(addOn.values[3]));
         quantity: 1,
         pricePerInch,
         total: parseFloat((pricePerInch * middleW).toFixed(2)),
+      });
+
+      newMaterials.push({
+        name: `${name} - ${btn} Width Back`,
+        color,
+        inches: backW,
+        quantity: 1,
+        pricePerInch,
+        total: parseFloat((pricePerInch * backW).toFixed(2)),
       });
     }
   });

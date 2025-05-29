@@ -1,19 +1,21 @@
 import { verifySession } from "@/auth/dal";
 import { redirect } from "next/navigation";
 
-export default async function () {
-  const { user } = await verifySession();
-  console.log(user);
+// app/page.tsx o app/(admin)/page.tsx
 
-  if (user.roles.includes("admin")) {
+export default async function Page() {
+  const { user } = await verifySession();
+  console.log("Hola" + user);
+
+  if (user?.roles?.includes("admin")) {
     redirect("/admin");
   }
 
-  if (user.roles.includes("seller")) {
+  if (user?.roles?.includes("seller")) {
     redirect("/seller");
   }
 
-  if (user.roles.includes("distributor")) {
+  if (user?.roles?.includes("distributor")) {
     redirect("/distributor");
   }
 

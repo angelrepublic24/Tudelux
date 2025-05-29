@@ -60,15 +60,13 @@ export const CompanySchemaForm = z.object({
   address_zip: z.string().optional(),
 });
 
-
-
 export const UserSchema = z.object({
   id: z.number(),
   name: z.string(),
   lName: z.string(),
   email: z.string().email(),
   roles: z.array(z.string()),
-  company: CompanySchemaForm.optional(), // 👈 hazlo opcional
+  company: CompanySchemaForm.optional().nullable(), // 👈 hazlo opcional
 });
 export const CompanySchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -79,7 +77,48 @@ export const CompanySchema = z.object({
   address_zip: z.string().optional(),
 });
 
+export const QuoteSchema = z.object({
+  customerName: z.string(),
+  customerLastName: z.string(),
+  customerEmail: z.string().email(),
+  customerPhone: z.string(),
+  address_street: z.string().optional(),
+  address_city: z.string().optional(),
+  address_state: z.string().optional(),
+  address_zip: z.string().optional(),
+  materials: z.array(
+    z.object({
+      material: z.string(),
+      color: z.string(),
+      size: z.string(),
+      qty: z.number(),
+      price: z.number(),
+    })
+  ),
+  materialCost: z.number(),
+  cutCost: z.number(),
+  markup: z.number(),
+  subtotal: z.number(),
+  total: z.number(),
+  additionalInfo: z.record(z.any()).optional(),
+});
+
+export const QuoteClientInfoSchema = z.object({
+  customerName: z.string(),
+  customerLastName: z.string(),
+  customerEmail: z.string().email(),
+  customerPhone: z.string(),
+  address_street: z.string().optional(),
+  address_city: z.string().optional(),
+  address_state: z.string().optional(),
+  address_zip: z.string().optional(),
+});
+
+export type QuoteClientInfoPayload = z.infer<typeof QuoteClientInfoSchema>;
+
+export type CreateQuotePayload = z.infer<typeof QuoteSchema>;
 export type User = z.infer<typeof UserSchema>;
 export type Company = z.infer<typeof CompanySchema>;
-export type RegisterDistributorFormType = z.infer<typeof RegisterDistributorSchema>;
-
+export type RegisterDistributorFormType = z.infer<
+  typeof RegisterDistributorSchema
+>;

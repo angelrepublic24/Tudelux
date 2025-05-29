@@ -9,6 +9,7 @@ import { getAddOn } from "@/api/HubspotAPi";
 import { getAddOnMaterials } from "@/utils/handleAddOnSelection";
 import { AddOnTooltip } from "@/components/AddOnTooltip";
 import { ImageRender } from "@/components/Render/3dRender";
+import { toast } from "react-toastify";
 
 interface Props {
   setRenderState: React.Dispatch<React.SetStateAction<RenderState>>;
@@ -31,12 +32,98 @@ export const StepFrontDesign = ({
   );
   const [selectedAddOn, setSelectedAddOn] = useState<RawAddOn | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [showExtraOptionsModal, setShowExtraOptionsModal] = useState(false);
+  const [crownBasePosition, setCrownBasePosition] = useState<string | null>(
+    null
+  );
   const [selectedButtons, setSelectedButtons] = useState<string[]>([]);
+  const [shownCrownCombinations, setShownCrownCombinations] = useState<
+    Set<string>
+  >(new Set());
+
+  const [globalSelections, setGlobalSelections] = useState<
+    Record<string, string[]>
+  >({});
 
   const { data: addOns = [] } = useQuery({
     queryFn: getAddOn,
     queryKey: ["addOns"],
   });
+
+  const handleConfirmAddon = (customButtons?: string[]) => {
+    if (!selectedAddOn || !selectedAddOnName) return;
+
+    const buttonsToUse = customButtons ?? selectedButtons;
+
+    const tempSelections = { ...globalSelections };
+    tempSelections[selectedAddOnName] = buttonsToUse;
+
+    // Validación: máximo 3 add-ons por posición
+    const positionCount: Record<string, number> = {};
+    Object.values(tempSelections).forEach((positions) => {
+      positions.forEach((pos) => {
+        positionCount[pos] = (positionCount[pos] || 0) + 1;
+      });
+    });
+
+    const exceeded = Object.values(positionCount).some((count) => count > 3);
+    if (exceeded) {
+      toast.error("You can only select up to 3 add-ons per position total.");
+      return;
+    }
+
+    // 🧠 Marcar combinaciones Crown-Conflict como vistas si aplican
+    const crownPositions = globalSelections["Crown"] || [];
+    const newShown = new Set(shownCrownCombinations);
+
+    buttonsToUse.forEach((pos) => {
+      if (selectedAddOnName !== "Crown" && crownPositions.includes(pos)) {
+        const key = `${selectedAddOnName}-${pos}`;
+        newShown.add(key);
+      }
+    });
+    setShownCrownCombinations(newShown);
+
+    // Agregar materiales
+    const newMaterials = getAddOnMaterials(
+      selectedAddOn,
+      buttonsToUse,
+      renderState
+    );
+
+    setMaterialsData((prev) => [...prev, ...newMaterials]);
+
+    // Actualizar render
+    setRenderState((prev) => ({
+      ...prev,
+      fontTypeDesign: `${selectedAddOnName} - ${buttonsToUse.join(", ")}`,
+    }));
+
+    // Guardar selección
+    setGlobalSelections((prev) => ({
+      ...prev,
+      [selectedAddOnName]: buttonsToUse,
+    }));
+
+    // Reset UI
+    setShowTooltip(false);
+    setSelectedAddOn(null);
+    setSelectedAddOnName(null);
+    setSelectedButtons([]);
+  };
+
+  const shouldShowExtraModal = (
+    addonName: string,
+    position: string
+  ): boolean => {
+    if (addonName === "Crown") return false;
+    const key = `${addonName}-${position}`;
+    const crownPositions = globalSelections["Crown"] || [];
+    const alreadyShown = shownCrownCombinations.has(key);
+    const alreadySaved = globalSelections[addonName]?.includes(position);
+
+    return !alreadyShown && crownPositions.includes(position) && !alreadySaved;
+  };
 
   return (
     <section className="py-16 relative">
@@ -88,10 +175,26 @@ export const StepFrontDesign = ({
                       if (addon) {
                         setSelectedAddOn(addon);
                         setSelectedAddOnName(type);
+
+                        const previousSelections = globalSelections[type] || [];
+                        setSelectedButtons(previousSelections);
                         setShowTooltip(true);
+
+                        // ✅ Mostrar modal adicional si no es Crown y comparte posición con Crown
+                        const crownPositions = globalSelections["Crown"] || [];
+                        const matchingPosition = previousSelections.find(
+                          (pos) => crownPositions.includes(pos)
+                        );
+
+                        if (type !== "Crown" && matchingPosition) {
+                          if (shouldShowExtraModal(type, matchingPosition)) {
+                            setCrownBasePosition(matchingPosition);
+                            setShowExtraOptionsModal(true);
+                          }
+                        }
                       }
                     }}
-                    className={`w-1/2 py-4 px-2 rounded text-center border flex flex-col items-center gap-2 ${
+                    className={`w-1/2 py-4 px-2 rounded text-center border hover:bg-gray-200 flex flex-col items-center gap-2 ${
                       selectedAddOnName === type
                         ? "bg-[#ff5100] text-white border-[#ff5100]"
                         : "bg-white text-gray-700 border-gray-300"
@@ -137,44 +240,83 @@ export const StepFrontDesign = ({
                       ]}
                       selected={selectedButtons}
                       onToggle={(btn) => {
-                        setSelectedButtons((prev) =>
-                          prev.includes(btn)
-                            ? prev.filter((b) => b !== btn)
-                            : prev.length < 3
-                            ? [...prev, btn]
-                            : prev
-                        );
+                        const alreadySelected = selectedButtons.includes(btn);
+
+                        let totalCountInPosition = 0;
+                        Object.values(globalSelections).forEach((positions) => {
+                          totalCountInPosition += positions.filter(
+                            (pos) => pos === btn
+                          ).length;
+                        });
+
+                        if (!alreadySelected && totalCountInPosition >= 3) {
+                          toast.error(
+                            `You can only select 3 add-ons in the "${btn}" position.`
+                          );
+                          return;
+                        }
+
+                        const newSelection = alreadySelected
+                          ? selectedButtons.filter((b) => b !== btn)
+                          : [...selectedButtons, btn];
+
+                        setSelectedButtons(newSelection);
+
+                        if (
+                          !alreadySelected &&
+                          shouldShowExtraModal(selectedAddOnName!, btn)
+                        ) {
+                          setCrownBasePosition(btn);
+                          setShowExtraOptionsModal(true);
+                        }
                       }}
                       onCancel={() => {
                         setShowTooltip(false);
                         setSelectedButtons([]);
                       }}
-                      onConfirm={() => {
-                        if (selectedAddOn && selectedAddOnName) {
-                          const newMaterials = getAddOnMaterials(
-                            selectedAddOn,
-                            selectedButtons,
-                            renderState
-                          );
-                          setMaterialsData((prev) => [
-                            ...prev,
-                            ...newMaterials,
-                          ]);
-
-                          setRenderState((prev) => ({
-                            ...prev,
-                            fontTypeDesign: `${selectedAddOnName} - ${selectedButtons.join(
-                              ", "
-                            )}`,
-                          }));
-
-                          setShowTooltip(false);
-                          setSelectedAddOn(null);
-                          setSelectedAddOnName(null);
-                          setSelectedButtons([]);
-                        }
-                      }}
+                      onConfirm={() => handleConfirmAddon()}
                     />
+                  </div>
+                )}
+
+                {showExtraOptionsModal && crownBasePosition && (
+                  <div className="fixed inset-0 bg-gray-500/40 backdrop-blur-sm flex justify-center items-center z-50">
+                    <div className="bg-white p-6 rounded-xl shadow-xl max-w-md w-full space-y-4 text-center">
+                      <h2 className="text-lg font-semibold">
+                        Choose additional option for {crownBasePosition} Crown
+                      </h2>
+                      <div className="flex flex-col gap-4">
+                        {[
+                          `On ${crownBasePosition} Crown`,
+                          `Below ${crownBasePosition} Crown`,
+                        ].map((label, index) => (
+                          <button
+                            key={index}
+                            className="py-2 px-4 rounded bg-[#ff5100] text-white hover:bg-orange-600"
+                            onClick={() => {
+                              if (crownBasePosition && selectedAddOnName) {
+                                const finalButtons = [
+                                  ...selectedButtons,
+                                  crownBasePosition,
+                                ];
+                                const key = `${selectedAddOnName}-${crownBasePosition}`;
+
+                                setShownCrownCombinations((prev) => {
+                                  const updated = new Set(prev);
+                                  updated.add(key);
+                                  return updated;
+                                });
+
+                                handleConfirmAddon(finalButtons);
+                                setShowExtraOptionsModal(false);
+                              }
+                            }}
+                          >
+                            {label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
