@@ -17,7 +17,9 @@ export async function register(formData: RegisterFormType) {
   }
 }
 
-export async function registerDistributor(formData: RegisterDistributorFormType) {
+export async function registerDistributor(
+  formData: RegisterDistributorFormType
+) {
   try {
     const { password_confirmation, ...dataToSend } = formData;
     const { data } = await Api.post("/auth/create-account", dataToSend);
@@ -43,12 +45,12 @@ export async function confirmAccount(token: string) {
   }
 }
 
-export async function login(formData: LoginFormType){
+export async function login(formData: LoginFormType) {
   try {
-    const {data} = await Api.post('/auth/login', formData, {
-      withCredentials: true
-    })
-    return data
+    const { data } = await Api.post("/auth/login", formData, {
+      withCredentials: true,
+    });
+    return data;
   } catch (error) {
     console.log(error);
     if (isAxiosError(error) && error.response) {
@@ -57,12 +59,12 @@ export async function login(formData: LoginFormType){
   }
 }
 
-export async function profile (){
+export async function profile() {
   try {
-    const {data} = await Api.get('/auth/profile', {
-      withCredentials: true
-    })
-    return data
+    const { data } = await Api.get("/auth/profile", {
+      withCredentials: true,
+    });
+    return data;
   } catch (error) {
     console.log(error);
     if (isAxiosError(error) && error.response) {
@@ -70,14 +72,13 @@ export async function profile (){
     }
   }
 }
-
 
 // src/api/AuthApi.ts o donde tengas tus funciones API
 export async function logout() {
   try {
     const res = await fetch("/api/auth/logout", {
       method: "POST",
-      credentials: "include"
+      credentials: "include",
     });
 
     if (!res.ok) throw new Error("Logout failed");
@@ -89,16 +90,15 @@ export async function logout() {
   }
 }
 
-
-export async function findDistributors(limit = 10, page = 1, search = '') {
+export async function findDistributors(limit = 10, page = 1, search = "") {
   try {
     const params = new URLSearchParams({
       limit: limit.toString(),
-      page: page.toString()
-    })
+      page: page.toString(),
+    });
 
-    if(search.trim()){
-      params.append('search', search.trim())
+    if (search.trim()) {
+      params.append("search", search.trim());
     }
     const { data } = await Api.get(`/auth/distributors?${params.toString()}`, {
       withCredentials: true,
@@ -109,7 +109,22 @@ export async function findDistributors(limit = 10, page = 1, search = '') {
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.message);
     }
-    throw new Error('Unexpected error occurred');
+    throw new Error("Unexpected error occurred");
+  }
+}
+
+export async function findDistributorById(id: number) {
+  try {
+    const { data } = await Api.get(`auth/distributor/${id}`, {
+      withCredentials: true,
+    });
+    return data;
+  } catch (error) {
+    console.error(error);
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error("Unexpected error occurred");
   }
 }
 
@@ -118,20 +133,25 @@ export async function findSellers(limit = 10, page = 1) {
   const parsedPage = Number(page);
 
   if (isNaN(parsedLimit) || isNaN(parsedPage)) {
-    throw new Error('Invalid pagination values');
+    throw new Error("Invalid pagination values");
   }
 
   try {
-    const { data } = await Api.get(`/auth/sellers?limit=${parsedLimit}&page=${parsedPage}`, {
-      withCredentials: true,
-    });
+    const { data } = await Api.get(
+      `/auth/sellers?limit=${parsedLimit}&page=${parsedPage}`,
+      {
+        withCredentials: true,
+      }
+    );
     return data;
   } catch (error) {
-    console.error('Error fetching distributors:', error);
+    console.error("Error fetching distributors:", error);
     if (isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.message || 'Error fetching distributors');
+      throw new Error(
+        error.response.data.message || "Error fetching distributors"
+      );
     }
-    throw new Error('Unexpected error occurred');
+    throw new Error("Unexpected error occurred");
   }
 }
 
@@ -140,20 +160,22 @@ export async function findCustomers(limit = 10, page = 1) {
   const parsedPage = Number(page);
 
   if (isNaN(parsedLimit) || isNaN(parsedPage)) {
-    throw new Error('Invalid pagination values');
+    throw new Error("Invalid pagination values");
   }
 
   try {
-    const { data } = await Api.get(`/auth/customers?limit=${parsedLimit}&page=${parsedPage}`, {
-      withCredentials: true,
-    });
+    const { data } = await Api.get(
+      `/auth/customers?limit=${parsedLimit}&page=${parsedPage}`,
+      {
+        withCredentials: true,
+      }
+    );
     return data;
   } catch (error) {
-    console.error('Error fetching customers:', error);
+    console.error("Error fetching customers:", error);
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.message);
     }
-    throw new Error('Unexpected error occurred');
+    throw new Error("Unexpected error occurred");
   }
 }
-

@@ -2,21 +2,21 @@
 
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { getDistributorById } from '@/api/DistributorApi';
-import { Loader } from '@/components/ui/Loader';
 import { Card } from '@/components/ui/card/Card';
 import { MetricCard } from '@/components/ui/card/MetricCard';
+import { Spinner } from '@/components/ui/Spinner/Spinner';
+import { findDistributorById } from '@/api/AuthApi';
 
 export default function DistributorDetailPage() {
   const { id } = useParams();
 
   const { data: distributor, isLoading } = useQuery({
     queryKey: ['distributor', id],
-    queryFn: () => getDistributorById(id),
+    queryFn: () => findDistributorById(Number(id)),
     enabled: !!id,
   });
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <Spinner />;
 
   return (
     <section className="p-6">
