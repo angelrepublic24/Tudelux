@@ -11,6 +11,7 @@ type Props = {
   limit: number;
   page: number;
   setPage: (page: number) => void;
+  search: string;
 };
 type DistributorsResponse = {
   data: DistributorAndSeller[];
@@ -18,10 +19,10 @@ type DistributorsResponse = {
   currentPage: number;
 };
 
-export const GetDistributors = ({ limit, page, setPage }: Props) => {
+export const GetDistributors = ({ limit, page, setPage, search }: Props) => {
   const { data, isLoading, isError, error } = useQuery<DistributorsResponse>({
-    queryKey: ['distributors', limit, page],
-    queryFn: () => findDistributors(limit, page),
+    queryKey: ['distributors', limit, page, search],
+    queryFn: () => findDistributors(limit, page, search),
     staleTime: 1000 * 60 * 5,
     placeholderData: (prev) => prev,
   });

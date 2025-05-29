@@ -1,5 +1,5 @@
 import { chooseDesign } from "@/utils/chooseDesign";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { ChooseProductGrid } from "../ChooseProductGrid";
 import { MaterialItemTable, RawAddOn, RenderState } from "@/types";
 import { StepTitle } from "@/components/ui/StepTitle/StepTitle";
@@ -36,6 +36,12 @@ export const StepFrontDesign = ({
   const [crownBasePosition, setCrownBasePosition] = useState<string | null>(
     null
   );
+  const previousAddOnRef = useRef<string | null>(null);
+  const lastConfirmedAddOnRef = useRef<string | null>(null);
+
+  const [lastSelectedAddOnName, setLastSelectedAddOnName] = useState<
+    string | null
+  >(null);
   const [selectedButtons, setSelectedButtons] = useState<string[]>([]);
   const [shownCrownCombinations, setShownCrownCombinations] = useState<
     Set<string>
@@ -105,6 +111,14 @@ export const StepFrontDesign = ({
       [selectedAddOnName]: buttonsToUse,
     }));
 
+    if (selectedAddOnName === "Crown") {
+      previousAddOnRef.current = "Crown";
+    } else {
+      previousAddOnRef.current = null;
+    }
+
+    lastConfirmedAddOnRef.current = selectedAddOnName;
+
     // Reset UI
     setShowTooltip(false);
     setSelectedAddOn(null);
@@ -112,18 +126,18 @@ export const StepFrontDesign = ({
     setSelectedButtons([]);
   };
 
-  const shouldShowExtraModal = (
-    addonName: string,
-    position: string
-  ): boolean => {
-    if (addonName === "Crown") return false;
-    const key = `${addonName}-${position}`;
-    const crownPositions = globalSelections["Crown"] || [];
-    const alreadyShown = shownCrownCombinations.has(key);
-    const alreadySaved = globalSelections[addonName]?.includes(position);
+  // const shouldShowExtraModal = (
+  //   addonName: string,
+  //   position: string
+  // ): boolean => {
+  //   if (addonName === "Crown") return false;
+  //   const key = `${addonName}-${position}`;
+  //   const crownPositions = globalSelections["Crown"] || [];
+  //   const alreadyShown = shownCrownCombinations.has(key);
+  //   const alreadySaved = globalSelections[addonName]?.includes(position);
 
-    return !alreadyShown && crownPositions.includes(position) && !alreadySaved;
-  };
+  //   return !alreadyShown && crownPositions.includes(position) && !alreadySaved;
+  // };
 
   return (
     <section className="py-16 relative">
@@ -170,29 +184,67 @@ export const StepFrontDesign = ({
                 ].map(({ type, image }) => (
                   <button
                     key={type}
+                    // onClick={() => {
+                    //   const addon = addOns.find((a) => a.values[1] === type);
+                    //   if (addon) {
+                    //     const previousSelections = globalSelections[type] || [];
+                    //     const previousAddOn = lastSelectedAddOnName; // ← aquí guardamos el valor actual
+
+                    //     setSelectedAddOn(addon);
+                    //     setSelectedAddOnName(type);
+                    //     setSelectedButtons(previousSelections);
+                    //     setShowTooltip(true);
+
+                    //     const crownPositions = globalSelections["Crown"] || [];
+                    //     const matchingPosition = crownPositions.find((pos) =>
+                    //       previousSelections.includes(pos)
+                    //     );
+                    //     console.log({ previousAddOn });
+                    //     console.log({ lastSelectedAddOnName });
+                    //     console.log({ matchingPosition });
+
+                    //     const key = `${type}-${matchingPosition}`;
+                    //     const alreadyShown = shownCrownCombinations.has(key);
+                    //     const alreadySaved =
+                    //       globalSelections[type]?.includes(matchingPosition);
+
+                    //     if (
+                    //       type !== "Crown" &&
+                    //       previousAddOn === "Crown" &&
+                    //       matchingPosition !== undefined &&
+                    //       !alreadyShown &&
+                    //       !alreadySaved
+                    //     ) {
+                    //       console.log(
+                    //         "🔥 Mostrando modal extra por conflicto con Crown"
+                    //       );
+                    //       setCrownBasePosition(matchingPosition);
+                    //       setShowExtraOptionsModal(true);
+                    //     }
+
+                    //     // Actualizamos después de usar
+                    //     setLastSelectedAddOnName(type);
+                    //   }
+                    // }}
                     onClick={() => {
                       const addon = addOns.find((a) => a.values[1] === type);
-                      if (addon) {
-                        setSelectedAddOn(addon);
-                        setSelectedAddOnName(type);
+                      if (!addon) return;
 
-                        const previousSelections = globalSelections[type] || [];
-                        setSelectedButtons(previousSelections);
-                        setShowTooltip(true);
-
-                        // ✅ Mostrar modal adicional si no es Crown y comparte posición con Crown
-                        const crownPositions = globalSelections["Crown"] || [];
-                        const matchingPosition = previousSelections.find(
-                          (pos) => crownPositions.includes(pos)
+                      // ✅ Guarda quién fue el add-on anterior, si no es Crown
+                      if (type !== "Crown") {
+                        previousAddOnRef.current = selectedAddOnName;
+                        console.log(
+                          "🧠 Guardando previousAddOnRef:",
+                          selectedAddOnName
                         );
-
-                        if (type !== "Crown" && matchingPosition) {
-                          if (shouldShowExtraModal(type, matchingPosition)) {
-                            setCrownBasePosition(matchingPosition);
-                            setShowExtraOptionsModal(true);
-                          }
-                        }
                       }
+
+                      const previousSelections = globalSelections[type] || [];
+
+                      setSelectedAddOn(addon);
+                      setSelectedAddOnName(type);
+                      setSelectedButtons(previousSelections);
+                      setShowTooltip(true);
                     }}
                     className={`w-1/2 py-4 px-2 rounded text-center border hover:bg-gray-200 flex flex-col items-center gap-2 ${
                       selectedAddOnName === type
@@ -242,6 +294,7 @@ export const StepFrontDesign = ({
                       onToggle={(btn) => {
                         const alreadySelected = selectedButtons.includes(btn);
 
+                        // Revisa si ya hay 3 add-ons en esa posición
                         let totalCountInPosition = 0;
                         Object.values(globalSelections).forEach((positions) => {
                           totalCountInPosition += positions.filter(
@@ -256,16 +309,37 @@ export const StepFrontDesign = ({
                           return;
                         }
 
+                        // Actualiza las posiciones seleccionadas en el tooltip
                         const newSelection = alreadySelected
                           ? selectedButtons.filter((b) => b !== btn)
                           : [...selectedButtons, btn];
 
                         setSelectedButtons(newSelection);
 
+                        // 🔥 Lógica para mostrar el modal extra
+                        const crownPositions = globalSelections["Crown"] || [];
+                        const key = `${selectedAddOnName}-${btn}`;
+                        const alreadyShown = shownCrownCombinations.has(key);
+                        const alreadySaved =
+                          globalSelections[selectedAddOnName!]?.includes(btn);
+
                         if (
-                          !alreadySelected &&
-                          shouldShowExtraModal(selectedAddOnName!, btn)
+                          !alreadySelected && // Solo mostrar si es una nueva selección
+                          selectedAddOnName !== "Crown" && // El actual no es crown
+                          lastConfirmedAddOnRef.current === "Crown" &&
+                          crownPositions.includes(btn) && // La posición ya está usada por crown
+                          !alreadyShown && // Aún no se ha mostrado esta combinación
+                          !alreadySaved // Aún no se ha confirmado esta combinación
                         ) {
+                          console.log(
+                            "🔥 Mostrar modal extra (desde tooltip)",
+                            {
+                              currentAddOn: selectedAddOnName,
+                              lastSelectedAddOnName,
+                              conflictingPosition: btn,
+                            }
+                          );
+
                           setCrownBasePosition(btn);
                           setShowExtraOptionsModal(true);
                         }

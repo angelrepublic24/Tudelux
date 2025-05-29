@@ -53,7 +53,7 @@ export const QuoteView = ({
         </div>
 
         {/* COTIZACIÓN */}
-        <div className="text-center">
+        <div className="text-right">
           <p className="text-2xl font-bold text-[#ff5100]">Quote</p>
           <p className="text-sm mb-2">And Purchase Agreement</p>
           <p><strong>Quote No.</strong><br />{quoteNumber}</p>

@@ -34,6 +34,7 @@
     "swiper": "^11.2.6",
     "three": "^0.176.0",
     "three-stdlib": "^2.36.0",
+    "use-debounce": "^10.0.4",
     "uuid": "^11.1.0",
     "zod": "^3.25.17",
     "zustand": "^5.0.4"

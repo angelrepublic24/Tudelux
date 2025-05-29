@@ -2,33 +2,46 @@
 
 import { useState } from 'react';
 import { GetDistributors } from '@/components/auth/GetDistributors';
+import { SearchInput } from '@/components/ui/searchInput/SearchInput';
 
 export default function DistributorsPage() {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState('')
 
   return (
     <section className="p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-[#ff5100]">Distributors</h1>
-        <div>
-          <label className="text-sm mr-2 text-gray-600">Rows per page:</label>
-          <select
-            className="border rounded px-2 py-1 text-sm"
-            value={limit}
-            onChange={(e) => {
-              setPage(1); // Reset page when limit changes
-              setLimit(Number(e.target.value));
-            }}
-          >
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={50}>50</option>
-          </select>
-        </div>
-      </div>
+        <h1 className="text-xl font-bold text-[#ff5100] mb-4">Distributors</h1>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                {/* Search Input */}
+                <SearchInput
+                  value={search}
+                  onChange={(val) => {
+                    setPage(1);
+                    setSearch(val);
+                  }}
+                  placeholder="Search by name or email..."
+                />
+        
+                {/* Rows per page */}
+                <div className="flex items-center">
+                  <label className="text-sm mr-2 text-gray-600">Rows per page:</label>
+                  <select
+                    className="border rounded px-2 py-1 text-sm"
+                    value={limit}
+                    onChange={(e) => {
+                      setPage(1);
+                      setLimit(Number(e.target.value));
+                    }}
+                  >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={50}>50</option>
+                  </select>
+                </div>
+              </div>
 
-      <GetDistributors limit={limit} page={page} setPage={setPage} />
+      <GetDistributors limit={limit} page={page} setPage={setPage} search={search} />
     </section>
   );
 }

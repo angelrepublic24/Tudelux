@@ -9,9 +9,17 @@ export async function createQuote(formData) {
   }
 }
 
-export async function getQuotes(limit: number, page: number) {
+export async function getQuotes(limit: number, page: number, search = '') {
   try {
-    const { data } = await Api.get(`/quotes?limit=${limit}&page=${page}`, {
+    const params = new URLSearchParams({
+      limit: limit.toString(),
+      page: page.toString(),
+    })
+
+    if(search.trim()){
+      params.append('search', search.trim())
+    }
+    const { data } = await Api.get(`/quotes?${params.toString()}`, {
       withCredentials: true,
     });
     return data;
