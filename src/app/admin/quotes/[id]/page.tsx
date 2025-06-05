@@ -1,24 +1,15 @@
 'use client';
-
-import { useQuery } from '@tanstack/react-query';
-import { getQuoteById } from '@/api/QuoteApi';
 import { toast } from 'react-toastify';
-import { QuoteView } from '@/components/quote/QuoteView';
-import { Spinner } from '@/components/ui/Spinner/Spinner';
 import { useParams } from 'next/navigation';
+import { QuoteView } from '@/modules/quotes/components/QuoteView';
+import { Spinner } from '@/shared/components/ui/Spinner/Spinner';
+import { useGetQuoteById } from '@/modules/quotes/services/quote.service';
 
 export default function QuoteDetailPage() {
   const params = useParams();
   const id = params?.id;
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['quote', id],
-    queryFn: () => getQuoteById(Number(id)),
-    enabled: !!id,
-  });
-
-  console.log(data);
-
+  const { data, isLoading, isError } = useGetQuoteById(Number(id))
   if (isLoading) return <Spinner />;
   if (isError || !data) {
     toast.error('Failed to load quote');

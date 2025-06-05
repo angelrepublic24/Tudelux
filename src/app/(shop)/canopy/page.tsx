@@ -1,5 +1,6 @@
 'use client'
-import CanopyBuilder from "@/components/customCanopy/CanopyBuilder";
+
+import CanopyBuilder from "@/shared/components/customCanopy/CanopyBuilder";
 
 export default function CanopyPage() {
   return <CanopyBuilder />;

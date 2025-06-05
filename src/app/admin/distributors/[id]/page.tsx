@@ -2,10 +2,11 @@
 
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { Card } from '@/components/ui/card/Card';
-import { MetricCard } from '@/components/ui/card/MetricCard';
-import { Spinner } from '@/components/ui/Spinner/Spinner';
-import { findDistributorById } from '@/api/AuthApi';
+import { findDistributorById } from '@/modules/distributor/api/Distributor.api';
+import { Spinner } from '@/shared/components/ui/Spinner/Spinner';
+import { Card } from '@/shared/components/ui/card/Card';
+import { MetricCard } from '@/shared/components/ui/card/MetricCard';
+
 
 export default function DistributorDetailPage() {
   const { id } = useParams();

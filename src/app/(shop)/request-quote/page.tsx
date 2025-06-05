@@ -1,9 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { RenderHeader } from "@/components/Render/RenderHeader";
-import { Title } from "@/components/ui/title/Title";
-import { chooseProduct } from "@/utils/chooseProduct";
-import { CostSummary, MaterialItemTable, RenderState } from "@/types"; // asegúrate de exportarlo ahí
+import { chooseProduct } from "@/shared/utils/chooseProduct";
+import { CostSummary, MaterialItemTable, RenderState } from "@/shared/types"; // asegúrate de exportarlo ahí
 import Image from "next/image";
 import {
   StepAddiotionalFeatures,
@@ -21,13 +19,17 @@ import {
   StepLouversDirections,
   StepProfile,
   StepRole,
+  StepWallAddons,
   StepSize,
   StepSpaceBetweenLouvers,
   StepStandardColorOptions,
   StepSupport,
-} from "@/components/Product";
-import { StepWallColor } from "@/components/Product/Steps/StepWallColor";
-import { StepWallAddons } from "@/components/Product/Steps/StepWallAddons";
+  StepWallColor
+} from "@/modules/products/components";
+// import { StepWallColor } from "@/components/Product/Steps/StepWallColor";
+// import { StepWallAddons } from "@/components/Product/Steps/StepWallAddons";
+import { RenderHeader } from "@/shared/components/Render/RenderHeader";
+import { Title } from "@/shared/components/ui/title/Title";
 
 export default function RequestQuotePage() {
   const [selectedProduct, setSelectedProduct] = useState<

@@ -1,6 +1,6 @@
 'use client';
-import { OrderCard } from '@/components/orders/OrderCard';
-import { orders } from '@/data/orderData';
+import { OrderCard } from '@/modules/orders/components/OrderCard';
+import { orders } from '@/shared/data/orderData';
 
 export default function OrdersPage() {
   return (

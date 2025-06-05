@@ -1,5 +1,5 @@
 'use client'
-import { Company, CompanySchema, CompanySchemaForm } from "@/schemas";
+import { Company, CompanySchema, CompanySchemaForm } from "@/modules/company/schemas/company.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";

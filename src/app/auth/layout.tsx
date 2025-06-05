@@ -1,5 +1,6 @@
-import Logo from "@/components/ui/Logo/Logo";
-import ToastNotification from "@/components/ui/toastNotification/ToastNotification";
+
+import Logo from "@/shared/components/ui/Logo/Logo";
+import ToastNotification from "@/shared/components/ui/toastNotification/ToastNotification";
 import Link from "next/link";
 
 

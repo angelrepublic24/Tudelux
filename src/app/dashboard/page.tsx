@@ -1,4 +1,4 @@
-import { verifySession } from "@/auth/dal";
+import { verifySession } from "@/shared/auth/dal";
 import { redirect } from "next/navigation";
 
 // app/page.tsx o app/(admin)/page.tsx

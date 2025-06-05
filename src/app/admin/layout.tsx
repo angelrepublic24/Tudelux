@@ -1,6 +1,6 @@
-import { verifySession } from "@/auth/dal";
-import { AdminSideBar } from "@/components/ui/AdminMenu/AdminSideBar";
-import { AdminTopBar } from "@/components/ui/AdminMenu/AdminTopBar";
+import { verifySession } from "@/shared/auth/dal";
+import { AdminSideBar } from "@/shared/components/ui/AdminMenu/AdminSideBar";
+import { AdminTopBar } from "@/shared/components/ui/AdminMenu/AdminTopBar";
 import { redirect } from "next/navigation";
 
 export default async function AdminLayout({

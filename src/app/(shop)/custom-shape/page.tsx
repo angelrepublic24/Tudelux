@@ -1,6 +1,7 @@
 'use client';
-import { Canvas2D, LineData } from '@/components/Canvas2d';
-import { Scene3D } from '@/components/Scene3d';
+
+import { Canvas2D, LineData } from '@/shared/components/Canvas2d';
+import { Scene3D } from '@/shared/components/Scene3d';
 import { useState } from 'react';
  
 

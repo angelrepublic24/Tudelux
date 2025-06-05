@@ -1,4 +1,4 @@
-import ConfirmAccountForm from "@/components/auth/ConfirmAccountForm";
+import ConfirmAccountForm from "@/modules/auth/components/confirmAccount/ConfirmAccountForm";
 
 export default function ConfirmAccountPage() {
   return (

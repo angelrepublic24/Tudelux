@@ -1,7 +1,7 @@
 'use client';
 
-import ProfileForm from '@/components/profile/ProfileForm';
-import { useState } from 'react';
+import ProfileForm from "@/modules/auth/components/profile/ProfileForm";
+
 
 export default function ProfilePage() {
   return (

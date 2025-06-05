@@ -1,7 +1,7 @@
 "use client";
 
-import { GetQuotes } from "@/components/quote/GetQuotes";
-import { SearchInput } from "@/components/ui/searchInput/SearchInput";
+import { GetQuotes } from "@/modules/quotes/components/GetQuotes";
+import { SearchInput } from "@/shared/components/ui/searchInput/SearchInput";
 import { useState } from "react";
 
 export default function QuotesPage() {

@@ -1,7 +1,6 @@
-import ProfileTabs, { Tab } from "@/components/profile/ProfileTabs";
-import ToastNotification from "@/components/ui/toastNotification/ToastNotification";
-import { BuildingOffice2Icon, UserIcon } from "@heroicons/react/20/solid";
 
+import ProfileTabs, { Tab } from "@/modules/auth/components/profile/ProfileTabs";
+import ToastNotification from "@/shared/components/ui/toastNotification/ToastNotification";
 
 const distributorTabs: Tab[] = [
   { name: "Profile", href: "/distributor/profile/settings", icon: "UserIcon" },

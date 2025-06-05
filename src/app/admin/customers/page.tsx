@@ -1,6 +1,6 @@
 'use client';
 
-import { CustomerList } from '@/components/customers/CustomerList';
+import { CustomerList } from '@/modules/customer/components/CustomerList';
 import { useState } from 'react';
 
 export default function CustomerPage() {

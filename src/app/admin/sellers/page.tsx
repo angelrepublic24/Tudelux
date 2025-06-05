@@ -1,6 +1,6 @@
 'use client';
 
-import { GetSeller } from '@/components/auth/GetSellers';
+import { GetSeller } from '@/modules/seller/components/GetSellers';
 import { useState } from 'react';
 
 export default function DistributorsPage() {

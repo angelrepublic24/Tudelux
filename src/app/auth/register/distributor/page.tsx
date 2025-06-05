@@ -1,5 +1,5 @@
-import RegisterDistributorForm from "@/components/auth/RegisterDistributorForm";
-import RegisterForm from "@/components/auth/RegisterForm";
+
+import RegisterDistributorForm from "@/modules/distributor/components/RegisterDistributorForm";
 import { Metadata } from "next";
 import Link from "next/link";
 

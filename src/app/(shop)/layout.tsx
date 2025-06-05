@@ -1,7 +1,8 @@
-import { CartSideBar } from "@/components/ui/carSideBar/CartSideBar";
-import { ShopTopMenu } from "@/components/ui/shop-topMenu/shopTopMenu";
-import { Sidebar } from "@/components/ui/sidebar/sidebar";
-import ToastNotification from "@/components/ui/toastNotification/ToastNotification";
+
+import { CartSideBar } from "@/shared/components/ui/cartSideBar/CartSideBar";
+import { ShopTopMenu } from "@/shared/components/ui/shop-topMenu/shopTopMenu";
+import { Sidebar } from "@/shared/components/ui/sidebar/sidebar";
+import ToastNotification from "@/shared/components/ui/toastNotification/ToastNotification";
 import React from "react";
 
 export default function ShopLayout({
