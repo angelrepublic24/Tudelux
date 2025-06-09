@@ -31,17 +31,25 @@ export async function confirmAccount(token: string) {
 
 export async function login(formData: LoginFormType) {
   try {
-    const { data } = await Api.post("/auth/login", formData, {
-      withCredentials: true,
+      const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData),
     });
-    return data;
-  } catch (error) {
-    console.log(error);
-    if (isAxiosError(error) && error.response) {
-      throw new Error(error.response.data.message);
+    console.log(res)
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message);
     }
+
+    return await res.json(); // puedes devolver { success: true }
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 }
+
 
 
 export async function profile() {
@@ -61,17 +69,15 @@ export async function profile() {
 
 export async function logout() {
   try {
-    const res = await fetch("/api/auth/logout", {
-      method: "POST",
-      credentials: "include",
+    const res = await fetch('/auth/logout', {
+      method: 'POST',
     });
 
-    if (!res.ok) throw new Error("Logout failed");
+    if (!res.ok) throw new Error('Logout failed');
 
-    // Puedes redirigir aquí si deseas
-    window.location.href = "/auth/login";
+    window.location.href = '/auth/login';
   } catch (error) {
-    console.error("Logout error:", error);
+    console.error('Logout error:', error);
   }
 }
 

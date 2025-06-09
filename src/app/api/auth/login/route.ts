@@ -1,39 +1,31 @@
-import { LoginSchema } from "@/modules/auth/schemas/auth.schema";
-import { NextResponse } from "next/server";
+import { cookies } from 'next/headers';
 
-export const POST = async (request: Request) => {
-  const body = await request.json();
+export async function POST(req: Request) {
+  const body = await req.json();
+  console.log(process.env.API_URL)
 
-  const loginParse = LoginSchema.safeParse(body);
+  const res = await fetch(`${process.env.API_URL}/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
 
-  if (!loginParse.success) {
-    const errors = loginParse.error.flatten().fieldErrors;
-    return NextResponse.json({ error: errors }, { status: 400 });
+  const data = await res.json();
+
+  if (!res.ok) {
+    return new Response(JSON.stringify({ message: data.message }), {
+      status: res.status,
+    });
   }
 
-  try {
-    const res = await fetch(`${process.env.API_URL}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: 'include',
-      body: JSON.stringify(loginParse.data),
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      return NextResponse.json({ error: data.message }, { status: res.status });
-    }
-    const response = NextResponse.json({ user: data.user });
+  // 🔐 Setea la cookie desde el servidor
+ (await cookies()).set('TUDELU_TOKEN', data.token, {
+    httpOnly: true,
+    path: '/',
+    secure: true,
+    sameSite: 'lax',
+    maxAge: 60 * 60 * 24 * 7, // 7 días
+  })
 
-    response.cookies.set("TUDELU_TOKEN", data.token, {
-      httpOnly: true,
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7, // 7 días
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-    });
-
-    return response;
-  } catch (error) {
-    return NextResponse.json({ error: "Login failed" }, { status: 500 });
-  }
+  return Response.json({ success: true });
 }

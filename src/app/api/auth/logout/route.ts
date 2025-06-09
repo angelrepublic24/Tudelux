@@ -1,13 +1,12 @@
-// app/api/auth/logout/route.ts
-import { NextResponse } from "next/server";
+// app/auth/logout/route.ts
+import { cookies } from 'next/headers';
 
 export async function POST() {
-  const response = NextResponse.json({ message: "Logged out" });
+  // 🔥 Elimina la cookie
+  (await cookies()).delete('TUDELU_TOKEN');
 
-  response.cookies.set("TUDELU_TOKEN", "", {
-    maxAge: 0,
-    path: "/",
+  return new Response(JSON.stringify({ success: true }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
   });
-
-  return response;
 }
