@@ -49,7 +49,9 @@ export const Banner = () => {
                 loop
                 autoPlay
                 className="w-full h-full object-cover absolute inset-0 opacity-0 transition-opacity duration-1000"
-                ref={(el) => (videoRefs.current[i] = el!)}
+                ref={(el) => {
+                  if (el) videoRefs.current[i] = el;
+                }}
               >
                 <source src={`${src}#t=0.5`} type="video/mp4" />
               </video>

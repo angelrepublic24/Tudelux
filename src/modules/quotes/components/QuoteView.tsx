@@ -43,30 +43,37 @@ export const QuoteView = ({
               <th className="px-3 py-5 text-[#ff5100] text-lg text-right">Price</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {materials.map((item, i) => (
+         <tbody className="bg-white divide-y divide-gray-200">
+          {materials.map((item, i) => {
+            const first = i === 0 ? (item as any) : null;
+
+            return (
               <tr key={i} className="hover:bg-gray-50">
                 <td className="px-3 py-5">
-<<<<<<< HEAD
-                  <h4>{materials.product} - {materials.product_type}</h4>
-                  <div className="flex flex-col">
-                    <small>Back Width : {materials.dimensions.backWidth} -  Front Width {materials.dimensions.frontWidth}</small>
-                  <small>Left Projection : {materials.dimensions.leftProjection} -  Right Projection {materials.dimensions.rightProjection}</small>
-                  <small>Middle Projection : {materials.dimensions.middleProjection} -  Right Width {materials.dimensions.middleWidth}</small>
-                  </div>
+                  {/* Solo mostrar datos generales (como product, dimensions) una vez en la primera fila */}
+                  {first && (
+                    <>
+                      <h4>{first.product} - {first.product_type}</h4>
+                      <div className="flex flex-col mb-2">
+                        <small>Back Width: {first.dimensions?.backWidth} - Front Width: {first.dimensions?.frontWidth}</small>
+                        <small>Left Projection: {first.dimensions?.leftProjection} - Right Projection: {first.dimensions?.rightProjection}</small>
+                        <small>Middle Projection: {first.dimensions?.middleProjection} - Middle Width: {first.dimensions?.middleWidth}</small>
+                      </div>
+                    </>
+                  )}
 
-=======
                   <h4>{item.material} - {item.color}</h4>
                   <p className="text-xs text-gray-500">Size: {item.size}"</p>
->>>>>>> 95f06cab1352878465888230c2bb52f1b2a58358
                 </td>
                 <td className="px-3 py-5">{item.qty}</td>
                 <td className="px-3 py-5 text-right font-semibold">
                   ${item.price.toFixed(2)}
                 </td>
               </tr>
-            ))}
-          </tbody>
+            );
+          })}
+        </tbody>
+
         </table>
       </div>
       <div className="flex justify-end max-w-5xl mx-auto">

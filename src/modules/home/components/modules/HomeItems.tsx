@@ -72,21 +72,22 @@ export default function HomeItem() {
       on: {
         slideChangeTransitionStart: function () {
           const videos = document.querySelectorAll('.swiper-slide video');
-          videos.forEach((video) => {
-            video.pause();
-            video.currentTime = 0;
-          });
+            videos.forEach((video) => {
+              const v = video as HTMLVideoElement;
+              v.pause();
+              v.currentTime = 0;
+            });
         },
         slideChangeTransitionEnd: function () {
-          const activeVideo = document.querySelector('.swiper-slide-active video');
+          const activeVideo = document.querySelector('.swiper-slide-active video') as HTMLVideoElement | null;
           if (activeVideo) activeVideo.play().catch(() => {});
         },
       },
     });
 
-    const firstVideo = document.querySelector('.swiper-slide-active video');
-    if (firstVideo) firstVideo.play().catch(() => {});
-  }, []);
+        const firstVideo = document.querySelector('.swiper-slide-active video')  as HTMLVideoElement | null;
+        if (firstVideo) firstVideo.play().catch(() => {});
+      }, []);
 
   return (
     <section className="bg-gray-100 py-20">
