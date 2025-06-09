@@ -1,6 +1,6 @@
 'use client';
 
-import { GetSeller } from '@/modules/seller/components/GetSellers';
+import { GetSeller } from '@/modules/sales/components/GetSellers';
 import { SearchInput } from '@/shared/components/ui/searchInput/SearchInput';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';

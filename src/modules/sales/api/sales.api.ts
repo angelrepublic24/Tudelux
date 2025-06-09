@@ -11,7 +11,7 @@ export async function findSellers(limit = 10, page = 1) {
 
   try {
     const { data } = await Api.get(
-      `/auth/sellers?limit=${parsedLimit}&page=${parsedPage}`,
+      `/auth/sales?limit=${parsedLimit}&page=${parsedPage}`,
       {
         withCredentials: true,
       }

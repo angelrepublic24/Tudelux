@@ -11,8 +11,8 @@ export default async function Page() {
     redirect("/admin");
   }
 
-  if (user?.roles?.includes("seller")) {
-    redirect("/seller");
+  if (user?.roles?.includes("sales")) {
+    redirect("/sales");
   }
 
   if (user?.roles?.includes("distributor")) {

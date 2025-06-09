@@ -5,7 +5,7 @@ import Pagination from '@/shared/utils/Pagination';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
-import { findSellers } from '../api/seller.api';
+import { findSellers } from '../api/sales.api';
 import {
   Table,
   TableBody,
@@ -35,7 +35,7 @@ export const GetSeller = ({ limit, page, setPage }: Props) => {
     placeholderData: (prev) => prev,
   });
 
-  const sellers = data?.data || [];
+  const sales = data?.data || [];
   const totalPages = data?.totalPages || 1;
   const currentPage = data?.currentPage || page;
 
@@ -43,17 +43,17 @@ export const GetSeller = ({ limit, page, setPage }: Props) => {
     <div className="space-y-6 max-w-6cl">
       {/* Loading / Error / Empty States */}
       {isLoading && (
-        <div className="text-center text-gray-500">Loading sellers...</div>
+        <div className="text-center text-gray-500">Loading sales...</div>
       )}
       {isError && (
         <div className="text-center text-red-500">{(error as Error).message}</div>
       )}
-      {!isLoading && !sellers.length && (
-        <div className="text-center text-gray-400 italic">No sellers found.</div>
+      {!isLoading && !sales.length && (
+        <div className="text-center text-gray-400 italic">No sales found.</div>
       )}
 
       {/* Table */}
-      {!isLoading && sellers.length > 0 && (
+      {!isLoading && sales.length > 0 && (
         <>
           <div className="border rounded-lg overflow-hidden">
             <Table>
@@ -67,20 +67,20 @@ export const GetSeller = ({ limit, page, setPage }: Props) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {sellers.map((seller) => (
-                  <TableRow key={seller.id}>
-                    <TableCell className="font-medium">{seller.name}</TableCell>
-                    <TableCell>{seller.email}</TableCell>
-                    <TableCell>{seller.company?.name || '—'}</TableCell>
+                {sales.map((sale) => (
+                  <TableRow key={sale.id}>
+                    <TableCell className="font-medium">{sale.name}</TableCell>
+                    <TableCell>{sale.email}</TableCell>
+                    <TableCell>{sale.company?.name || '—'}</TableCell>
                     <TableCell>
                       <span
                         className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${
-                          seller.status
+                          sale.status
                             ? 'bg-green-100 text-green-700'
                             : 'bg-red-100 text-red-600'
                         }`}
                       >
-                        {seller.status ? (
+                        {sale.status ? (
                           <>
                             <FaCheckCircle size={12} /> Active
                           </>
@@ -92,7 +92,7 @@ export const GetSeller = ({ limit, page, setPage }: Props) => {
                       </span>
                     </TableCell>
                     <TableCell className="text-gray-500 text-xs">
-                      {new Date(seller.createdAt).toLocaleDateString()}
+                      {new Date(sale.createdAt).toLocaleDateString()}
                     </TableCell>
                   </TableRow>
                 ))}

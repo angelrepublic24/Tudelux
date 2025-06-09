@@ -69,7 +69,7 @@ export async function profile() {
 
 export async function logout() {
   try {
-    const res = await fetch('/auth/logout', {
+    const res = await fetch('/api/auth/logout', {
       method: 'POST',
     });
 

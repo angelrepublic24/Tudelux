@@ -1,6 +1,5 @@
 "use client";
 import { CostSummary, MaterialQuote } from "@/shared/types";
-import Image from "next/image";
 import { QuoteHeader } from "./QuoteHeader";
 
 interface Props {

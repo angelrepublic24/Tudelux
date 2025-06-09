@@ -15,11 +15,11 @@ export function ShopTopMenu() {
 
         {/* Navigation */}
         <nav className="hidden xl:flex space-x-8 items-center">
-          <span className="text-white text-lg font-medium">Our Divisions: </span>
+          <span className="text-white text-base font-medium leading-[20px]">Our Divisions: </span>
 
           {/* Canopies */}
           <div className="relative group">
-            <a href="#" className="text-white text-base font-medium transition flex items-center">Canopies <ChevronDown size={20}/></a>
+            <a href="#" className="text-white text-base font-medium transition flex items-center leading-[20px]">Canopies <ChevronDown size={20}/></a>
             <div className="absolute top-10 z-50 left-1/2 transform -translate-x-1/2 w-[340px] bg-white rounded-xl shadow-xl p-6 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition duration-300">
               <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white rotate-45 -z-10"></div>
               <p className="text-base text-[#ff5100] font-semibold mb-2">Tudelu Canopies</p>
@@ -34,7 +34,7 @@ export function ShopTopMenu() {
 
           {/* Partition Walls */}
           <div className="relative group">
-            <a href="#" className="text-white text-base font-medium transition flex items-center">Partition Walls  <ChevronDown size={20}/></a>
+            <a href="#" className="text-white text-base font-medium transition flex items-center leading-[20px]">Partition Walls  <ChevronDown size={20}/></a>
             <div className="absolute z-50 top-10 left-1/2 transform -translate-x-1/2 w-[340px] bg-white rounded-xl shadow-xl p-6 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition duration-300">
               <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white rotate-45 -z-10"></div>
               <p className="text-base text-[#ff5100] font-semibold mb-2">Tudelu Partitions</p>
@@ -49,7 +49,7 @@ export function ShopTopMenu() {
 
           {/* Pergolas */}
           <div className="relative group">
-            <a href="#" className="text-white text-base font-medium transition flex items-center">Pergolas <ChevronDown size={20} /></a>
+            <a href="#" className="text-white text-base font-medium transition flex items-center leading-[20px]">Pergolas <ChevronDown size={20} /></a>
             <div className="absolute top-10 z-50 left-1/2 transform -translate-x-1/2 w-[340px] bg-white rounded-xl shadow-xl p-6 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition duration-300">
               <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white rotate-45 -z-10"></div>
               <p className="text-sm text-[#ff5100] font-semibold mb-2">Tudelu Pergolas</p>
@@ -63,10 +63,10 @@ export function ShopTopMenu() {
           </div>
 
           <div className="w-[2px] h-8 bg-black"></div>
-          <a href="/about" className="text-white text-base font-medium transition">About</a>
-          <a href="/resources" className="text-white text-base font-medium transition">Resources</a>
-          <a href="/installations" className="text-white text-base font-medium transition">Installations</a>
-          <a href="/contact" className="text-white text-base font-medium transition">Contact</a>
+          <a href="/about" className="text-white text-base font-medium transition leading-[20px]">About</a>
+          <a href="/resources" className="text-white text-base font-medium transition leading-[20px]">Resources</a>
+          {/* <a href="/installations" className="text-white text-base font-medium transition">Installations</a> */}
+          <a href="/contact" className="text-white text-base font-medium transition leading-[20px]">Contact</a>
         </nav>
 
         {/* Start Design Button with Modal */}

@@ -1,4 +1,3 @@
-// components/quote/QuoteHeader.tsx
 import Image from "next/image";
 
 interface QuoteHeaderProps {

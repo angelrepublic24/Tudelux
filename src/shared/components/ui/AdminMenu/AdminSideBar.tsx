@@ -22,7 +22,7 @@ export const AdminSideBar = () => {
         <SidebarLink href="/admin/materials" icon={<Component  size={20} />} label="Materials" />
         <SidebarLink href="/admin/quotes" icon={<MdOutlineRequestQuote size={20} />} label="Quotes" />
         <SidebarLink href="/admin/installations" icon={<MdHomeRepairService size={20} />} label="Installations" />
-        <SidebarLink href="/admin/sellers" icon={<AiOutlineShop size={20} />} label="Sales" />
+        <SidebarLink href="/admin/sales" icon={<AiOutlineShop size={20} />} label="Sales" />
         <SidebarLink href="/admin/distributors" icon={<FaWarehouse size={20} />} label="Distributors" />
         <SidebarLink href="/admin/customers" icon={<HiOutlineUsers size={20} />} label="Customers" />
         <SidebarLink href="/admin/orders" icon={<IoTicketOutline size={20} />} label="Orders" />
