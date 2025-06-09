@@ -1,5 +1,3 @@
-import { LoginSchema, RegisterSchema } from "@/schemas";
-import { z } from "zod";
 
 export type BaseProduct = {
   name: string;

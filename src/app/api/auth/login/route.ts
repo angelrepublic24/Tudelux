@@ -1,4 +1,4 @@
-import { LoginSchema } from "@/schemas";
+import { LoginSchema } from "@/modules/auth/schemas/auth.schema";
 import { NextResponse } from "next/server";
 
 export const POST = async (request: Request) => {

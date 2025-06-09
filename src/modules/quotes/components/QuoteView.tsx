@@ -44,20 +44,18 @@ export const QuoteView = ({
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {/* {materials.map((item, i) => ( */}
-              <tr  className="hover:bg-gray-50">
+            {materials.map((item, i) => (
+              <tr key={i} className="hover:bg-gray-50">
                 <td className="px-3 py-5">
-                  <h4>{materials.product} - {materials.product_type}</h4>
-
+                  <h4>{item.material} - {item.color}</h4>
+                  <p className="text-xs text-gray-500">Size: {item.size}"</p>
                 </td>
-                {/* <td className="px-3 py-5">{item.color}</td>
-                <td className="px-3 py-5">{item.size} in</td> */}
-                <td className="px-3 py-5">1</td>
+                <td className="px-3 py-5">{item.qty}</td>
                 <td className="px-3 py-5 text-right font-semibold">
-                  ${Number(materials.subtotal).toFixed(2)}
+                  ${item.price.toFixed(2)}
                 </td>
               </tr>
-            {/* ))} */}
+            ))}
           </tbody>
         </table>
       </div>
