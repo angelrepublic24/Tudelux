@@ -8,7 +8,7 @@ export const useLogin = () => {
   const router = useRouter();
   return useMutation({
     mutationFn: (data: LoginFormType) => login(data),
-    onSuccess: () => router.push("/dashboard"),
+    onSuccess: () => {return window.location.href = "/dashboard"},
     onError: (error: any) => toast.error(error.message),
   });
 };
