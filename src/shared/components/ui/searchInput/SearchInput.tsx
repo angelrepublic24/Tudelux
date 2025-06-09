@@ -1,6 +1,6 @@
 // SearchInput.tsx
 'use client';
-
+import { Input } from '@/components/ui/input';
 import { FaSearch } from 'react-icons/fa';
 
 interface Props {
@@ -15,9 +15,9 @@ export const SearchInput = ({
   placeholder = 'Search...',
 }: Props) => {
   return (
-    <div className="relative w-full md:w-64">
+    <div className="relative w-3/4 ">
       <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-      <input
+      <Input
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}

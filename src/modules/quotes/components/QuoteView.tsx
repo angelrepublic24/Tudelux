@@ -34,7 +34,7 @@ export const QuoteView = ({
       <div className="bg-white w">
         <div className=" overflow-hidden mb-2 max-w-5xl mx-auto p-10">
         <table className="min-w-full text-sm">
-          <thead className="text-white text-left border border-b-gray-200">
+          <thead className="text-white text-left border-b border-b-gray-200">
             <tr>
               <th className="px-3 py-5 text-[#ff5100] text-lg">Product</th>
               {/* <th className="px-3 py-5 text-[#ff5100] text-lg">Color</th>
@@ -48,6 +48,11 @@ export const QuoteView = ({
               <tr  className="hover:bg-gray-50">
                 <td className="px-3 py-5">
                   <h4>{materials.product} - {materials.product_type}</h4>
+                  <div className="flex flex-col">
+                    <small>Back Width : {materials.dimensions.backWidth} -  Front Width {materials.dimensions.frontWidth}</small>
+                  <small>Left Projection : {materials.dimensions.leftProjection} -  Right Projection {materials.dimensions.rightProjection}</small>
+                  <small>Middle Projection : {materials.dimensions.middleProjection} -  Right Width {materials.dimensions.middleWidth}</small>
+                  </div>
 
                 </td>
                 {/* <td className="px-3 py-5">{item.color}</td>
@@ -63,12 +68,12 @@ export const QuoteView = ({
       </div>
       <div className="flex justify-end max-w-5xl mx-auto">
         <div className="w-full sm:w-1/2 md:w-1/3text-sm space-y-2">
-          <SummaryLine label="Material Cost" value={summary.materialCost} />
+          {/* <SummaryLine label="Material Cost" value={summary.materialCost} />
           <SummaryLine label="Cut Cost" value={summary.cutsCost} />
           <SummaryLine label="Subtotal" value={summary.combinedCost} />
           <SummaryLine label="15% Markup" value={summary.markup} />
           <SummaryLine label="Subtotal + Markup" value={summary.pricePlus15Markup} />
-          <SummaryLine label="Final Markup" value={summary.finalMarkup} />
+          <SummaryLine label="Final Markup" value={summary.finalMarkup} /> */}
           <SummaryLine
             label="Total"
             value={summary.finalTotal}

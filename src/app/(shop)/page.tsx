@@ -1,13 +1,24 @@
+import { Banner } from '@/modules/home/components/Banner'
+import ArchitectsPortalSection from '@/modules/home/components/modules/ArchitecturalPortal'
+import HomeItem from '@/modules/home/components/modules/HomeItems'
+import RecentProjects from '@/modules/home/components/modules/RecentProjects'
 import Link from 'next/link'
 import React from 'react'
 
 export default function HomePage () {
   return (
-    <div className='flex justify-center items-center h-screen space-x-8'>
+    <>
+      <Banner />
+      <HomeItem/>
+      <ArchitectsPortalSection />
+      <RecentProjects />
+    </>
+    
+    // <div className='flex justify-center items-center h-screen space-x-8'>
         
-        <Link href={'/request-quote'} className='font-semibold'>Request Quote</Link>
-        <Link href={'/canopy'} className='font-semibold'>Custom Canopy</Link>
-        <Link href={'/custom-shape'} className='font-semibold'>Custom Shape</Link>
-    </div>
+    //     <Link href={'/request-quote'} className='font-semibold'>Request Quote</Link>
+    //     <Link href={'/canopy'} className='font-semibold'>Custom Canopy</Link>
+    //     <Link href={'/custom-shape'} className='font-semibold'>Custom Shape</Link>
+    // </div>
   )
 }

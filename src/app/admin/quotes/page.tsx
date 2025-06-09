@@ -10,10 +10,11 @@ export default function QuotesPage() {
   const [search, setSearch] = useState(""); // ✅ agregar el estado search
 
   return (
-    <section className="p-6 rounded-xl">
-      <h1 className="text-xl font-bold text-[#ff5100] mb-4">Quotes</h1>
+    <section className="p-6 rounded-xl max-w-6xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Manage Quotes</h1>
 
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between">
         {/* Search Input */}
         <SearchInput
           value={search}

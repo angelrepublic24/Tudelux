@@ -9,6 +9,7 @@ import { HiOutlineUsers } from 'react-icons/hi';
 import { AiOutlineProduct, AiOutlineShop } from 'react-icons/ai';
 import { FaWarehouse } from 'react-icons/fa6';
 import { MdOutlineRequestQuote, MdHomeRepairService, MdSupportAgent } from 'react-icons/md';
+import { Component } from 'lucide-react';
 
 
 export const AdminSideBar = () => {
@@ -18,9 +19,10 @@ export const AdminSideBar = () => {
 
       <div className="flex flex-col gap-5">
         <SidebarLink href="/admin/products" icon={<AiOutlineProduct  size={20} />} label="Products" />
+        <SidebarLink href="/admin/materials" icon={<Component  size={20} />} label="Materials" />
         <SidebarLink href="/admin/quotes" icon={<MdOutlineRequestQuote size={20} />} label="Quotes" />
         <SidebarLink href="/admin/installations" icon={<MdHomeRepairService size={20} />} label="Installations" />
-        <SidebarLink href="/admin/sellers" icon={<AiOutlineShop size={20} />} label="Sellers" />
+        <SidebarLink href="/admin/sellers" icon={<AiOutlineShop size={20} />} label="Sales" />
         <SidebarLink href="/admin/distributors" icon={<FaWarehouse size={20} />} label="Distributors" />
         <SidebarLink href="/admin/customers" icon={<HiOutlineUsers size={20} />} label="Customers" />
         <SidebarLink href="/admin/orders" icon={<IoTicketOutline size={20} />} label="Orders" />

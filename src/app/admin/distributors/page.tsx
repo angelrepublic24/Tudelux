@@ -17,8 +17,8 @@ export default function DistributorsPage() {
   }, [debouncedSearch]);
 
   return (
-    <section className="p-6">
-      <h1 className="text-xl font-bold text-[#ff5100] mb-4">Distributors</h1>
+    <section className="p-6 max-w-6xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Distributors</h1>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         {/* Search Input */}
         <SearchInput
