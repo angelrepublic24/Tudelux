@@ -44,9 +44,10 @@ export const QuoteView = ({
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {/* {materials.map((item, i) => ( */}
-              <tr  className="hover:bg-gray-50">
+            {materials.map((item, i) => (
+              <tr key={i} className="hover:bg-gray-50">
                 <td className="px-3 py-5">
+<<<<<<< HEAD
                   <h4>{materials.product} - {materials.product_type}</h4>
                   <div className="flex flex-col">
                     <small>Back Width : {materials.dimensions.backWidth} -  Front Width {materials.dimensions.frontWidth}</small>
@@ -54,15 +55,17 @@ export const QuoteView = ({
                   <small>Middle Projection : {materials.dimensions.middleProjection} -  Right Width {materials.dimensions.middleWidth}</small>
                   </div>
 
+=======
+                  <h4>{item.material} - {item.color}</h4>
+                  <p className="text-xs text-gray-500">Size: {item.size}"</p>
+>>>>>>> 95f06cab1352878465888230c2bb52f1b2a58358
                 </td>
-                {/* <td className="px-3 py-5">{item.color}</td>
-                <td className="px-3 py-5">{item.size} in</td> */}
-                <td className="px-3 py-5">1</td>
+                <td className="px-3 py-5">{item.qty}</td>
                 <td className="px-3 py-5 text-right font-semibold">
-                  ${Number(materials.subtotal).toFixed(2)}
+                  ${item.price.toFixed(2)}
                 </td>
               </tr>
-            {/* ))} */}
+            ))}
           </tbody>
         </table>
       </div>

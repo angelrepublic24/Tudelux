@@ -1,4 +1,5 @@
 
+import { Footer } from "@/shared/components/footer/Footer";
 import { CartSideBar } from "@/shared/components/ui/cartSideBar/CartSideBar";
 import { ShopTopMenu } from "@/shared/components/ui/shop-topMenu/shopTopMenu";
 import { Sidebar } from "@/shared/components/ui/sidebar/sidebar";
@@ -18,6 +19,8 @@ export default function ShopLayout({
 
       <div className="">{children}</div>
       <ToastNotification />
+      <Footer/>
     </main>
+    
   );
 }
