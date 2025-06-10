@@ -12,7 +12,8 @@ export function groupProfilesByName(items: any[]): GroupedProfile[] {
       pricePerInch: item.values[4],
       unitLength: item.values[5],
       roofProjection: parseFloat(item.values[6]),
-      cutPrice: item.values[7]
+      cutPrice: item.values[7],
+      addedProjection: item.values[8]
     };
 
     if (!groups[name]) {

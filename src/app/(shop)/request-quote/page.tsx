@@ -30,6 +30,7 @@ import {
 // import { StepWallAddons } from "@/components/Product/Steps/StepWallAddons";
 import { RenderHeader } from "@/shared/components/Render/RenderHeader";
 import { Title } from "@/shared/components/ui/title/Title";
+import { getLouvers } from "@/api/HubspotAPi";
 
 export default function RequestQuotePage() {
   const [selectedProduct, setSelectedProduct] = useState<
@@ -101,7 +102,7 @@ export default function RequestQuotePage() {
       finalMarkup,
       finalTotal,
     });
-  }, [materialsData]);
+  }, [materialsData]);  
 
   return (
     <div className="mx-auto container">
@@ -326,11 +327,17 @@ your custom Tudelü wall."
             <div ref={StepSupportRef}>
               {activeStep >= 12 && (
                 <StepSupport
+                setMaterialsData={setMaterialsData}
                   setRenderState={setRenderState}
                   setIsRenderOpen={setIsRenderOpen}
                   onContinue={() => {
-                    setActiveStep(13);
-                    scrollToRef(StepLightingRef);
+                    if (renderState.extraF === "Louvers") {
+                      setActiveStep(14);
+                      scrollToRef(StepColorsRef);
+                    } else {
+                      setActiveStep(13);
+                      scrollToRef(StepLightingRef);
+                    }
                   }}
                 />
               )}

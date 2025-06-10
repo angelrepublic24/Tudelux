@@ -59,9 +59,18 @@ export type RenderState = {
   frontDesign?: string;
   fontTypeDesign?: string;
   profile?: string;
+  profileAddedProjection?: number;
   extraF?: string;
   directions?: string;
   details?: string;
+  selectedLouverVariant?: {
+    id: string;
+    color: string;
+    pricePerInch: number;
+    unitLength: string;
+    roofProjection: number;
+    cutPrice: number;
+  };
   spacingLouver?: number;
   support?: string;
   lighting?: string;
@@ -99,6 +108,7 @@ export type ProfileVariant = {
   unitLength: number;
   roofProjection: number;
   cutPrice: number;
+  addedProjection?: number
 };
 
 export type GroupedProfile = {

@@ -70,3 +70,27 @@ export async function getWallAdOns() {
   console.log(res);
   return res.json();
 }
+
+export async function getLouvers() {
+    try {
+        const {data} = await axios.get("https://api.hubapi.com/hubdb/api/v2/tables/121155394/rows?portalId=22465736");
+        const louvers = data.objects;
+        return louvers  
+    } catch (error) {
+        if(isAxiosError(error)){
+            throw new Error(error.response?.data)
+        }
+    }
+}
+
+export async function getSupports() {
+    try {
+        const {data} = await axios.get("https://api.hubapi.com/hubdb/api/v2/tables/121171236/rows?portalId=22465736");
+        const supports = data.objects;
+        return supports  
+    } catch (error) {
+        if(isAxiosError(error)){
+            throw new Error(error.response?.data)
+        }
+    }
+}

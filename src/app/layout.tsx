@@ -3,6 +3,7 @@ import { Alexandria } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./provider";
 import {Toaster} from "sonner"
+import ToastNotification from "@/shared/components/ui/toastNotification/ToastNotification";
 
 
 
@@ -26,10 +27,10 @@ export default function RootLayout({
       <body
         className={`${alexandria.variable} antialiased`}
       >
-        <Toaster />
         <Providers>
           {children}
         </Providers>
+        <ToastNotification/>
       </body>
     </html>
   );

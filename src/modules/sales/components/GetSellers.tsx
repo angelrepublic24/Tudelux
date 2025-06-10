@@ -5,7 +5,6 @@ import Pagination from '@/shared/utils/Pagination';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
-import { findSellers } from '../api/sales.api';
 import {
   Table,
   TableBody,
@@ -14,6 +13,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
+import { findSales } from '../api/sales.api';
 
 type Props = {
   limit: number;
@@ -30,7 +30,7 @@ type SellerResponse = {
 export const GetSeller = ({ limit, page, setPage }: Props) => {
   const { data, isLoading, isError, error } = useQuery<SellerResponse>({
     queryKey: ['sellers', limit, page],
-    queryFn: () => findSellers(limit, page),
+    queryFn: () => findSales(limit, page),
     staleTime: 1000 * 60 * 5,
     placeholderData: (prev) => prev,
   });

@@ -1,10 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import { getQuoteById, getQuotes } from "../api/QuoteApi";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { assignQuote, getQuoteById, getQuotes } from "../api/QuoteApi";
+import { toast } from "react-toastify";
 
-export const useGetQuote = (limit: number, page: number, search: string) => {
+export const useGetQuote = (limit: number, page: number, search: string, status?: string) => {
   return useQuery({
-    queryKey: ["quotes", limit, page, search],
-    queryFn: () => getQuotes(limit, page, search),
+    queryKey: ['quote', limit, page, search, status],
+    queryFn: () => getQuotes(limit, page, search, status),
   });
 };
 export const useGetQuoteById = (id: number) => {
@@ -12,5 +13,22 @@ export const useGetQuoteById = (id: number) => {
     queryKey: ["quote", id],
     queryFn: () => getQuoteById(id),
     enabled: !!id,
+  });
+};
+
+export const useAssignQuote = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ quoteId, userId }: { quoteId: number; userId: number }) =>
+      assignQuote(quoteId, userId),
+    onSuccess: (res) => {
+      queryClient.invalidateQueries({ queryKey: ['quote'] });
+      toast.success(res.message)
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error(error.message)
+    }
   });
 };

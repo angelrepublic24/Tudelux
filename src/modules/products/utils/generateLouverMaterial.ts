@@ -22,45 +22,53 @@ export function getLengthForLouvers(renderState: RenderState): number {
 }
 
 export function generateLouversMaterial(renderState: RenderState): MaterialItemTable | null {
-  const { spacingLouver, details, directions } = renderState;
+  const {
+    spacingLouver,
+    details,
+    directions,
+    profileAddedProjection,
+    selectedLouverVariant,
+  } = renderState;
 
-  console.log("🔎 Validating inputs", { spacingLouver, details, directions });
-
-  if (spacingLouver === undefined || spacingLouver === null || isNaN(spacingLouver) || !details || !directions) {
+  if (
+    spacingLouver === undefined || isNaN(spacingLouver) ||
+    !details || !directions || !selectedLouverVariant ||
+    profileAddedProjection === undefined || isNaN(profileAddedProjection)
+  ) {
     return null;
   }
 
-  const totalLength = getLengthForLouvers(renderState);
+  let totalLength = getLengthForLouvers(renderState);
   if (!totalLength || totalLength === 0) return null;
+
+  // 🟠 Fórmulas base
+  const usableInches = totalLength - 2 * profileAddedProjection;
+  const quantity = Math.ceil(usableInches / spacingLouver);
+  const pricePerInch = selectedLouverVariant.pricePerInch;
+  const total = usableInches * quantity * pricePerInch;
+
+  // 🟡 Cálculo de cortes
+  const cuts = selectedLouverVariant.cutPrice * 2 * quantity;
+  const cutCost = cuts * selectedLouverVariant.cutPrice;
 
   const louverSizeMatch = details.match(/\d+x\d+/);
   if (!louverSizeMatch) return null;
 
-  const [widthStr, heightStr] = louverSizeMatch[0].split("x");
+  const [_, heightStr] = louverSizeMatch[0].split("x");
   const louverWidth = Number(heightStr);
   if (isNaN(louverWidth)) return null;
 
-  const unitSpacing = spacingLouver + louverWidth;
-  const quantity = Math.floor(totalLength / unitSpacing);
-  const pricePerInch = 0.35;
-  const total = quantity * louverWidth * pricePerInch;
-
-  console.log("🧩 Louver Details:", {
-    details,
-    spacingLouver,
-    directions,
-    louverWidth,
-    quantity,
-    totalLength,
-  });
-
   return {
-    name: `${details} Louvers`,
-    color: "Standard",
-    inches: louverWidth,
+    name: `Louver ${details}`,
+    color: selectedLouverVariant.color,
+    inches: Math.round(usableInches),
     quantity,
     pricePerInch,
     total: parseFloat(total.toFixed(2)),
+    cutPrice: parseFloat(cutCost.toFixed(2)), // ✅ lo agregas al resumen de cortes
     sourceStep: "Louvers",
   };
 }
+
+
+

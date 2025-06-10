@@ -180,6 +180,7 @@ export const CanopyFlow = ({
       <div ref={supportRef}>
         {activeStep >= 12 && (
           <StepSupport
+          setMaterialsData={setMaterialsData}
             setRenderState={setRenderState}
             setIsRenderOpen={setIsRenderOpen}
             onContinue={() => {

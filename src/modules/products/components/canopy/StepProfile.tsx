@@ -47,7 +47,8 @@ export const StepProfile = ({
                   ...renderState,
                   profile: variant.name,
                   color: variant.color,
-                  cutPrice: variant.cutPrice
+                  cutPrice: variant.cutPrice,
+                  profileAddedProjection: variant.addedProjection,
                 };
 
                 setRenderState(updatedState);

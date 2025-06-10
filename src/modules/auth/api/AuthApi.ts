@@ -50,8 +50,6 @@ export async function login(formData: LoginFormType) {
   }
 }
 
-
-
 export async function profile() {
   try {
     const { data } = await Api.get("/auth/profile", {
