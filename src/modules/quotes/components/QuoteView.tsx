@@ -2,9 +2,10 @@
 import { CostSummary, MaterialQuote } from "@/shared/types";
 import Image from "next/image";
 import { QuoteHeader } from "./QuoteHeader";
+import { CreateQuotePayload } from "../schema/quote.schema";
 
 interface Props {
-  materials: MaterialQuote[];
+  materials: CreateQuotePayload;
   summary: CostSummary;
   customerInfo: {
     name: string;
@@ -54,9 +55,9 @@ export const QuoteView = ({
                   </div>
                 </td>
                 {/* <td className="px-3 py-5">{item.qty}</td> */}
-                <td className="px-3 py-5 text-right font-semibold">
+                {/* <td className="px-3 py-5 text-right font-semibold">
                   ${materials.price}
-                </td>
+                </td> */}
               </tr>
           </tbody>
         </table>

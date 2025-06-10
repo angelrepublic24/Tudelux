@@ -24,7 +24,7 @@ import {
   StepSpaceBetweenLouvers,
   StepStandardColorOptions,
   StepSupport,
-  StepWallColor
+  StepWallColor,
 } from "@/modules/products/components";
 // import { StepWallColor } from "@/components/Product/Steps/StepWallColor";
 // import { StepWallAddons } from "@/components/Product/Steps/StepWallAddons";
@@ -279,44 +279,50 @@ your custom Tudelü wall."
               )}
             </div>
 
-            <div ref={StepLouversDirectionsRef}>
-              {activeStep >= 9 && (
-                <StepLouversDirections
-                  setRenderState={setRenderState}
-                  setIsRenderOpen={setIsRenderOpen}
-                  onContinue={() => {
-                    setActiveStep(10);
-                    scrollToRef(StepLouverDetailsRef);
-                  }}
-                />
-              )}
-            </div>
+            {renderState.extraF === "Louvers" && (
+              <>
+                <div ref={StepLouversDirectionsRef}>
+                  {activeStep >= 9 && (
+                    <StepLouversDirections
+                      setRenderState={setRenderState}
+                      setIsRenderOpen={setIsRenderOpen}
+                      onContinue={() => {
+                        setActiveStep(10);
+                        scrollToRef(StepLouverDetailsRef);
+                      }}
+                    />
+                  )}
+                </div>
 
-            <div ref={StepLouverDetailsRef}>
-              {activeStep >= 10 && (
-                <StepLouverDetails
-                  setRenderState={setRenderState}
-                  setIsRenderOpen={setIsRenderOpen}
-                  onContinue={() => {
-                    setActiveStep(11);
-                    scrollToRef(StepSpaceBetweenLouversRef);
-                  }}
-                />
-              )}
-            </div>
+                <div ref={StepLouverDetailsRef}>
+                  {activeStep >= 10 && (
+                    <StepLouverDetails
+                      setRenderState={setRenderState}
+                      setIsRenderOpen={setIsRenderOpen}
+                      onContinue={() => {
+                        setActiveStep(11);
+                        scrollToRef(StepSpaceBetweenLouversRef);
+                      }}
+                    />
+                  )}
+                </div>
 
-            <div ref={StepSpaceBetweenLouversRef}>
-              {activeStep >= 11 && (
-                <StepSpaceBetweenLouvers
-                  setRenderState={setRenderState}
-                  setIsRenderOpen={setIsRenderOpen}
-                  onContinue={() => {
-                    setActiveStep(12);
-                    scrollToRef(StepSupportRef);
-                  }}
-                />
-              )}
-            </div>
+                <div ref={StepSpaceBetweenLouversRef}>
+                  {activeStep >= 11 && (
+                    <StepSpaceBetweenLouvers
+                      renderState={renderState}
+                      setMaterialsData={setMaterialsData}
+                      setRenderState={setRenderState}
+                      setIsRenderOpen={setIsRenderOpen}
+                      onContinue={() => {
+                        setActiveStep(12);
+                        scrollToRef(StepSupportRef);
+                      }}
+                    />
+                  )}
+                </div>
+              </>
+            )}
             <div ref={StepSupportRef}>
               {activeStep >= 12 && (
                 <StepSupport
@@ -329,18 +335,20 @@ your custom Tudelü wall."
                 />
               )}
             </div>
-            <div ref={StepLightingRef}>
-              {activeStep >= 13 && (
-                <StepLighting
-                  setRenderState={setRenderState}
-                  setIsRenderOpen={setIsRenderOpen}
-                  onContinue={() => {
-                    setActiveStep(14);
-                    scrollToRef(StepColorsRef);
-                  }}
-                />
-              )}
-            </div>
+            {renderState.extraF === "Skylight" && (
+              <div ref={StepLightingRef}>
+                {activeStep >= 13 && (
+                  <StepLighting
+                    setRenderState={setRenderState}
+                    setIsRenderOpen={setIsRenderOpen}
+                    onContinue={() => {
+                      setActiveStep(14);
+                      scrollToRef(StepColorsRef);
+                    }}
+                  />
+                )}
+              </div>
+            )}
             <div ref={StepColorsRef}>
               {activeStep >= 14 && (
                 <StepColors
