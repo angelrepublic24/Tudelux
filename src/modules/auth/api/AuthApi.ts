@@ -28,57 +28,27 @@ export async function confirmAccount(token: string) {
     }
   }
 }
+
 export async function login(formData: LoginFormType) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+      const res = await fetch('/api/auth/login', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
-      credentials: 'include', // 🔥 Esto permite recibir la cookie TUDELU_TOKEN
     });
+    console.log(res)
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Login failed');
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message);
     }
 
-    return {
-      success: true,
-      user: data.user,
-      message: data.message,
-    };
+    return await res.json(); // puedes devolver { success: true }
   } catch (error) {
-    console.error('Login error:', error);
-    return {
-      success: false,
-      message: error.message || 'Something went wrong',
-    };
+    console.error(error);
+    throw error;
   }
 }
-
-// export async function login(formData: LoginFormType) {
-//   try {
-//       const res = await fetch('/api/auth/login', {
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify(formData),
-//     });
-//     console.log(res)
-
-//     if (!res.ok) {
-//       const error = await res.json();
-//       throw new Error(error.message);
-//     }
-
-//     return await res.json(); // puedes devolver { success: true }
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// }
 
 export async function profile() {
   try {
