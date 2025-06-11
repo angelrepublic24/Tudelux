@@ -4,10 +4,10 @@ import {
   StepAddiotionalFeatures,
   StepChooseShape,
   StepColors,
-  StepComplete,
   StepCustomLocationOptions,
   StepFrontDesign,
   StepFullCustomOptions,
+  StepKindOfProduct,
   StepLighting,
   StepLouverDetails,
   StepLouversDirections,
@@ -17,6 +17,7 @@ import {
   StepStandardColorOptions,
   StepSupport,
 } from "@/modules/products/components";
+import { chooseProduct } from "@/shared/utils/chooseProduct";
 import { CostSummary, MaterialItemTable, RenderState } from "@/shared/types";
 import { useRef } from "react";
 
@@ -31,6 +32,9 @@ type Props = {
   setActiveStep: (step: number) => void;
   costSummary: CostSummary;
   scrollToRef: (ref: React.RefObject<HTMLDivElement>) => void;
+  completeSectionRef: React.RefObject<HTMLDivElement>;
+  selectedProduct: (typeof chooseProduct)[0];
+  kindOfProductStartRef: React.RefObject<HTMLDivElement>;
 };
 
 export const CanopyFlow = ({
@@ -44,7 +48,11 @@ export const CanopyFlow = ({
   setActiveStep,
   costSummary,
   scrollToRef,
+  completeSectionRef,
+  selectedProduct,
+  kindOfProductStartRef
 }: Props) => {
+  const kindOfProductRef = useRef<HTMLDivElement>(null);
   const shapeRef = useRef<HTMLDivElement>(null);
   const sizeRef = useRef<HTMLDivElement>(null);
   const frontRef = useRef<HTMLDivElement>(null);
@@ -57,10 +65,24 @@ export const CanopyFlow = ({
   const lightingRef = useRef<HTMLDivElement>(null);
   const colorsRef = useRef<HTMLDivElement>(null);
   const colorOptionsRef = useRef<HTMLDivElement>(null);
-  const completeRef = useRef<HTMLDivElement>(null);
+  const completeRef = completeSectionRef;
 
   return (
     <>
+      <div ref={kindOfProductStartRef}>
+        {activeStep >= 2 && selectedProduct?.type.length > 0 && (
+          <StepKindOfProduct
+            productType={selectedProduct}
+            setRenderState={setRenderState}
+            setIsRenderOpen={setIsRenderOpen}
+            onContinue={() => {
+              setActiveStep(3);
+              scrollToRef(shapeRef);
+            }}
+          />
+        )}
+      </div>
+
       <div ref={shapeRef}>
         {activeStep >= 3 && (
           <StepChooseShape
@@ -180,12 +202,17 @@ export const CanopyFlow = ({
       <div ref={supportRef}>
         {activeStep >= 12 && (
           <StepSupport
-          setMaterialsData={setMaterialsData}
+            setMaterialsData={setMaterialsData}
             setRenderState={setRenderState}
             setIsRenderOpen={setIsRenderOpen}
             onContinue={() => {
-              setActiveStep(13);
-              scrollToRef(lightingRef);
+              if (renderState.extraF === "Louvers") {
+                setActiveStep(14);
+                scrollToRef(colorsRef);
+              } else {
+                setActiveStep(13);
+                scrollToRef(lightingRef);
+              }
             }}
           />
         )}
@@ -254,20 +281,6 @@ export const CanopyFlow = ({
               }}
             />
           )}
-      </div>
-
-      <div ref={completeRef}>
-        {activeStep >= 16 && (
-          <StepComplete
-            renderState={renderState}
-            setRenderState={setRenderState}
-            materials={materialsData}
-            summary={costSummary}
-            setMaterialsData={setMaterialsData}
-            setActiveStep={setActiveStep}
-            setIsRenderOpen={setIsRenderOpen}
-          />
-        )}
       </div>
     </>
   );

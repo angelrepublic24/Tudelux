@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PartotopmWallFlow = () => {
+const PartitionWallFlow = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const PartotopmWallFlow = () => {
   )
 }
 
-export default PartotopmWallFlow
+export default PartitionWallFlow
