@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { assignQuote, getQuoteById, getQuotes } from "../api/QuoteApi";
+import { assignQuote, getAssignedQuotes, getQuoteById, getQuoteByIdForSales, getQuotes } from "../api/QuoteApi";
 import { toast } from "react-toastify";
 
 export const useGetQuote = (limit: number, page: number, search: string, status?: string) => {
@@ -16,6 +16,13 @@ export const useGetQuoteById = (id: number) => {
   });
 };
 
+export const useGetQuoteByIdForSales = (id: number) => {
+  return useQuery({
+    queryKey: ['quote', id],
+    queryFn: () => getQuoteByIdForSales(id),
+    enabled: !!id,
+  });
+};
 export const useAssignQuote = () => {
   const queryClient = useQueryClient();
 
@@ -30,5 +37,15 @@ export const useAssignQuote = () => {
       console.log(error);
       toast.error(error.message)
     }
+  });
+
+  
+};
+
+export const useGetAssignedQuotes = ( limit: number, page: number, status?: string
+) => {
+  return useQuery({
+    queryKey: ['assigned-quotes', limit, page, status],
+    queryFn: () => getAssignedQuotes(limit, page, status),
   });
 };
