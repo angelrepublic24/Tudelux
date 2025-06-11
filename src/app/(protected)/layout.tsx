@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 
 export default async function ProtectedLayout({ children }: { children: ReactNode }) {
   const { user } = await verifySession(); // Redirige a login si no está autenticado
+  console.log(user);
 
   return (
     <ClientWrapper user={user}>
