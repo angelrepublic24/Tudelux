@@ -16,11 +16,12 @@ export const verifySession = cache(async () => {
   });
 
   const result = UserSchema.safeParse(data);
-  console.log(result);
+  console.log({data});
+  console.log({data});
   if (!result.success) {
     redirect("/auth/login");
   }
-
+console.log({result});
   return {
     user: result.data,
     isAuth: true,
