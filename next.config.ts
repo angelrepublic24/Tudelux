@@ -8,7 +8,15 @@ const nextConfig: NextConfig = {
       'res.cloudinary.com',
       'tudelu.com'
     ]
-  }
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://tudeluserver.onrender.com/api/:path*', 
+      },
+    ];
+  },
   /* config options here */
 };
 
