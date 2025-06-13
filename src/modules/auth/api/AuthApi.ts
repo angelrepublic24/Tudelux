@@ -31,24 +31,33 @@ export async function confirmAccount(token: string) {
 
 export async function login(formData: LoginFormType) {
   try {
-      const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
-    console.log(res)
-
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.message);
-    }
-
-    return await res.json(); // puedes devolver { success: true }
+      const {data} = await Api.post('/auth/login', formData, {withCredentials: true});
+    return data;
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
+
+// export async function login(formData: LoginFormType) {
+//   try {
+//       const res = await fetch('/api/auth/login', {
+//       method: 'POST',
+//       headers: { 'Content-Type': 'application/json' },
+//       body: JSON.stringify(formData),
+//     });
+
+//     if (!res.ok) {
+//       const error = await res.json();
+//       throw new Error(error.message);
+//     }
+
+//     return await res.json(); // puedes devolver { success: true }
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// }
 
 export async function profile() {
   try {
