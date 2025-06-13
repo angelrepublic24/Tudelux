@@ -1,17 +1,19 @@
 import { UserSchema } from '@/modules/auth/schemas/auth.schema';
 import { Api } from '@/shared/global/Global';
-import { headers } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { cache } from 'react';
 
 export const verifySession = cache(async () => {
  try {
-   const cookieHeader = await headers()
-  const cookies = cookieHeader.get('cookie');
+   const cookieStore = await cookies();
+    const token = cookieStore.get('TUDELU_TOKEN')?.value;
+
+    if (!token) redirect("/auth/login");
 
   const { data } = await Api.get("/auth/profile", {
     headers: {
-      Cookie: cookies ?? '', // 👈 pasa la cookie manualmente
+      Cookie: `TUDELU_TOKEN=${token}`,
     },
     withCredentials: true
   });
