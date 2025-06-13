@@ -79,7 +79,6 @@ export async function getAssignedQuotes(
     if (status) params.append("status", status);
 
     const { data } = await Api.get(`/quotes/assigned?${params.toString()}`, {withCredentials: true});
-    console.log(data);
     return data;
   } catch (error) {
     console.log(error);

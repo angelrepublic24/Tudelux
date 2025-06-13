@@ -13,6 +13,7 @@ export const verifySession = cache(async () => {
     headers: {
       Cookie: cookies ?? '', // 👈 pasa la cookie manualmente
     },
+    withCredentials: true
   });
 
   const result = UserSchema.safeParse(data);
