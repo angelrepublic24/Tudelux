@@ -2,6 +2,7 @@
 
 src/modules/build/
 src/app/(shop)/design/
+src/shared/data/sketData.ts
 
 # dependencies
 /node_modules

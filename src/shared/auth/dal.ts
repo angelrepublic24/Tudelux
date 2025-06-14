@@ -6,17 +6,27 @@ import { cache } from 'react';
 
 export const verifySession = cache(async () => {
  try {
-   const cookieStore = await cookies();
-    const token = cookieStore.get('TUDELU_TOKEN')?.value;
+   const headersList = await headers();
+    const cookieHeader = headersList.get('cookie') || '';
 
-    if (!token) redirect("/auth/login");
+    // ⚠️ reenviamos todas las cookies al backend
+    const { data } = await Api.get("/auth/profile", {
+      headers: {
+        Cookie: cookieHeader, // 🔥 reenviamos la cookie
+      },
+      withCredentials: true,
+    });
+  //  const cookieStore = await cookies();
+  //   const token = cookieStore.get('TUDELU_TOKEN')?.value;
 
-  const { data } = await Api.get("/auth/profile", {
-    headers: {
-      Cookie: `TUDELU_TOKEN=${token}`,
-    },
-    withCredentials: true
-  });
+  //   if (!token) redirect("/auth/login");
+
+  // const { data } = await Api.get("/auth/profile", {
+  //   headers: {
+  //     Cookie: `TUDELU_TOKEN=${token}`,
+  //   },
+  //   withCredentials: true
+  // });
 
   const result = UserSchema.safeParse(data);
   if (!result.success) {
