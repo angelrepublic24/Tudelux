@@ -11,20 +11,39 @@ export async function createQuote(formData) {
   }
 }
 
-export async function getQuotes( limit: number, page: number, search = "", status?: string) {
-  try {
-    const params = new URLSearchParams();
-    params.append("limit", limit.toString());
-    params.append("page", page.toString());
-    if (search) params.append("search", search);
-    if (status) params.append("status", status);
-    const { data } = await Api.get(`/quotes?${params.toString()}`, {
-      withCredentials: true,
-    });
-    return data;
-  } catch (error) {
-    throw new Error(error.response.data.message);
+// export async function getQuotes( limit: number, page: number, search = "", status?: string) {
+//   try {
+//     const params = new URLSearchParams();
+//     params.append("limit", limit.toString());
+//     params.append("page", page.toString());
+//     if (search) params.append("search", search);
+//     if (status) params.append("status", status);
+//     const { data } = await Api.get(`/quotes?${params.toString()}`, {
+//       withCredentials: true,
+//     });
+//     return data;
+//   } catch (error) {
+//     throw new Error(error.response.data.message);
+//   }
+// }
+export async function getQuotes(limit: number, page: number, search = "", status?: string) {
+  const params = new URLSearchParams();
+  params.append("limit", limit.toString());
+  params.append("page", page.toString());
+  if (search) params.append("search", search);
+  if (status) params.append("status", status);
+
+  const res = await fetch(`/api/quotes?${params.toString()}`, {
+    method: 'GET',
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(data.message || "Error fetching quotes");
   }
+
+  return data;
 }
 
 export async function getQuoteById(id: number) {
