@@ -16,17 +16,6 @@ export const verifySession = cache(async () => {
       },
       withCredentials: true,
     });
-  //  const cookieStore = await cookies();
-  //   const token = cookieStore.get('TUDELU_TOKEN')?.value;
-
-  //   if (!token) redirect("/auth/login");
-
-  // const { data } = await Api.get("/auth/profile", {
-  //   headers: {
-  //     Cookie: `TUDELU_TOKEN=${token}`,
-  //   },
-  //   withCredentials: true
-  // });
 
   const result = UserSchema.safeParse(data);
   if (!result.success) {
