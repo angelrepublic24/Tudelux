@@ -82,9 +82,9 @@ export default function RequestQuotePage() {
         </div>
       )}
 
-      {renderState && isRenderOpen && (
+      {/* {renderState && isRenderOpen && (
         <RenderHeader renderState={renderState} onToggle={() => setIsRenderOpen(false)} />
-      )}
+      )} */}
 
       <section className="">
         <div className="grid grid-cols-1 md:grid-cols-3 py-16">

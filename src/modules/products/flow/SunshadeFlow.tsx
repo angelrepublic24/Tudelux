@@ -37,7 +37,7 @@ type Props = {
   kindOfProductStartRef: React.RefObject<HTMLDivElement>;
 };
 
-export const CanopyFlow = ({
+export const SunshadeFlow = ({
   renderState,
   setRenderState,
   materialsData,
@@ -144,7 +144,6 @@ export const CanopyFlow = ({
       <div ref={featuresRef}>
         {activeStep >= 8 && (
           <StepAddiotionalFeatures
-            renderState={renderState}
             setRenderState={setRenderState}
             setIsRenderOpen={setIsRenderOpen}
             onContinue={() => {

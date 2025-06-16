@@ -8,11 +8,11 @@ export const verifySession = cache(async () => {
  try {
    const headersList = await headers();
     const cookieHeader = headersList.get('cookie') || '';
-
-    // ⚠️ reenviamos todas las cookies al backend
+    console.log({cookieHeader});
+console.log({headersList});
     const { data } = await Api.get("/auth/profile", {
       headers: {
-        Cookie: cookieHeader, // 🔥 reenviamos la cookie
+        Cookie: cookieHeader, 
       },
       withCredentials: true,
     });

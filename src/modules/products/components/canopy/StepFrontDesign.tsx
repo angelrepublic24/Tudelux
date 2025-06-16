@@ -162,12 +162,12 @@ export const StepFrontDesign = ({
             <div className="flex gap-6">
               <div className="w-1/3 space-y-3">
                 {[
-                  { type: "Tube", image: "/tube.png" },
-                  { type: "Channel", image: "/channel.png" },
-                  { type: "Crown", image: "/crown.png" },
-                  { type: `1" In`, image: "/1up.png" },
-                  { type: `1" Out`, image: "/1down.png" },
-                  { type: `3" Extender`, image: "/3extender.png" },
+                  { type: "Tube", image: "/addons/tube.avif" },
+                  { type: "Channel", image: "/addons/channel.avif" },
+                  { type: "Crown", image: "/addons/crown.avif" },
+                  { type: `1" In`, image: "/addons/1up.avif" },
+                  { type: `1" Out`, image: "/addons/1out.avif" },
+                  { type: `3" Extender`, image: "/addons/3extender.avif" },
                 ].map(({ type, image }) => (
                   <button
                     key={type}
@@ -191,16 +191,12 @@ export const StepFrontDesign = ({
                       setSelectedButtons(previousSelections);
                       setShowTooltip(true);
                     }}
-                    className={`w-1/2 py-4 px-2 rounded text-center border hover:bg-gray-200 flex flex-col items-center gap-2 ${
-                      selectedAddOnName === type
-                        ? "bg-[#ff5100] text-white border-[#ff5100]"
-                        : "bg-white text-gray-700 border-gray-300"
-                    }`}
+                    className={`w-1/2 py-4 rounded text-center border flex flex-col items-center gap-2 hover:shadow-md shadow-[#ff5100] `}
                   >
                     <img
                       src={image}
                       alt={type}
-                      className="w-full h-10 object-contain"
+                      className="w-full h-14"
                     />
                     <span className="font-small text-sm">Add {type}</span>
                   </button>
