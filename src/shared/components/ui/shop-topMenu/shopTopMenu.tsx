@@ -2,9 +2,12 @@
 
 import { ChevronDown } from "lucide-react"
 import { ShopDropdown } from "./shopDropDown"
+import { IoCartOutline } from "react-icons/io5"
+import { useUIStore } from "@/shared/store/ui/ui-store"
 
 
 export function ShopTopMenu() {
+  const openCart = useUIStore((s) => s.toggleCart)
   return (
     <header className="bg-[#ff5100] h-28 relative z-50">
       <div className="max-w-8xl mx-auto px-8 lg:px-4 py-4 flex justify-between xl:justify-around items-center h-28">
@@ -71,6 +74,9 @@ export function ShopTopMenu() {
 
         {/* Start Design Button with Modal */}
         <nav className="hidden xl:flex space-x-8">
+          <button onClick={openCart}>
+            <IoCartOutline size={20} color="white" />
+          </button>
           <ShopDropdown />
         </nav>
 

@@ -175,6 +175,21 @@ export type CartItem = {
   productType?: string;    // Ej: 'Custom Canopy'
   shape?: string;  
 };
+export interface ConfigState {
+  width: string;
+  projection: string;
+  slot1: string;
+  slot2: string;
+  fasciaColor: string;
+  slot1Color: string;
+  slot2Color: string;
+  coverColor: string;
+  topRoofColor: string;
+  louverColor: string;
+  spacing: string;
+  tilt: string;
+  louverType: string;
+}
 
 // export type IUser = {
 //   id: number,

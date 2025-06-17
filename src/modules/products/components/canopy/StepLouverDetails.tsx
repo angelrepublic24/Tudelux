@@ -64,7 +64,7 @@ export const StepLouverDetails = ({ setRenderState, onContinue }: Props) => {
     <section>
       <StepTitle step={11} title="Louver details" />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 w-full">
+      <div className="flex flex-col lg:flex-row justify-center items-center gap-10 px-4">
         {groupedLouvers.map((group, i) => (
           <ChooseDesignGrid
             key={i}

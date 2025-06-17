@@ -13,6 +13,7 @@ import {
 import { RenderHeader } from "@/shared/components/Render/RenderHeader";
 import { Title } from "@/shared/components/ui/title/Title";
 import { CanopyFlow } from "@/modules/products/flow/CanopyFlow";
+import PartitionWallFlow from "@/modules/products/flow/PartitionWallFlow";
 
 export default function RequestQuotePage() {
   const [selectedProduct, setSelectedProduct] = useState<
@@ -35,7 +36,7 @@ export default function RequestQuotePage() {
   const chooseProductRef = useRef<HTMLDivElement>(null);
   const StepCompleteRef = useRef<HTMLDivElement>(null);
   const canopyFlowRef = useRef<HTMLDivElement>(null);
-
+  const partitionWallFlowRef = useRef<HTMLDivElement>(null);
 
   const scrollToRef = (ref: React.RefObject<HTMLDivElement | null>) => {
     setTimeout(() => {
@@ -46,7 +47,10 @@ export default function RequestQuotePage() {
   useEffect(() => {
     if (materialsData.length === 0) return;
 
-    const materialCost = materialsData.reduce((acc, item) => acc + item.total, 0);
+    const materialCost = materialsData.reduce(
+      (acc, item) => acc + item.total,
+      0
+    );
     const cutsCost = materialsData.reduce((acc, item) => {
       return item.cutPrice && item.cutPrice > 0
         ? acc + 2 * item.quantity * item.cutPrice
@@ -126,11 +130,28 @@ export default function RequestQuotePage() {
           )}
         </div>
 
-        {/* Flujo CANOPY */}
-        {activeStep >= 2 &&
-          selectedProduct &&
-          renderState.title === "Architectural Canopy" && (
-            <CanopyFlow
+        <div ref={canopyFlowRef}>
+          {activeStep >= 2 &&
+            selectedProduct?.name === "Architectural Canopy" && (
+              <CanopyFlow
+                renderState={renderState}
+                setRenderState={setRenderState}
+                materialsData={materialsData}
+                setMaterialsData={setMaterialsData}
+                isRenderOpen={isRenderOpen}
+                setIsRenderOpen={setIsRenderOpen}
+                activeStep={activeStep}
+                setActiveStep={setActiveStep}
+                costSummary={costSummary}
+                scrollToRef={scrollToRef}
+                completeSectionRef={StepCompleteRef}
+                selectedProduct={selectedProduct}
+                kindOfProductStartRef={canopyFlowRef}
+              />
+            )}
+
+          {activeStep >= 2 && selectedProduct?.name === "Partition Walls" && (
+            <PartitionWallFlow
               renderState={renderState}
               setRenderState={setRenderState}
               materialsData={materialsData}
@@ -143,27 +164,9 @@ export default function RequestQuotePage() {
               scrollToRef={scrollToRef}
               completeSectionRef={StepCompleteRef}
               selectedProduct={selectedProduct}
-              kindOfProductStartRef={canopyFlowRef}
-
             />
           )}
-
-        {/* Flujo WALL (puedes extender esto en otro flow más adelante si deseas) */}
-        {activeStep >= 2 &&
-          selectedProduct &&
-          renderState.title === "Partition Walls" && (
-            <>
-              <StepWallColor
-                setRenderState={setRenderState}
-                setIsRenderOpen={setIsRenderOpen}
-                onContinue={() => {
-                  setActiveStep(3);
-                  scrollToRef(StepCompleteRef);
-                }}
-              />
-              <StepWallAddons />
-            </>
-          )}
+        </div>
 
         {/* Paso final */}
         <div ref={StepCompleteRef}>

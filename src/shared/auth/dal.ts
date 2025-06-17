@@ -8,15 +8,12 @@ export const verifySession = cache(async () => {
  try {
    const headersList = await headers();
     const cookieHeader = headersList.get('cookie') || '';
-    console.log({cookieHeader});
-console.log({headersList});
     const { data } = await Api.get("/auth/profile", {
       headers: {
         Cookie: cookieHeader, 
       },
       withCredentials: true,
     });
-
   const result = UserSchema.safeParse(data);
   if (!result.success) {
     redirect("/auth/login");

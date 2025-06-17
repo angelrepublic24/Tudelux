@@ -1,3 +1,4 @@
+'use client'
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { LoginFormType, RegisterFormType } from "../types";

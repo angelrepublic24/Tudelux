@@ -50,7 +50,7 @@ export const CanopyFlow = ({
   scrollToRef,
   completeSectionRef,
   selectedProduct,
-  kindOfProductStartRef
+  kindOfProductStartRef,
 }: Props) => {
   const kindOfProductRef = useRef<HTMLDivElement>(null);
   const shapeRef = useRef<HTMLDivElement>(null);
@@ -148,9 +148,17 @@ export const CanopyFlow = ({
             setRenderState={setRenderState}
             setIsRenderOpen={setIsRenderOpen}
             onContinue={() => {
-              setActiveStep(9);
-              scrollToRef(directionRef);
-            }}
+    if (renderState.extraF === "Louvers") {
+      setActiveStep(9);
+      scrollToRef(directionRef);
+    } else if (renderState.extraF === "Skylight") {
+      setActiveStep(13);
+      scrollToRef(lightingRef);
+    } else {
+      setActiveStep(14); // Default: skip to support
+      scrollToRef(supportRef);
+    }
+  }}
           />
         )}
       </div>
@@ -191,7 +199,7 @@ export const CanopyFlow = ({
                 setRenderState={setRenderState}
                 setIsRenderOpen={setIsRenderOpen}
                 onContinue={() => {
-                  setActiveStep(12);
+                  setActiveStep(14);
                   scrollToRef(supportRef);
                 }}
               />
@@ -200,25 +208,6 @@ export const CanopyFlow = ({
         </>
       )}
 
-      <div ref={supportRef}>
-        {activeStep >= 12 && (
-          <StepSupport
-            setMaterialsData={setMaterialsData}
-            setRenderState={setRenderState}
-            setIsRenderOpen={setIsRenderOpen}
-            onContinue={() => {
-              if (renderState.extraF === "Louvers") {
-                setActiveStep(14);
-                scrollToRef(colorsRef);
-              } else {
-                setActiveStep(13);
-                scrollToRef(lightingRef);
-              }
-            }}
-          />
-        )}
-      </div>
-
       {renderState.extraF === "Skylight" && (
         <div ref={lightingRef}>
           {activeStep >= 13 && (
@@ -226,16 +215,30 @@ export const CanopyFlow = ({
               setRenderState={setRenderState}
               setIsRenderOpen={setIsRenderOpen}
               onContinue={() => {
-                setActiveStep(14);
-                scrollToRef(colorsRef);
+                setActiveStep(14); // Apunta al StepSupport
+                scrollToRef(supportRef);
               }}
             />
           )}
         </div>
       )}
 
-      <div ref={colorsRef}>
+      <div ref={supportRef}>
         {activeStep >= 14 && (
+          <StepSupport
+            setMaterialsData={setMaterialsData}
+            setRenderState={setRenderState}
+            setIsRenderOpen={setIsRenderOpen}
+            onContinue={() => {
+              setActiveStep(15); // Siempre pasa a StepColors
+              scrollToRef(colorsRef);
+            }}
+          />
+        )}
+      </div>
+
+      <div ref={colorsRef}>
+        {activeStep >= 15 && (
           <StepColors
             setRenderState={setRenderState}
             setIsRenderOpen={setIsRenderOpen}
