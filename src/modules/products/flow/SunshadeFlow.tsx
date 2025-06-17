@@ -144,6 +144,7 @@ export const SunshadeFlow = ({
       <div ref={featuresRef}>
         {activeStep >= 8 && (
           <StepAddiotionalFeatures
+          renderState={renderState}
             setRenderState={setRenderState}
             setIsRenderOpen={setIsRenderOpen}
             onContinue={() => {
