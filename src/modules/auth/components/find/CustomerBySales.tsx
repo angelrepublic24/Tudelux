@@ -6,14 +6,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { useFindCustomersBySales } from '../../services/auth.service';
 
 type Props = {
-  salesId: number;
   limit: number;
   page: number;
   setPage: (page: number) => void;
   search: string;
 };
 
-export const GetCustomersBySales = ({ salesId, limit, page, setPage, search }: Props) => {
+export const GetCustomersBySales = ({limit, page, setPage, search }: Props) => {
   const { data, isLoading, isError, error } = useFindCustomersBySales(limit, page, search);
   const customers = data?.data || [];
   const totalPages = data?.totalPages || 1;

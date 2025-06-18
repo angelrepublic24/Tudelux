@@ -1,14 +1,9 @@
 'use client';
-
 import { GetCustomersBySales } from '@/modules/auth/components/find/CustomerBySales';
 import { SearchInput } from '@/shared/components/ui/searchInput/SearchInput';
 import { useState } from 'react';
 
-type Props = {
-  salesId: number; // puedes obtenerlo del user auth o pasarlo desde ruta
-};
-
-export default function CustomersBySalesPage({ salesId }: Props) {
+export default function CustomersBySalesPage() {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
@@ -45,7 +40,6 @@ export default function CustomersBySalesPage({ salesId }: Props) {
       </div>
 
       <GetCustomersBySales
-        salesId={salesId}
         limit={limit}
         page={page}
         setPage={setPage}
@@ -54,3 +48,4 @@ export default function CustomersBySalesPage({ salesId }: Props) {
     </section>
   );
 }
+
