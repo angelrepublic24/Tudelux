@@ -1,15 +1,24 @@
-'use client'
+"use client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { LoginFormType, RegisterFormType } from "../types";
-import { confirmAccount, login, profile, register } from "../api/AuthApi";
+import {
+  confirmAccount,
+  findCustomerBySales,
+  login,
+  profile,
+  register,
+} from "../api/AuthApi";
 import { toast } from "react-toastify";
+import { Api } from "@/shared/global/Global";
 
 export const useLogin = () => {
   const router = useRouter();
   return useMutation({
     mutationFn: (data: LoginFormType) => login(data),
-    onSuccess: () => {return router.push("/dashboard")},
+    onSuccess: () => {
+      return router.push("/dashboard");
+    },
     onError: (error: any) => toast.error(error.message),
   });
 };
@@ -41,5 +50,12 @@ export const useProfile = () => {
   return useQuery({
     queryKey: ["profile"],
     queryFn: profile,
+  });
+};
+
+export const useFindCustomersBySales = ( limit: number, page: number, search: string ) => {
+  return useQuery({
+    queryKey: ['customers', limit, page, search],
+    queryFn: () => findCustomerBySales(limit, page, search),
   });
 };

@@ -1,8 +1,10 @@
-import { CostSummary, MaterialItemTable, RenderState } from '@/shared/types';
-import { chooseProduct } from '@/shared/utils/chooseProduct';
-import React from 'react';
-import DimensionStep from '../components/wall/DimensionStep';
-import { StepWallAddons, StepWallColor } from '../components';
+import { CostSummary, MaterialItemTable, RenderState } from "@/shared/types";
+import { chooseProduct } from "@/shared/utils/chooseProduct";
+import React, { useRef } from "react";
+import DimensionStep from "../components/wall/DimensionStep";
+import { StepWallAddons, StepWallColor } from "../components";
+import { STCStep } from "../components/wall/STCStep";
+import { OptionStep } from "../components/wall/OptionStep";
 
 type Props = {
   renderState: RenderState;
@@ -33,43 +35,63 @@ const PartitionWallFlow = ({
   completeSectionRef,
   selectedProduct,
 }: Props) => {
+  const wallColorRef = useRef<HTMLDivElement>(null);
+  const stcRef = useRef<HTMLDivElement>(null);
+  const optionRef = useRef<HTMLDivElement>(null)
+
   return (
     <div>
       {/* Paso 1: DimensionStep */}
-      {activeStep >= 2 &&
-        selectedProduct &&
-        renderState.title === "Partition Walls" && (
-          <DimensionStep
-            renderState={renderState}
-            setRenderState={setRenderState}
-            setIsRenderOpen={setIsRenderOpen}
-            onContinue={() => {
-              setActiveStep(3);
-              scrollToRef(null); // puedes pasar un ref si lo deseas
-            }}
-          />
-        )}
+      {activeStep >= 2 && (
+        <DimensionStep
+          renderState={renderState}
+          setRenderState={setRenderState}
+          setIsRenderOpen={setIsRenderOpen}
+          onContinue={() => {
+            setActiveStep(3);
+            scrollToRef(wallColorRef); // puedes pasar un ref si lo deseas
+          }}
+        />
+      )}
 
-      {/* Paso 2: Wall Color */}
-      {activeStep >= 3 &&
-        selectedProduct &&
-        renderState.title === "Partition Walls" && (
+      <div ref={wallColorRef}>
+        {activeStep >= 3 && (
           <StepWallColor
             setRenderState={setRenderState}
             setIsRenderOpen={setIsRenderOpen}
             onContinue={() => {
               setActiveStep(4);
-              scrollToRef(completeSectionRef);
+              scrollToRef(stcRef);
             }}
           />
         )}
+      </div>
 
       {/* Paso 3: Addons */}
-      {activeStep >= 4 &&
-        selectedProduct &&
-        renderState.title === "Partition Walls" && (
-          <StepWallAddons />
+      <div ref={stcRef}>
+        {activeStep >= 4 && (
+          <STCStep
+            setRenderState={setRenderState}
+            setIsRenderOpen={setIsRenderOpen}
+            onContinue={() => {
+              setActiveStep(5);
+              scrollToRef(optionRef);
+            }}
+          />
         )}
+      </div>
+      <div ref={optionRef}>
+        {activeStep >= 5 && (
+          <OptionStep
+            setRenderState={setRenderState}
+            setIsRenderOpen={setIsRenderOpen}
+            onContinue={() => {
+              setActiveStep(4);
+              scrollToRef(null);
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 };

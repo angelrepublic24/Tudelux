@@ -16,7 +16,6 @@ export async function register(formData: RegisterFormType) {
   }
 }
 
-
 export async function confirmAccount(token: string) {
   try {
     const { data } = await Api.post("/auth/confirm-account", { token });
@@ -29,21 +28,11 @@ export async function confirmAccount(token: string) {
   }
 }
 
-// export async function login(formData: LoginFormType) {
-//   try {
-//       const {data} = await Api.post('/auth/login', formData, {withCredentials: true});
-//     return data;
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// }
-
 export async function login(formData: LoginFormType) {
   try {
-      const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
     });
 
@@ -74,21 +63,43 @@ export async function profile() {
   }
 }
 
-
 export async function logout() {
   try {
-    const res = await fetch('/api/auth/logout', {
-      method: 'POST',
+    const res = await fetch("/api/auth/logout", {
+      method: "POST",
     });
 
-    if (!res.ok) throw new Error('Logout failed');
+    if (!res.ok) throw new Error("Logout failed");
 
-    window.location.href = '/auth/login';
+    window.location.href = "/auth/login";
   } catch (error) {
-    console.error('Logout error:', error);
+    console.error("Logout error:", error);
   }
 }
 
+export async function findCustomerBySales(limit = 10, page = 1, search = '') {
+  try {
+    const params = new URLSearchParams({
+      limit: limit.toString(),
+      page: page.toString(),
+    });
 
+    if (search.trim()) {
+      params.append('search', search.trim());
+    }
 
+    const { data } = await Api.get(
+      `/auth/sales/customers?${params.toString()}`,
+      { withCredentials: true }
+    );
+
+    return data;
+  } catch (error) {
+    console.error(error);
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error('Unexpected error occurred');
+  }
+}
 

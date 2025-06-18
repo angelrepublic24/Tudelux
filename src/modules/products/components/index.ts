@@ -1,5 +1,5 @@
-export { StepWallAddons } from './canopy/StepWallAddons';
-export { StepWallColor } from './canopy/StepWallColor';
+export { StepWallAddons } from './wall/StepWallAddons';
+export { StepWallColor } from './wall/StepWallColor';
 export { StepFront } from "./canopy/StepFront";
 export { StepProfile } from "./canopy/StepProfile";
 export { StepAddiotionalFeatures } from "./canopy/StepAddiotionalFeatures";

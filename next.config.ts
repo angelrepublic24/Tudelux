@@ -6,7 +6,8 @@ const nextConfig: NextConfig = {
       '24116371.fs1.hubspotusercontent-na1.net',
       '22465736.fs1.hubspotusercontent-na1.net',
       'res.cloudinary.com',
-      'tudelu.com'
+      'tudelu.com',
+      'm.media-amazon.com'
     ]
   },
   // async rewrites() {

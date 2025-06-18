@@ -94,3 +94,15 @@ export async function getSupports() {
         }
     }
 }
+
+export async function getOptions() {
+    try {
+        const {data} = await axios.get("https://api.hubapi.com/hubdb/api/v2/tables/7443628/rows?portalId=22465736");
+        const options = data.objects;
+        return options  
+    } catch (error) {
+        if(isAxiosError(error)){
+            throw new Error(error.response?.data)
+        }
+    }
+}
