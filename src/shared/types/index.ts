@@ -1,3 +1,4 @@
+import { Material } from "@/modules/materials/schemas/materials.schema";
 
 export type BaseProduct = {
   name: string;
@@ -76,6 +77,40 @@ export type RenderState = {
   lighting?: string;
   color?: string;
   cutPrice?: number;
+
+
+  // Partition Wall
+  // 🔽 Nuevos campos para Partition Walls
+  selectedSTC?: "36 STC" | "48 STC";
+  dimensionWall?: {
+    width?:string,
+    height?: string,
+    widthInc?:string,
+    heightIn?: string,
+  }
+  selectedMaterial?: Material;
+  selectedVariant?: {
+    color: string;
+    unit: string;
+    pricePerUnit: number;
+    cutPrice?: number;
+  };
+};
+
+export type PartitionState = {
+  stcType?: '36 STC' | '48 STC';
+  width?: number; // en ft
+  height?: number; // en ft
+  widthInches?: number;
+  heightInches?: number;
+  selectedColor?: string;
+  selectedMaterial?: Material;
+  selectedVariant?: {
+    color: string;
+    unit: string;
+    pricePerUnit: number;
+  };
+  addons?: string[]; 
 };
 
 export type RawAddOn = {
@@ -130,8 +165,8 @@ export type MaterialItemTable = {
   color: string;
   inches: number;
   quantity: number;
-  pricePerInch: number;
   total: number;
+  pricePerInch?: number;
   cutPrice?: number;
   sourceStep?: string;
   
@@ -168,6 +203,10 @@ export type CartItem = {
     width?: string;
     projection?: string;
   };
+  dimensionsWall?: {
+    width?: string;
+    height?: string;
+  }
   color?: string;
   image?: string;
 

@@ -38,8 +38,12 @@ export const useCartStore = create<CartStore>((set, get) => ({
             ),
         });
     },
-    total: () => 
+    total: () =>
         get().items.reduce((acc, item) => {
-            return acc + (item.costSummary?.finalTotal)
-        }, 0)
+            if (item.product === "Partition Walls") {
+            return acc + item.price * item.quantity;
+            } else {
+            return acc + (item.costSummary?.finalTotal || 0);
+            }
+        }, 0),
 }))

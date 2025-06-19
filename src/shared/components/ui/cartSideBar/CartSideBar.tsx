@@ -14,13 +14,22 @@ import { toast } from "react-toastify";
 import { calculateCostSummary } from "@/shared/utils/calculateCostSummary";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuoteStore } from "@/shared/store/ui/useQuoteStore";
-import { CreateQuotePayload, QuoteClientInfoPayload, QuoteClientInfoSchema } from "@/modules/quotes/schema/quote.schema";
+import {
+  CreateQuotePayload,
+  QuoteClientInfoPayload,
+  QuoteClientInfoSchema,
+} from "@/modules/quotes/schema/quote.schema";
+import { Input } from "@/components/ui/input";
+import { FaTrash } from "react-icons/fa6";
+import { formatCurrency } from "@/shared/utils/formatCurency";
+import { StateSelector } from "../../LocationInput/StateSelector";
 
 export const CartSideBar = () => {
   const isCartOpen = useUIStore((state) => state.isCartOpen);
   const closeCart = useUIStore((state) => state.closeCart);
   const items = useCartStore((state) => state.items);
   const total = useCartStore((state) => state.total());
+
 
   const [activeMaterials, setActiveMaterials] = useState<
     MaterialItemTable[] | null
@@ -29,7 +38,7 @@ export const CartSideBar = () => {
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const { register, handleSubmit, reset } = useForm<QuoteClientInfoPayload>({
+  const { register, handleSubmit, reset, control } = useForm<QuoteClientInfoPayload>({
     resolver: zodResolver(QuoteClientInfoSchema),
   });
   const quoteMutation = useMutation({
@@ -54,57 +63,65 @@ export const CartSideBar = () => {
     }
     // Derivar AddOns escaneando los materiales
     const validAddOns = [
-  "Crown",
-  "Tube",
-  "Channel",
-  '1" In',
-  '1" Out',
-  '3" Extender',
-];
+      "Crown",
+      "Tube",
+      "Channel",
+      '1" In',
+      '1" Out',
+      '3" Extender',
+    ];
     const derivedAddOns = uniq(
-  quoteMaterials
-    .filter((m) =>
-      validAddOns.some((addon) =>
-        m.name.toLowerCase().includes(addon.toLowerCase())
-      )
-    )
-    .map((m) =>
-      validAddOns.find((addon) =>
-        m.name.toLowerCase().includes(addon.toLowerCase())
-      )
-    )
-    .filter(Boolean) // Elimina null/undefined
-);
+      quoteMaterials
+        .filter((m) =>
+          validAddOns.some((addon) =>
+            m.name.toLowerCase().includes(addon.toLowerCase())
+          )
+        )
+        .map((m) =>
+          validAddOns.find((addon) =>
+            m.name.toLowerCase().includes(addon.toLowerCase())
+          )
+        )
+        .filter(Boolean) // Elimina null/undefined
+    );
 
     // Derivar dimensiones desde materiales tipo "fascia"
     const dimensions: Record<string, number> = {};
-quoteMaterials.forEach((m) => {
-  const name = m.name.toLowerCase();
+    quoteMaterials.forEach((m) => {
+      const name = m.name.toLowerCase();
 
-  if (name.includes("front") && name.includes("width")) {
-    dimensions.frontWidth = m.inches;
-  } else if (name.includes("back") && name.includes("width")) {
-    dimensions.backWidth = m.inches;
-  } else if (name.includes("middle") && name.includes("width")) {
-    dimensions.middleWidth = m.inches;
-  }
+      if (name.includes("front") && name.includes("width")) {
+        dimensions.frontWidth = m.inches;
+      } else if (name.includes("back") && name.includes("width")) {
+        dimensions.backWidth = m.inches;
+      } else if (name.includes("middle") && name.includes("width")) {
+        dimensions.middleWidth = m.inches;
+      }
 
-  if (name.includes("left") && name.includes("projection")) {
-    dimensions.leftProjection = m.inches;
-  } else if (name.includes("right") && name.includes("projection")) {
-    dimensions.rightProjection = m.inches;
-  } else if (name.includes("middle") && name.includes("projection")) {
-    dimensions.middleProjection = m.inches;
-  }
+      if (name.includes("left") && name.includes("projection")) {
+        dimensions.leftProjection = m.inches;
+      } else if (name.includes("right") && name.includes("projection")) {
+        dimensions.rightProjection = m.inches;
+      } else if (name.includes("middle") && name.includes("projection")) {
+        dimensions.middleProjection = m.inches;
+      }
 
-  // Fallback para rectangular
-  if (name.includes("fascia") && name.includes("width") && !dimensions.width) {
-    dimensions.width = m.inches;
-  }
-  if (name.includes("fascia") && name.includes("projection") && !dimensions.projection) {
-    dimensions.projection = m.inches;
-  }
-});
+      // Fallback para rectangular
+      if (
+        name.includes("fascia") &&
+        name.includes("width") &&
+        !dimensions.width
+      ) {
+        dimensions.width = m.inches;
+      }
+      if (
+        name.includes("fascia") &&
+        name.includes("projection") &&
+        !dimensions.projection
+      ) {
+        dimensions.projection = m.inches;
+      }
+    });
 
     // Usar el primer item del carrito como referencia de contexto
     const firstItem = items[0];
@@ -133,6 +150,7 @@ quoteMaterials.forEach((m) => {
 
     quoteMutation.mutate(payload);
   };
+  console.log(items);
 
   if (!isCartOpen) return null;
 
@@ -152,43 +170,40 @@ quoteMaterials.forEach((m) => {
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <h2 className="text-xl font-bold mb-4">Send Quote</h2>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-              <input
+              <Input
                 {...register("customerName")}
                 placeholder="First Name"
                 className="input"
               />
-              <input
+              <Input
                 {...register("customerLastName")}
                 placeholder="Last Name"
                 className="input"
               />
-              <input
+              <Input
                 {...register("customerEmail")}
                 placeholder="Email"
                 type="email"
                 className="input"
               />
-              <input
+              <Input
                 {...register("customerPhone")}
                 placeholder="Phone"
                 className="input"
               />
-              <input
+              <Input
                 {...register("address_street")}
                 placeholder="Address"
                 className="input"
               />
-              <input
+              <Input
                 {...register("address_city")}
                 placeholder="City"
                 className="input"
               />
-              <input
-                {...register("address_state")}
-                placeholder="State"
-                className="input"
-              />
-              <input
+              <StateSelector control={control} />
+
+              <Input
                 {...register("address_zip")}
                 placeholder="ZIP"
                 className="input"
@@ -226,36 +241,93 @@ quoteMaterials.forEach((m) => {
           ) : (
             <ul className="space-y-4">
               {items.map((item) => (
-                <li key={item.id} className="flex justify-between items-start">
-                  <div>
+                <li
+                  key={item.id}
+                  className="flex justify-between items-stretch gap-3"
+                >
+                  <div className="flex-1">
                     <p className="font-semibold">{item.name}</p>
-                    <p className="text-xs text-gray-500">
-                      {item.dimensions?.width}" x {item.dimensions?.projection}"
-                    </p>
-                    <button
-                      onClick={() => {
-                        if (item.materials) {
-                          const summary = calculateCostSummary(
-                            item.materials,
-                            item.costSummary.finalMarkup // fixedFinalMarkup si aplica
-                          );
 
-                          setActiveMaterials(item.materials);
-                          setActiveSummary(summary);
-                          setShowModal(true);
+                    {/* Color visible SOLO si es Partition Wall */}
+                    {item.product === "Partition Walls" && item.color && (
+                      <p className="text-sm text-gray-700">
+                        Housing Color: {item.color}
+                      </p>
+                    )}
+
+                    {/* Dimensiones */}
+                    <p className="text-xs text-gray-500">
+                      {item.dimensionsWall?.width}" x{" "}
+                      {item.dimensionsWall?.height}"
+                    </p>
+
+                    {/* Breakdown solo si NO es Partition Wall */}
+                    {item.product !== "Partition Wall" ? (
+                      <button
+                        onClick={() => {
+                          if (item.materials) {
+                            const summary = calculateCostSummary(
+                              item.materials,
+                              item.costSummary.finalMarkup
+                            );
+                            setActiveMaterials(item.materials);
+                            setActiveSummary(summary);
+                            setShowModal(true);
+                          }
+                        }}
+                        className="text-blue-500 hover:underline text-sm mt-1"
+                      >
+                        {formatCurrency(item.price)} (see breakdown)
+                      </button>
+                    ) : (
+                      <span className="text-gray-500 text-sm mt-1 italic">
+                        ${item.price.toFixed(2)}
+                      </span>
+                    )}
+
+                    {/* Quantity controls */}
+                    <div className="flex items-center gap-2 mt-2">
+                      <button
+                        onClick={() =>
+                          useCartStore
+                            .getState()
+                            .updateQuantity(item.id, item.quantity - 1)
                         }
-                      }}
-                      className="text-blue-500 hover:underline text-sm mt-1"
-                    >
-                      ${item.price.toFixed(2)} (see breakdown)
-                    </button>
+                        disabled={item.quantity <= 1}
+                        className="bg-gray-200 rounded px-2 text-sm"
+                      >
+                        −
+                      </button>
+                      <span className="text-sm font-medium">
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() =>
+                          useCartStore
+                            .getState()
+                            .updateQuantity(item.id, item.quantity + 1)
+                        }
+                        className="bg-gray-200 rounded px-2 text-sm"
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
-                  <button
-                    className="text-red-400 hover:text-red-600 cursor-pointer"
-                    onClick={() => useCartStore.getState().removeItem(item.id)}
-                  >
-                    Remove
-                  </button>
+
+                  {/* Trash icon to remove */}
+                  <div className="flex flex-col items-end justify-between mt-1">
+                    <button
+                      className="text-red-500 hover:text-red-700"
+                      onClick={() =>
+                        useCartStore.getState().removeItem(item.id)
+                      }
+                    >
+                      <FaTrash size={16} />
+                    </button>
+                    <span className="text-sm text-gray-800 font-semibold mt-1">
+                      Total: {formatCurrency((item.price * item.quantity))}
+                    </span>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -284,7 +356,7 @@ quoteMaterials.forEach((m) => {
           </button>
         </div>
         <div className="mt-6 text-right font-semibold text-lg">
-          Total: ${total.toFixed(2)}
+          Total: {formatCurrency(total)}
         </div>
       </aside>
     </>

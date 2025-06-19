@@ -1,6 +1,6 @@
 "use client";
 
-import { RenderState } from "@/shared/types";
+import { MaterialItemTable, RenderState } from "@/shared/types";
 import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -9,12 +9,13 @@ import { useQuery } from "@tanstack/react-query";
 import { getOptions } from "@/api/HubspotAPi";
 
 type Props = {
+  setMaterialsData: React.Dispatch<React.SetStateAction<MaterialItemTable[]>>;
   setRenderState: React.Dispatch<React.SetStateAction<RenderState>>;
   onContinue: () => void;
   setIsRenderOpen?: (open: boolean) => void;
 };
 
-export const OptionStep = ({ setRenderState, onContinue }: Props) => {
+export const OptionStep = ({setMaterialsData, setRenderState, onContinue }: Props) => {
   const [sensor, setSensor] = useState<string | null>(null);
   const [automation, setAutomation] = useState<string | null>(null);
   const [additionalRemote, setAdditionalRemote] = useState<string | null>(null);

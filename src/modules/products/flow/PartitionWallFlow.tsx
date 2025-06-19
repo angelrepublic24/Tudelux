@@ -5,6 +5,7 @@ import DimensionStep from "../components/wall/DimensionStep";
 import { StepWallAddons, StepWallColor } from "../components";
 import { STCStep } from "../components/wall/STCStep";
 import { OptionStep } from "../components/wall/OptionStep";
+import { StepHousingColor } from "../components/wall/StepHousingColor";
 
 type Props = {
   renderState: RenderState;
@@ -38,6 +39,9 @@ const PartitionWallFlow = ({
   const wallColorRef = useRef<HTMLDivElement>(null);
   const stcRef = useRef<HTMLDivElement>(null);
   const optionRef = useRef<HTMLDivElement>(null)
+  const housingColor = useRef<HTMLDivElement>(null)
+  const completeRef = completeSectionRef;
+
 
   return (
     <div>
@@ -71,6 +75,8 @@ const PartitionWallFlow = ({
       <div ref={stcRef}>
         {activeStep >= 4 && (
           <STCStep
+          setMaterialsData={setMaterialsData}
+            renderState={renderState}
             setRenderState={setRenderState}
             setIsRenderOpen={setIsRenderOpen}
             onContinue={() => {
@@ -83,12 +89,29 @@ const PartitionWallFlow = ({
       <div ref={optionRef}>
         {activeStep >= 5 && (
           <OptionStep
+            setMaterialsData={setMaterialsData}
             setRenderState={setRenderState}
             setIsRenderOpen={setIsRenderOpen}
             onContinue={() => {
-              setActiveStep(4);
-              scrollToRef(null);
-            }}
+                setActiveStep(6);
+                scrollToRef(housingColor);
+              }}
+          />
+        )}
+      </div>
+
+      <div ref={housingColor}>
+        {activeStep >= 6 && (
+          <StepHousingColor
+            materialsData={materialsData}
+            setMaterialsData={setMaterialsData}
+            renderState={renderState}
+            setRenderState={setRenderState}
+            setIsRenderOpen={setIsRenderOpen}
+            onContinue={() => {
+                setActiveStep(16);
+                scrollToRef(completeRef);
+              }}
           />
         )}
       </div>

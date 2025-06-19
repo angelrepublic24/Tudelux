@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { RenderState } from "@/shared/types";
 import { StepTitle } from "@/shared/components/ui/StepTitle/StepTitle";
 import { ContinueButton } from "@/shared/components/ui/continueButton/ContinueButton";
@@ -22,15 +21,36 @@ export default function DimensionStep({
 }: Props) {
   const [width, setWidth] = useState(10); // ft
   const [height, setHeight] = useState(8); // ft
+  const [errors, setErrors] = useState({ width: "", height: "" });
+
+  const handleWidthChange = (val: number) => {
+    if (val >= 10 && val <= 80) {
+      setWidth(val);
+      setErrors((prev) => ({ ...prev, width: "" }));
+    } else {
+      setErrors((prev) => ({ ...prev, width: "Min 10' - Max 80'" }));
+    }
+  };
+
+  const handleHeightChange = (val: number) => {
+    if (val >= 3 && val <= 16) {
+      setHeight(val);
+      setErrors((prev) => ({ ...prev, height: "" }));
+    } else {
+      setErrors((prev) => ({ ...prev, height: "Min 3' - Max 16'" }));
+    }
+  };
 
   const handleContinue = () => {
+    if (errors.width || errors.height) return;
+
     setRenderState((prev) => ({
       ...prev,
-      dimensions: {
+      dimensionWall: {
         width: width.toString(),
         height: height.toString(),
-        widthInches: width * 12,
-        heightInches: height * 12,
+        widthInc: (width * 12).toString(),
+        heightIn: (height * 12).toString(),
       },
     }));
 
@@ -40,7 +60,6 @@ export default function DimensionStep({
 
   return (
     <div className="w-[90%] py-10">
-      {/* Step Header */}
       <StepTitle step={3} title="Give your dimensions" />
       <a
         href="#"
@@ -49,8 +68,7 @@ export default function DimensionStep({
         Help Me Measure
       </a>
 
-      {/* Form */}
-      <div className="flex justify-around ">
+      <div className="flex justify-around">
         {/* Width */}
         <div className="flex justify-around">
           <p className="text-xl font-medium w-1/3">
@@ -62,11 +80,14 @@ export default function DimensionStep({
               <Input
                 type="number"
                 value={width}
-                onChange={(e) => setWidth(Number(e.target.value))}
+                onChange={(e) => handleWidthChange(Number(e.target.value))}
                 placeholder="ft"
                 className="w-24 h-16 rounded-2xl bg-gray-100 text-center"
               />
-              <p className="text-xs text-gray-500 mt-2">Min 3' - Max 22'</p>
+              <p className="text-xs text-gray-500 mt-2">Min 10' - Max 80'</p>
+              {errors.width && (
+                <span className="text-red-500 text-sm">{errors.width}</span>
+              )}
             </div>
             <div>
               <Input
@@ -89,11 +110,14 @@ export default function DimensionStep({
               <Input
                 type="number"
                 value={height}
-                onChange={(e) => setHeight(Number(e.target.value))}
+                onChange={(e) => handleHeightChange(Number(e.target.value))}
                 placeholder="ft"
                 className="w-24 h-16 rounded-2xl bg-gray-100 text-center"
               />
-              <p className="text-xs text-gray-500 mt-2">Max height 10'</p>
+              <p className="text-xs text-gray-500 mt-2">Min 3' - Max 16'</p>
+              {errors.height && (
+                <span className="text-red-500 text-sm">{errors.height}</span>
+              )}
             </div>
             <div>
               <Input
@@ -106,7 +130,6 @@ export default function DimensionStep({
         </div>
       </div>
 
-      {/* Continue Button */}
       <div className="mt-10">
         <ContinueButton onContinue={handleContinue} />
       </div>
