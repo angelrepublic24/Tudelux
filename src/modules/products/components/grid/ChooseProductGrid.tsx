@@ -9,6 +9,7 @@ type Props<T extends BaseProduct> = {
   onSelect?: (product: T) => void;
   isSelected?: boolean;
   className?: string;
+  onContinue?: () => void
 };
 
 export function ChooseProductGrid<T extends BaseProduct>({
@@ -17,7 +18,9 @@ export function ChooseProductGrid<T extends BaseProduct>({
   onSelect,
   isSelected,
   className,
+  onContinue
 }: Props<T>) {
+
   return (
     <div className={`flex flex-col items-center text-center ${className}`}>
       <div className="mb-12 bg-white w-full flex flex-col items-center justify-start h-[320px] overflow-visible relative rounded-lg shadow">
@@ -73,8 +76,9 @@ export function ChooseProductGrid<T extends BaseProduct>({
         </ul>
         <button
           onClick={() => {
-              onSelect?.(product);
-              handleState && handleState();
+             onSelect?.(product);
+             handleState && handleState();
+             onContinue?.()
             }
           }
           className="mt-6 bg-[#ff5100] w-[70%] text-white font-semibold py-6 px-10 rounded-2xl hover:opacity-80 transition focus:bg-[#ece83a] focus:text-[#ff5100]"

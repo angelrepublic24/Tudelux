@@ -1,22 +1,44 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { MaterialModal } from './MaterialModal';
-import { MaterialFormType } from '../schemas/materials.schema';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal } from 'lucide-react';
-import { useGetMaterials } from '../services/material.service';
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { MaterialModal } from "./MaterialModal";
+import { MaterialFormType } from "../schemas/materials.schema";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { MoreHorizontal } from "lucide-react";
+import {
+  useDeleteMaterial,
+  useGetMaterials,
+} from "../services/material.service";
+import { toast } from "react-toastify";
+import { ConfirmModal } from "@/shared/components/ui/ConfirmActionModal/ConfirmActionModal";
 
 export const MaterialList = () => {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedMaterial, setSelectedMaterial] = useState<MaterialFormType & { id?: number } | null>(null);
+  const [selectedMaterial, setSelectedMaterial] = useState<
+    (MaterialFormType & { id?: number }) | null
+  >(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [materialToDelete, setMaterialToDelete] = useState<number | null>(null);
 
   const { data: materials = [], isLoading } = useGetMaterials();
+  const { mutateAsync: deleteMaterial } = useDeleteMaterial();
 
   const filtered = materials.filter((mat) =>
     mat.name.toLowerCase().includes(search.toLowerCase())
@@ -32,6 +54,25 @@ export const MaterialList = () => {
     setSelectedMaterial(null);
     setIsEditing(false);
     setModalOpen(true);
+  };
+
+  const handleDelete = (id: number) => {
+    setMaterialToDelete(id);
+    setConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (materialToDelete != null) {
+      try {
+        await deleteMaterial(materialToDelete);
+        toast.success("Material deleted");
+      } catch {
+        toast.error("Failed to delete material");
+      } finally {
+        setConfirmOpen(false);
+        setMaterialToDelete(null);
+      }
+    }
   };
 
   return (
@@ -64,8 +105,8 @@ export const MaterialList = () => {
             {filtered.map((mat) => (
               <TableRow key={mat.id}>
                 <TableCell>{mat.name}</TableCell>
-                <TableCell>{mat.description || '-'}</TableCell>
-                <TableCell>{mat.compatibleWith.join(', ')}</TableCell>
+                <TableCell>{mat.description || "-"}</TableCell>
+                <TableCell>{mat.compatibleWith.join(", ")}</TableCell>
                 <TableCell>{mat.variants?.length || 0}</TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>
@@ -78,11 +119,11 @@ export const MaterialList = () => {
                       <DropdownMenuItem onClick={() => handleEdit(mat)}>
                         Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => alert('Coming soon')}>
+                      <DropdownMenuItem onClick={() => alert("Coming soon")}>
                         View
                       </DropdownMenuItem>
                       <DropdownMenuItem
-                        onClick={() => alert('Delete logic coming soon')}
+                        onClick={() => handleDelete(mat.id)}
                         className="text-red-500"
                       >
                         Delete
@@ -102,6 +143,13 @@ export const MaterialList = () => {
         onClose={() => setModalOpen(false)}
         defaultValues={selectedMaterial ?? undefined}
         isEditing={isEditing}
+      />
+
+      <ConfirmModal
+        isOpen={confirmOpen}
+        message="This will permanently delete the material. Are you sure?"
+        onCancel={() => setConfirmOpen(false)}
+        onConfirm={confirmDelete}
       />
     </div>
   );

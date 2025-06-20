@@ -60,6 +60,7 @@ export const StepProfile = ({
                     generateMaterialsFromDimensions(updatedState);
                   return [...preservedAddOns, ...newBaseStructure]; // <-- mantiene estructura arriba y addons abajo
                 });
+              onContinue()
               }}
               className="bg-gray-100 border border-transparent hover:bg-gray-200 focus:border-black focus:border-dotted text-center w-full font-semibold text-xl rounded-xl py-4"
             >
@@ -67,15 +68,6 @@ export const StepProfile = ({
             </button>
           );
         })}
-      </div>
-
-      <div className="flex justify-end">
-        <button
-          className="bg-[#ff5100] text-lg px-10 py-5 border rounded-2xl text-amber-300 hover:bg-white hover:border-[#ff5100]"
-          onClick={onContinue}
-        >
-          Continue
-        </button>
       </div>
     </section>
   );

@@ -43,6 +43,11 @@ export const MaterialModal = ({
     resolver: zodResolver(materialSchema),
   });
 
+  const handleClose = () => {
+    reset(); // Limpia el formulario
+    onClose(); // Luego cierra el modal
+  };
+
   const { fields, append, remove } = useFieldArray({
     name: "variants",
     control,
@@ -64,9 +69,11 @@ export const MaterialModal = ({
       if (isEditing && defaultValues?.id) {
         await updateMaterial({ id: defaultValues.id, data });
         toast.success("Material updated successfully");
+        handleClose();
       } else {
         await createMaterial(data);
         toast.success("Material created successfully");
+        handleClose();
       }
       onClose();
     } catch (err: any) {
@@ -75,7 +82,7 @@ export const MaterialModal = ({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-3xl">
         <DialogHeader>
           <DialogTitle>
@@ -112,10 +119,7 @@ export const MaterialModal = ({
           <div className="space-y-4">
             <p className="font-semibold">Variants</p>
             {fields.map((field, index) => (
-              <div
-                key={field.id}
-                className="grid grid-cols-5 gap-4 items-end"
-              >
+              <div key={field.id} className="grid grid-cols-5 gap-4 items-end">
                 <div className="flex flex-col">
                   <label className="text-xs text-gray-500 mb-1">Color</label>
                   <Input
@@ -141,9 +145,7 @@ export const MaterialModal = ({
                   />
                 </div>
                 <div className="flex flex-col">
-                  <label className="text-xs text-gray-500 mb-1">
-                    Unit ($)
-                  </label>
+                  <label className="text-xs text-gray-500 mb-1">Unit ($)</label>
                   <Input
                     type="number"
                     {...register(`variants.${index}.pricePerUnit`, {

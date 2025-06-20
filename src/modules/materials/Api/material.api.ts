@@ -26,7 +26,7 @@ export class MaterialApi {
   }
 
   static async update(id: number, input: MaterialFormType) {
-    const { data } = await Api.put(`/materials/${id}`, input);
+    const { data } = await Api.patch(`/materials/${id}`, input);
     return data;
   }
 

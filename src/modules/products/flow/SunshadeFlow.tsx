@@ -144,13 +144,14 @@ export const SunshadeFlow = ({
       <div ref={featuresRef}>
         {activeStep >= 8 && (
           <StepAddiotionalFeatures
-          renderState={renderState}
+            renderState={renderState}
             setRenderState={setRenderState}
             setIsRenderOpen={setIsRenderOpen}
-            onContinue={() => {
-              setActiveStep(9);
-              scrollToRef(directionRef);
-            }}
+            scrollToRef={scrollToRef}
+            setActiveStep={setActiveStep}
+            directionRef={directionRef}
+            lightingRef={lightingRef}
+            supportRef={supportRef}
           />
         )}
       </div>

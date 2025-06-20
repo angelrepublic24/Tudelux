@@ -50,16 +50,17 @@ export const StepSupport = ({setRenderState, onContinue, setMaterialsData, setIs
       <div className="max-w-sm space-y-4">
         <p className="font-medium text-lg">{support.name}</p>
         <label className="text-sm font-semibold">How many supports?</label>
-        <Input
+        <input
           type="number"
           min={1}
+          className="rounded-xl px-8 py-4 bg-gray-100 border focus:border-[#ff5100]"
           value={quantity}
           onChange={(e) => setQuantity(Number(e.target.value))}
         />
       </div>
 
       <div className="mt-6">
-        <ContinueButton onContinue={handleContinue} />
+        <ContinueButton disabled={quantity <=0 } onContinue={handleContinue} />
       </div>
     </section>
   );

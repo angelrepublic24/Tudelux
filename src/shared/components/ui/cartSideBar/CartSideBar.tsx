@@ -5,7 +5,12 @@ import { IoClose } from "react-icons/io5";
 import { useState } from "react";
 import { PricingBreakdownModal } from "../pricingModal/PricingBreakdownModal";
 import { useCartStore } from "@/shared/store/useCartStore";
-import { CostSummary, MaterialItem, MaterialItemTable } from "@/shared/types";
+import {
+  CartItem,
+  CostSummary,
+  MaterialItem,
+  MaterialItemTable,
+} from "@/shared/types";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { createQuote } from "@/modules/quotes/api/QuoteApi";
@@ -30,7 +35,6 @@ export const CartSideBar = () => {
   const items = useCartStore((state) => state.items);
   const total = useCartStore((state) => state.total());
 
-
   const [activeMaterials, setActiveMaterials] = useState<
     MaterialItemTable[] | null
   >(null);
@@ -38,9 +42,10 @@ export const CartSideBar = () => {
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  const { register, handleSubmit, reset, control } = useForm<QuoteClientInfoPayload>({
-    resolver: zodResolver(QuoteClientInfoSchema),
-  });
+  const { register, handleSubmit, reset, control } =
+    useForm<QuoteClientInfoPayload>({
+      resolver: zodResolver(QuoteClientInfoSchema),
+    });
   const quoteMutation = useMutation({
     mutationFn: createQuote,
     onSuccess: (data) => {
@@ -57,98 +62,116 @@ export const CartSideBar = () => {
   const quoteSummary = useQuoteStore((state) => state.quoteSummary);
 
   const onSubmit = (formData: QuoteClientInfoPayload) => {
-    if (!quoteMaterials || !quoteSummary) {
-      toast.error("No quote data available");
+    if (items.length === 0) {
+      toast.error("Cart is empty");
       return;
     }
-    // Derivar AddOns escaneando los materiales
-    const validAddOns = [
-      "Crown",
-      "Tube",
-      "Channel",
-      '1" In',
-      '1" Out',
-      '3" Extender',
-    ];
-    const derivedAddOns = uniq(
-      quoteMaterials
-        .filter((m) =>
-          validAddOns.some((addon) =>
-            m.name.toLowerCase().includes(addon.toLowerCase())
+
+    const itemsToSend: CreateQuotePayload[] = items.map((item) => {
+      const isPartitionWall = item.product === "Partition Walls";
+      const isCanopy = item.product === "Architectural Canopy";
+      let dimensions: Record<string, number> = {};
+
+      if (isCanopy) {
+        item.materials?.forEach((m) => {
+          const name = m.name.toLowerCase();
+          if (name.includes("front") && name.includes("width"))
+            dimensions.frontWidth = m.inches;
+          else if (name.includes("back") && name.includes("width"))
+            dimensions.backWidth = m.inches;
+          else if (name.includes("middle") && name.includes("width"))
+            dimensions.middleWidth = m.inches;
+          else if (name.includes("left") && name.includes("projection"))
+            dimensions.leftProjection = m.inches;
+          else if (name.includes("right") && name.includes("projection"))
+            dimensions.rightProjection = m.inches;
+          else if (name.includes("middle") && name.includes("projection"))
+            dimensions.middleProjection = m.inches;
+          else if (
+            name.includes("fascia") &&
+            name.includes("width") &&
+            !dimensions.width
           )
-        )
-        .map((m) =>
-          validAddOns.find((addon) =>
-            m.name.toLowerCase().includes(addon.toLowerCase())
+            dimensions.width = m.inches;
+          else if (
+            name.includes("fascia") &&
+            name.includes("projection") &&
+            !dimensions.projection
           )
-        )
-        .filter(Boolean) // Elimina null/undefined
-    );
-
-    // Derivar dimensiones desde materiales tipo "fascia"
-    const dimensions: Record<string, number> = {};
-    quoteMaterials.forEach((m) => {
-      const name = m.name.toLowerCase();
-
-      if (name.includes("front") && name.includes("width")) {
-        dimensions.frontWidth = m.inches;
-      } else if (name.includes("back") && name.includes("width")) {
-        dimensions.backWidth = m.inches;
-      } else if (name.includes("middle") && name.includes("width")) {
-        dimensions.middleWidth = m.inches;
+            dimensions.projection = m.inches;
+        });
+      }
+      if (isPartitionWall && item.dimensionsWall) {
+        dimensions.width = Number(item.dimensionsWall.width);
+        dimensions.height = Number(item.dimensionsWall.height);
       }
 
-      if (name.includes("left") && name.includes("projection")) {
-        dimensions.leftProjection = m.inches;
-      } else if (name.includes("right") && name.includes("projection")) {
-        dimensions.rightProjection = m.inches;
-      } else if (name.includes("middle") && name.includes("projection")) {
-        dimensions.middleProjection = m.inches;
-      }
+      const validAddOns = [
+        "Crown",
+        "Tube",
+        "Channel",
+        '1" In',
+        '1" Out',
+        '3" Extender',
+      ];
+      const derivedAddOns = uniq(
+        item.materials
+          ?.filter((m) =>
+            validAddOns.some((addon) =>
+              m.name.toLowerCase().includes(addon.toLowerCase())
+            )
+          )
+          .map((m) =>
+            validAddOns.find((addon) =>
+              m.name.toLowerCase().includes(addon.toLowerCase())
+            )
+          )
+          .filter(Boolean)
+      );
+      console.log("ITEM PRODUCT:", item.product);
 
-      // Fallback para rectangular
-      if (
-        name.includes("fascia") &&
-        name.includes("width") &&
-        !dimensions.width
-      ) {
-        dimensions.width = m.inches;
-      }
-      if (
-        name.includes("fascia") &&
-        name.includes("projection") &&
-        !dimensions.projection
-      ) {
-        dimensions.projection = m.inches;
-      }
+      return {
+        product: item.product,
+        product_type: isPartitionWall
+          ? item.selectedSTC
+          : item.productType || "Custom Type",
+        shape: item.shape || "",
+        addOns: derivedAddOns as string[],
+        dimensions,
+        materials:
+          item.materials?.map((m) => ({
+            material: m.name,
+            color: m.color,
+            size: `${m.inches} in`,
+            qty: m.quantity,
+            price: m.total,
+          })) || [],
+        materialCost: item.costSummary?.materialCost || 0,
+        cutCost: item.costSummary?.cutsCost || 0,
+        markup: item.costSummary?.finalMarkup || 0,
+        subtotal: item.costSummary?.pricePlus15Markup || 0,
+        total: item.price,
+        color: isPartitionWall ? item.color : undefined,
+        quantity: item.quantity ?? 1,
+        additionalInfo: {},
+      };
     });
 
-    // Usar el primer item del carrito como referencia de contexto
-    const firstItem = items[0];
-    const payload: CreateQuotePayload = {
-      ...formData,
-      product: firstItem?.product || "Custom", // ejemplo: "Canopy"
-      product_type: firstItem?.productType || "Custom Type", // ejemplo: "Custom Canopy"
-      shape: firstItem?.shape || "Rectangular", // ejemplo: "Left Wall"
-      addOns: derivedAddOns,
-      dimensions,
-
-      materials: quoteMaterials.map((m) => ({
-        material: m.name,
-        color: m.color,
-        size: `${m.inches} in`,
-        qty: m.quantity,
-        price: m.total,
-      })),
-      materialCost: quoteSummary.materialCost,
-      cutCost: quoteSummary.cutsCost,
-      markup: quoteSummary.finalMarkup,
-      subtotal: quoteSummary.pricePlus15Markup,
-      total: quoteSummary.finalTotal,
-      additionalInfo: {},
+    const finalQuoteToSend = {
+      customerName: formData.customerName,
+      customerLastName: formData.customerLastName,
+      customerEmail: formData.customerEmail,
+      customerPhone: formData.customerPhone,
+      address_street: formData.address_street,
+      address_city: formData.address_city,
+      address_state: formData.address_state,
+      address_zip: formData.address_zip,
+      total: itemsToSend.reduce((acc, item) => acc + item.total, 0),
+      items: itemsToSend,
     };
+    console.log(finalQuoteToSend);
 
-    quoteMutation.mutate(payload);
+    quoteMutation.mutate(finalQuoteToSend);
   };
   console.log(items);
 
@@ -255,14 +278,21 @@ export const CartSideBar = () => {
                       </p>
                     )}
 
-                    {/* Dimensiones */}
-                    <p className="text-xs text-gray-500">
-                      {item.dimensionsWall?.width}" x{" "}
-                      {item.dimensionsWall?.height}"
-                    </p>
+                    {item.dimensionsWall && (
+                      <p className="text-xs text-gray-500">
+                        {item.dimensionsWall?.width}" x{" "}
+                        {item.dimensionsWall?.height}"
+                      </p>
+                    )}
+                    {item.dimensions && (
+                      <p className="text-xs text-gray-500">
+                        {item.dimensions?.frontWidth}" x{" "}
+                        {item.dimensions?.projection}"
+                      </p>
+                    )}
 
                     {/* Breakdown solo si NO es Partition Wall */}
-                    {item.product !== "Partition Wall" ? (
+                    {item.product == "Architectural Canopy" ? (
                       <button
                         onClick={() => {
                           if (item.materials) {
@@ -275,13 +305,13 @@ export const CartSideBar = () => {
                             setShowModal(true);
                           }
                         }}
-                        className="text-blue-500 hover:underline text-sm mt-1"
+                        className="text-blue-500 hover:underline text-sm mt-1 disabled"
                       >
                         {formatCurrency(item.price)} (see breakdown)
                       </button>
                     ) : (
                       <span className="text-gray-500 text-sm mt-1 italic">
-                        ${item.price.toFixed(2)}
+                        {formatCurrency(item.price)}
                       </span>
                     )}
 
@@ -325,7 +355,7 @@ export const CartSideBar = () => {
                       <FaTrash size={16} />
                     </button>
                     <span className="text-sm text-gray-800 font-semibold mt-1">
-                      Total: {formatCurrency((item.price * item.quantity))}
+                      Total: {formatCurrency(item.price * item.quantity)}
                     </span>
                   </div>
                 </li>
@@ -337,14 +367,14 @@ export const CartSideBar = () => {
         <div>
           <button
             onClick={() => {
-              if (
-                items.length > 0 &&
-                items[0].materials &&
-                items[0].costSummary
-              ) {
+              const validItem = items.find(
+                (item) => item.materials && item.costSummary
+              );
+
+              if (validItem) {
                 useQuoteStore
                   .getState()
-                  .setQuoteData(items[0].materials, items[0].costSummary);
+                  .setQuoteData(validItem.materials, validItem.costSummary);
                 setIsQuoteModalOpen(true);
               } else {
                 toast.error("No valid data to create a quote");

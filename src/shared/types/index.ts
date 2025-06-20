@@ -78,16 +78,15 @@ export type RenderState = {
   color?: string;
   cutPrice?: number;
 
-
   // Partition Wall
   // 🔽 Nuevos campos para Partition Walls
   selectedSTC?: "36 STC" | "48 STC";
   dimensionWall?: {
-    width?:string,
-    height?: string,
-    widthInc?:string,
-    heightIn?: string,
-  }
+    width?: string;
+    height?: string;
+    widthInc?: string;
+    heightIn?: string;
+  };
   selectedMaterial?: Material;
   selectedVariant?: {
     color: string;
@@ -98,7 +97,7 @@ export type RenderState = {
 };
 
 export type PartitionState = {
-  stcType?: '36 STC' | '48 STC';
+  stcType?: "36 STC" | "48 STC";
   width?: number; // en ft
   height?: number; // en ft
   widthInches?: number;
@@ -110,7 +109,7 @@ export type PartitionState = {
     unit: string;
     pricePerUnit: number;
   };
-  addons?: string[]; 
+  addons?: string[];
 };
 
 export type RawAddOn = {
@@ -143,7 +142,7 @@ export type ProfileVariant = {
   unitLength: number;
   roofProjection: number;
   cutPrice: number;
-  addedProjection?: number
+  addedProjection?: number;
 };
 
 export type GroupedProfile = {
@@ -155,9 +154,9 @@ export type MaterialItem = {
   name: string;
   color: string;
   quantity: number;
-  unit: string;
-  pricePerUnit: number;
   totalPrice: number;
+  unit?: string;
+  pricePerUnit?: number;
 };
 
 export type MaterialItemTable = {
@@ -169,7 +168,6 @@ export type MaterialItemTable = {
   pricePerInch?: number;
   cutPrice?: number;
   sourceStep?: string;
-  
 };
 
 export type MaterialQuote = {
@@ -198,21 +196,23 @@ export type CartItem = {
   price: number;
   quantity: number;
   materials: MaterialItemTable[];
-  costSummary: CostSummary;
+  costSummary?: CostSummary;
   dimensions?: {
+    frontWidth?: string;
     width?: string;
     projection?: string;
   };
   dimensionsWall?: {
     width?: string;
     height?: string;
-  }
+  };
   color?: string;
   image?: string;
 
-  product?: string;         // Ej: 'Canopy'
-  productType?: string;    // Ej: 'Custom Canopy'
-  shape?: string;  
+  product?: string; // Ej: 'Canopy'
+  productType?: string; // Ej: 'Custom Canopy'
+  shape?: string;
+  selectedSTC?: string; // ✅ nuevo campo para Partition Walls
 };
 export interface ConfigState {
   width: string;
@@ -239,9 +239,6 @@ export interface ConfigState {
 //   roles?: string[]
 // }
 
-
-
-
 // export type RegisterDistributorFormType = Omit<IUser, 'id'> & {
 //   password_confirmation: string;
 //   phone: string;
@@ -254,9 +251,3 @@ export interface ConfigState {
 //   };
 //   roles: ['distributor']; // opcional si ya está fijo desde el backend
 // };
-
-
-
-
-
-

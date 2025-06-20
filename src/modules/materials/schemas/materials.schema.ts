@@ -11,7 +11,7 @@ export const materialVariantSchema = z.object({
 export const materialSchema = z.object({
   name: z.string().min(1),
   description: z.string().optional(),
-  compatibleWith: z.array(z.string()).min(1, "At least one compatibility value is required."),
+  compatibleWith: z.array(z.string()).optional(),
   variants: z.array(materialVariantSchema).optional(),
 });
 

@@ -147,18 +147,11 @@ export const CanopyFlow = ({
             renderState={renderState}
             setRenderState={setRenderState}
             setIsRenderOpen={setIsRenderOpen}
-            onContinue={() => {
-    if (renderState.extraF === "Louvers") {
-      setActiveStep(9);
-      scrollToRef(directionRef);
-    } else if (renderState.extraF === "Skylight") {
-      setActiveStep(13);
-      scrollToRef(lightingRef);
-    } else {
-      setActiveStep(14); // Default: skip to support
-      scrollToRef(supportRef);
-    }
-  }}
+            scrollToRef={scrollToRef}
+            setActiveStep={setActiveStep}
+            directionRef={directionRef}
+            lightingRef={lightingRef}
+            supportRef={supportRef}
           />
         )}
       </div>

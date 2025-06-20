@@ -132,13 +132,13 @@ export const GetQuotes = ({ limit, page, setPage, search }: Props) => {
           }}
         >
           <QuoteBreakDown
-            materials={selectedQuote.materials}
+            materials={selectedQuote}
             summary={{
-              materialCost: selectedQuote.materialCost,
-              cutsCost: selectedQuote.cutCost,
-              combinedCost: selectedQuote.subtotal,
-              markup: selectedQuote.markup,
-              pricePlus15Markup: selectedQuote.subtotal + selectedQuote.markup,
+              materialCost: selectedQuote,
+              cutsCost: selectedQuote,
+              combinedCost: selectedQuote,
+              markup: selectedQuote,
+              pricePlus15Markup: selectedQuote + selectedQuote,
               finalMarkup: 0,
               finalTotal: selectedQuote.total,
             }}

@@ -27,9 +27,9 @@ export function ShopDropdown() {
         <DropdownMenuItem onClick={() => router.push('/auth/login')}>
           Login
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => router.push('/start-design')}>
+        {/* <DropdownMenuItem onClick={() => router.push('/start-design')}>
           Start Design
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         <DropdownMenuItem onClick={() => router.push('/request-quote')}>
           Request Quote
         </DropdownMenuItem>

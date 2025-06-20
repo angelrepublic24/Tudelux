@@ -1,9 +1,11 @@
 "use client";
 import { CostSummary, MaterialQuote } from "@/shared/types";
 import { QuoteHeader } from "./QuoteHeader";
+import { formatCurrency } from "@/shared/utils/formatCurency";
+import { CreateQuotePayload, QuoteToSendPayload } from "../schema/quote.schema";
 
 interface Props {
-  materials: MaterialQuote[];
+  materials: QuoteToSendPayload;
   summary: CostSummary;
   customerInfo: {
     name: string;
@@ -23,6 +25,9 @@ export const QuoteBreakDown = ({
   quoteNumber,
   quoteDate,
 }: Props) => {
+ const product = materials.items.find((m) => m.product === "Architectural Canopy");
+ const materialPlusCuts = product.cutCost + product.materialCost
+ const markup15 = materialPlusCuts * 0.15
   return (
     <div className=" text-black font-sans text-sm">
       {/* Header */}
@@ -42,7 +47,7 @@ export const QuoteBreakDown = ({
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {materials.map((item, i) => (
+            {product.materials.map((item, i) => (
               <tr key={i} className="hover:bg-gray-50">
                 <td className="p-3">{item.material}</td>
                 <td className="p-3">{item.color}</td>
@@ -58,15 +63,15 @@ export const QuoteBreakDown = ({
       </div>
       <div className="flex justify-end max-w-5xl mx-auto">
         <div className="w-full sm:w-1/2 md:w-1/3text-sm space-y-2">
-          <SummaryLine label="Material Cost" value={summary.materialCost} />
-          <SummaryLine label="Cut Cost" value={summary.cutsCost} />
-          <SummaryLine label="Subtotal" value={summary.combinedCost} />
-          <SummaryLine label="15% Markup" value={summary.markup} />
-          <SummaryLine label="Subtotal + Markup" value={summary.pricePlus15Markup} />
-          <SummaryLine label="Final Markup" value={summary.finalMarkup} />
+          <SummaryLine label="Material Cost" value={product.materialCost} />
+          <SummaryLine label="Cut Cost" value={product.cutCost} />
+          <SummaryLine label="Subtotal" value={materialPlusCuts} />
+          <SummaryLine label="15% Markup" value={markup15} />
+          <SummaryLine label="Subtotal + Markup" value={product.subtotal} />
+          <SummaryLine label="Final Markup" value={product.markup} />
           <SummaryLine
             label="Total"
-            value={summary.finalTotal}
+            value={product.total}
             highlight
           />
         </div>
@@ -91,7 +96,7 @@ const SummaryLine = ({
   <div className="flex justify-between border-b pb-1">
     <span className={`text-gray-600 ${highlight ? "font-bold text-base" : ""}`}>{label}</span>
     <span className={highlight ? "text-[#ff5100] font-bold text-base" : "text-gray-800"}>
-      ${value.toFixed(2)}
+      {formatCurrency(value)}
     </span>
   </div>
 );

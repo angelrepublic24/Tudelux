@@ -80,6 +80,7 @@ export const StepComplete = ({
         image: renderState.renderUrl,
         color: renderState.selectedVariant.color,
         product: renderState.title,
+        selectedSTC: renderState.selectedSTC
       };
     }
 

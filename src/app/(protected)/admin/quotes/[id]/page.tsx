@@ -10,6 +10,7 @@ export default function QuoteDetailPage() {
   const id = params?.id;
 
   const { data, isLoading, isError } = useGetQuoteById(Number(id))
+  console.log(data);
   if (isLoading) return <Spinner />;
   if (isError || !data) {
     toast.error('Failed to load quote');
