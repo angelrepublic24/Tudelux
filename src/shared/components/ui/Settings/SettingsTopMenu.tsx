@@ -7,27 +7,27 @@ import Link from 'next/link';
 import { logout } from '@/modules/auth/api/AuthApi';
 import { User } from '@/modules/auth/schemas/auth.schema';
 
-export const AdminTopBar = ({ user }: { user: User }) => {
+export const SettingTopMenu = ({ user }: { user: User }) => {
   return (
-    <header className="fixed top-0 w-full  right-0 h-16 shadow-md px-6 flex items-center justify-end z-40 bg-gray-50 ">
-      {/* <div className="text-xl font-semibold text-[#ff5100]">
+    <header className="fixed top-0 w-full  right-0 h-16  px-6 flex items-center justify-between z-40 bg-[#2d3e50]">
+      <div className="text-xl font-semibold text-[#ff5100]">
         Admin Dashboard
-      </div> */}
+      </div>
 
       <div className="flex items-center gap-6">
         <button className="relative">
-          <IoNotificationsOutline size={24}  />
+          <IoNotificationsOutline size={24} color='white' />
           <span className="absolute top-0 right-0 bg-[#ff5100] text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
         </button>
 
         <Link href={'/admin/settings'} className='cursor-pointer'>
-          <IoSettingsOutline size={22}  />
+          <IoSettingsOutline size={22} color='white' />
         </Link>
 
         {/* Usuario con menú flotante */}
         <Popover className="relative">
           <PopoverButton as="div" className="flex items-center gap-2 cursor-pointer">
-            <FaUserCircle size={28} />
+            <FaUserCircle size={28} color='white' />
             <span className="hidden md:inline text-sm font-medium">{user.name}</span>
           </PopoverButton>
 

@@ -11,11 +11,7 @@ export const SalesTopBar = ({user}: {user: User}) => {
     const base = "/sales";
 
   return (
-    <header className="fixed top-0 left-[280px] right-0 h-16 bg-white shadow-md px-6 flex items-center justify-between z-40">
-      <div className="text-xl font-semibold text-[#ff5100]">
-        Sales Portal
-      </div>
-
+    <header className="fixed top-0 w-full h-16 bg-gray-50 shadow-md px-6 flex items-center justify-end z-40">
       <div className="flex items-center gap-6">
         <button className="relative">
           <IoNotificationsOutline size={24} />

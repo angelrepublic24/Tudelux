@@ -19,7 +19,7 @@ export const GetCustomersBySales = ({limit, page, setPage, search }: Props) => {
   const currentPage = data?.currentPage || page;
 
   return (
-    <div className="space-y-6 max-w-6xl">
+    <div className="space-y-6">
       {/* Feedback */}
       {isLoading && <div className="text-center text-gray-500">Loading customers...</div>}
       {isError && <div className="text-center text-red-500">{(error as Error).message}</div>}

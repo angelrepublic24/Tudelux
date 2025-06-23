@@ -5,9 +5,12 @@ import { LoginFormType, RegisterFormType } from "../types";
 import {
   confirmAccount,
   findCustomerBySales,
+  forgotPassword,
   login,
   profile,
   register,
+  resetPassword,
+  validateToken,
 } from "../api/AuthApi";
 import { toast } from "react-toastify";
 import { Api } from "@/shared/global/Global";
@@ -59,3 +62,22 @@ export const useFindCustomersBySales = ( limit: number, page: number, search: st
     queryFn: () => findCustomerBySales(limit, page, search),
   });
 };
+
+export const useForgotPassword = () => {
+  return useMutation({
+    mutationFn: (email: string) => forgotPassword(email),
+    onError: (error) => toast.error(error.message)
+  })
+}
+
+export const useValidateToken = () => {
+  return useMutation({
+    mutationFn: (token: string) => validateToken(token),
+  })
+}
+
+export const useResetPassword = (token: string) => {
+  return useMutation({
+    mutationFn: ( password: string ) => resetPassword(token, password),
+  })
+}

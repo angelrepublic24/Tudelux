@@ -11,7 +11,7 @@ export default function AuthLayout({
     return(
         <>
         <div className="lg:grid grid-cols-2 lg:min-h-screen">
-            <div className="bg-black lg:bg-auth lg:bg-30 flex justify-center items-center bg-no-repeat bg-left-bottom">
+            <div className="bg-[#ff5100] lg:bg-auth lg:bg-30 flex justify-center items-center bg-no-repeat bg-left-bottom">
                 <div className="w-96 py-10 lg:py-20">
                     <Link href={'/'}>
                         <Logo />

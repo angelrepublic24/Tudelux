@@ -1,18 +1,15 @@
-"use client";
-
-import { GetQuotes } from "@/modules/quotes/components/GetQuotes";
+'use client'
+import { UsersSettings } from "@/modules/admin/settings/components/UserSettings";
 import { SearchInput } from "@/shared/components/ui/searchInput/SearchInput";
-import { useState } from "react";
+import React, { useState } from "react";
 
-export default function QuotesPage() {
-  const [limit, setLimit] = useState(10);
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState(""); // ✅ agregar el estado search
-
+export default function UserPage() {
+    const [limit, setLimit] = useState(10);
+      const [page, setPage] = useState(1);
+      const [search, setSearch] = useState("");
   return (
-    <section className="p-6 rounded-xl max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Manage Quotes</h1>
-
+    <section className="p-6 rounded-xl w-full mx-auto">
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Manage you users</h1>
 
       <div className="flex flex-col md:flex-row md:items-end md:justify-between">
         {/* Search Input */}
@@ -42,8 +39,7 @@ export default function QuotesPage() {
           </select>
         </div>
       </div>
-
-      <GetQuotes limit={limit} page={page} setPage={setPage} search={search} />
+      <UsersSettings />
     </section>
   );
 }

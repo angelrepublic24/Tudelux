@@ -9,6 +9,10 @@ type DistributorsResponse = {
   totalPages: number;
   currentPage: number;
 };
+type Filters = {
+  isApproved?: boolean;
+  companyStatus?: string;
+};
 
 export const useRegisterDistributor = () => {
   return useMutation({
@@ -23,10 +27,15 @@ export const useRegisterDistributor = () => {
   });
 };
 
-export const useGetDistributors = (limit: number, page: number, search: string) => {
+export const useGetDistributors = (
+  limit: number,
+  page: number,
+  search: string,
+  filters?: Filters
+) => {
   return useQuery<DistributorsResponse>({
-    queryKey: ["distributors", limit, page, search],
-    queryFn: () => findDistributors(limit, page, search),
+    queryKey: ["distributors", limit, page, search, filters],
+    queryFn: () => findDistributors(limit, page, search, filters),
     staleTime: 1000 * 60 * 5,
     placeholderData: (prev) => prev,
   });

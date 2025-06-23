@@ -14,6 +14,7 @@ import {
   TableRow
 } from '@/components/ui/table';
 import { findSales } from '../api/sales.api';
+import Link from 'next/link';
 
 type Props = {
   limit: number;
@@ -39,6 +40,8 @@ export const GetSeller = ({ limit, page, setPage }: Props) => {
   const totalPages = data?.totalPages || 1;
   const currentPage = data?.currentPage || page;
 
+  console.log(sales);
+
   return (
     <div className="space-y-6 max-w-6cl">
       {/* Loading / Error / Empty States */}
@@ -61,7 +64,7 @@ export const GetSeller = ({ limit, page, setPage }: Props) => {
                 <TableRow>
                   <TableHead>Name</TableHead>
                   <TableHead>Email</TableHead>
-                  <TableHead>Company</TableHead>
+                  <TableHead>Orders</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Created</TableHead>
                 </TableRow>
@@ -69,7 +72,9 @@ export const GetSeller = ({ limit, page, setPage }: Props) => {
               <TableBody>
                 {sales.map((sale) => (
                   <TableRow key={sale.id}>
-                    <TableCell className="font-medium">{sale.name}</TableCell>
+                    <TableCell className="font-medium">
+                      <Link href={`/admin/sales/${sale.id}`}>{sale.name}</Link>
+                    </TableCell>
                     <TableCell>{sale.email}</TableCell>
                     <TableCell>{sale.company?.name || '—'}</TableCell>
                     <TableCell>

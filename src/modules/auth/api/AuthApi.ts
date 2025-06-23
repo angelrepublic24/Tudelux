@@ -28,20 +28,66 @@ export async function confirmAccount(token: string) {
   }
 }
 
+export async function forgotPassword(email: string) {
+  try {
+    const { data } = await Api.post("/auth/forgot-password", { email });
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.message);
+    }
+  }
+}
+
+export async function validateToken(token: string) {
+  try {
+    const { data } = await Api.post("/auth/validate-token", { token });
+    return data;
+  } catch (error) {
+    console.log(error);
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.message);
+    }
+  }
+}
+
+export async function resetPassword(token: string, password: string){
+  try {
+    const {data} = await Api.post(`/auth/reset-password/${token}`, {password})
+    return data;
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.message);
+    }
+  }
+}
+
+// export async function login(formData: LoginFormType) {
+//   try {
+//     const res = await fetch("/api/auth/login", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify(formData),
+//     });
+
+//     if (!res.ok) {
+//       const error = await res.json();
+//       throw new Error(error.message);
+//     }
+
+//     return await res.json(); // puedes devolver { success: true }
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// }
+
 export async function login(formData: LoginFormType) {
   try {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.message);
-    }
-
-    return await res.json(); // puedes devolver { success: true }
+    const {data} = await Api.post("/auth/login", formData,{withCredentials: true})
+    return data;
   } catch (error) {
     console.error(error);
     throw error;
@@ -77,7 +123,7 @@ export async function logout() {
   }
 }
 
-export async function findCustomerBySales(limit = 10, page = 1, search = '') {
+export async function findCustomerBySales(limit = 10, page = 1, search = "") {
   try {
     const params = new URLSearchParams({
       limit: limit.toString(),
@@ -85,7 +131,7 @@ export async function findCustomerBySales(limit = 10, page = 1, search = '') {
     });
 
     if (search.trim()) {
-      params.append('search', search.trim());
+      params.append("search", search.trim());
     }
 
     const { data } = await Api.get(
@@ -99,7 +145,6 @@ export async function findCustomerBySales(limit = 10, page = 1, search = '') {
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.message);
     }
-    throw new Error('Unexpected error occurred');
+    throw new Error("Unexpected error occurred");
   }
 }
-

@@ -49,7 +49,7 @@ const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefin
   if (isLoading) return <p className="text-center mt-10">Loading...</p>;
 
   return (
-    <div className="max-w-6xl mx-auto mt-6">
+    <div className="mt-6">
       <div className="mb-4 flex justify-end">
         <Select onValueChange={(val) => setSelectedStatus(val === 'all' ? undefined : val)} defaultValue="all">
           <SelectTrigger className="w-[200px]">

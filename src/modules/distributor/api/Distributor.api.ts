@@ -2,6 +2,11 @@ import { Api } from "@/shared/global/Global";
 import { RegisterDistributorFormType } from "@/modules/auth/schemas/auth.schema";
 import { isAxiosError } from "axios";
 
+type DistributorFilters = {
+  isApproved?: boolean;
+  companyStatus?: string;
+};
+
 export async function registerDistributor(
   formData: RegisterDistributorFormType
 ) {
@@ -18,21 +23,34 @@ export async function registerDistributor(
   }
 }
 
-export async function findDistributors(limit = 10, page = 1, search = "") {
+export async function findDistributors(
+  limit = 10,
+  page = 1,
+  search = "",
+  filters: DistributorFilters = {}
+) {
   try {
     const params = new URLSearchParams({
       limit: limit.toString(),
       page: page.toString(),
     });
 
-  
     if (search.trim()) {
       params.append("search", search.trim());
     }
+
+    if (filters.isApproved !== undefined) {
+      params.append("isApproved", String(filters.isApproved));
+    }
+
+    if (filters.companyStatus) {
+      params.append("companyStatus", filters.companyStatus);
+    }
+
     const { data } = await Api.get(`/auth/distributors?${params.toString()}`, {
       withCredentials: true,
     });
-    console.log(data);
+
     return data;
   } catch (error) {
     console.error(error);
@@ -45,9 +63,10 @@ export async function findDistributors(limit = 10, page = 1, search = "") {
 
 export async function findDistributorById(id: number) {
   try {
-    const { data } = await Api.get(`auth/distributor/${id}`, {
+    const { data } = await Api.get(`auth/distributors/${id}`, {
       withCredentials: true,
     });
+    console.log(data);
     return data;
   } catch (error) {
     console.error(error);

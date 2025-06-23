@@ -1,35 +1,36 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { useGetDistributors } from '../services/distributor.service';
 import Pagination from '@/shared/utils/Pagination';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import Link from 'next/link';
 
 type Props = {
   limit: number;
   page: number;
   setPage: (page: number) => void;
   search: string;
+  filters?: {
+    isApproved?: boolean;
+    companyStatus?: string;
+  };
 };
 
-export const GetDistributors = ({ limit, page, setPage, search }: Props) => {
-  const { data, isLoading, isError, error } = useGetDistributors(limit, page, search);
+export const GetDistributors = ({ limit, page, setPage, search, filters = {} }: Props) => {
+  const { data, isLoading, isError, error } = useGetDistributors(limit, page, search, filters);
   const distributors = data?.data || [];
   const totalPages = data?.totalPages || 1;
   const currentPage = data?.currentPage || page;
 
   return (
-    <div className="space-y-6 max-w-6xl">
-      {/* Search */}
-
-      {/* Feedback */}
+    <div className="space-y-6 ">
       {isLoading && <div className="text-center text-gray-500">Loading distributors...</div>}
       {isError && <div className="text-center text-red-500">{(error as Error).message}</div>}
       {!isLoading && !distributors.length && (
         <div className="text-center text-gray-400 italic">No distributors found.</div>
       )}
 
-      {/* Table */}
       {!isLoading && distributors.length > 0 && (
         <>
           <div className="border rounded-lg overflow-hidden">
@@ -46,7 +47,9 @@ export const GetDistributors = ({ limit, page, setPage, search }: Props) => {
               <TableBody>
                 {distributors.map((d) => (
                   <TableRow key={d.id} className="text-sm">
-                    <TableCell>{d.name}</TableCell>
+                    <TableCell>
+                      <Link href={`/admin/distributors/${d.id}`}>{d.name}</Link>
+                    </TableCell>
                     <TableCell>{d.email}</TableCell>
                     <TableCell>{d.company?.name || '—'}</TableCell>
                     <TableCell>
@@ -77,7 +80,6 @@ export const GetDistributors = ({ limit, page, setPage, search }: Props) => {
             </Table>
           </div>
 
-          {/* Pagination */}
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}

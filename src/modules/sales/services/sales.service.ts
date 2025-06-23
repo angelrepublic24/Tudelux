@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createSales, findSales} from "../api/sales.api";
+import { createSales, findSales, findSalesById} from "../api/sales.api";
 import { toast } from "react-toastify";
 import { RegisterSaleFormType } from "../schema/sales.schema";
 
@@ -17,4 +17,12 @@ export const useCreateSales = () => {
     mutationFn: (data: RegisterSaleFormType) => createSales(data),
     onError: (error) => toast.error(error.message)
   })
+}
+
+export const useFindSalesById = (id) => {
+ return useQuery({
+     queryKey: ['sales', id],
+     queryFn: () => findSalesById(Number(id)),
+     enabled: !!id,
+   });
 }

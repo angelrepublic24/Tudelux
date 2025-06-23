@@ -1,27 +1,31 @@
-'use client';
-import { GetCustomersBySales } from '@/modules/auth/components/find/CustomerBySales';
-import { SearchInput } from '@/shared/components/ui/searchInput/SearchInput';
-import { useState } from 'react';
+"use client";
 
-export default function CustomersBySalesPage() {
+import { GetQuotes } from "@/modules/quotes/components/GetQuotes";
+import { SearchInput } from "@/shared/components/ui/searchInput/SearchInput";
+import { useState } from "react";
+
+export default function QuotesPage() {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(""); // ✅ agregar el estado search
 
   return (
-    <section className="p-6 rounded-xl w-full mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Customers Assigned</h1>
+    <section className="p-6 rounded-xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Manage Quotes</h1>
 
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
+
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between">
+        {/* Search Input */}
         <SearchInput
           value={search}
           onChange={(val) => {
             setPage(1);
             setSearch(val);
           }}
-          placeholder="Search customers..."
+          placeholder="Search by name or email..."
         />
 
+        {/* Rows per page */}
         <div className="flex items-center">
           <label className="text-sm mr-2 text-gray-600">Rows per page:</label>
           <select
@@ -39,13 +43,7 @@ export default function CustomersBySalesPage() {
         </div>
       </div>
 
-      <GetCustomersBySales
-        limit={limit}
-        page={page}
-        setPage={setPage}
-        search={search}
-      />
+      <GetQuotes limit={limit} page={page} setPage={setPage} search={search} />
     </section>
   );
 }
-

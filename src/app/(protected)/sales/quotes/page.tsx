@@ -9,7 +9,7 @@ export default function SalesQuotesPage() {
   const [search, setSearch] = useState("");
 
   return (
-    <section className="p-6 rounded-xl max-w-6xl mx-auto">
+    <section className="p-6 rounded-xl w-full mx-auto">
       <h1 className="text-3xl font-bold mb-6 text-gray-800">Manage Quotes</h1>
 
       <div className="flex flex-col md:flex-row md:items-end md:justify-between">

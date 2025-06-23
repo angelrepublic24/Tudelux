@@ -29,12 +29,28 @@ export async function findSales(limit = 10, page = 1) {
   }
 }
 
-export async function createSales(formData: RegisterSaleFormType){
+export async function findSalesById(id: number) {
+  try {
+    const { data } = await Api.get(`auth/sales/${id}`, {
+      withCredentials: true,
+    });
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error(error);
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error("Unexpected error occurred");
+  }
+}
+
+export async function createSales(formData: RegisterSaleFormType) {
   try {
     const { password_confirmation, ...dataToSend } = formData;
-    const {data} = await Api.post('/auth/create-account/sales', dataToSend);
+    const { data } = await Api.post("/auth/create-account/sales", dataToSend);
     console.log(data);
-    return data
+    return data;
   } catch (error) {
     console.log(error);
     if (isAxiosError(error) && error.response) {

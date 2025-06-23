@@ -8,7 +8,13 @@ export const RegisterSchema = z
     email: z.string().min(1, { message: "Email is required" }).email(),
     password: z
       .string()
-      .min(6, { message: "The password is too short, min 6 characters" }),
+      .min(6, { message: "The password is too short, min 6 characters" })
+      .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter",
+      })
+      .regex(/[^A-Za-z0-9]/, {
+        message: "Password must contain at least one special character",
+      }),
     password_confirmation: z.string(),
   })
   .refine((data) => data.password === data.password_confirmation, {
@@ -21,7 +27,13 @@ export const RegisterDistributorSchema = z
     name: z.string().min(1, "Name is required"),
     lName: z.string().min(1, "Last name is required"),
     email: z.string().email("Invalid email"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+    password: z.string().min(6, "Password must be at least 6 characters")
+    .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter",
+      })
+      .regex(/[^A-Za-z0-9]/, {
+        message: "Password must contain at least one special character",
+      }),
     password_confirmation: z.string(),
 
     phone: z
@@ -60,6 +72,28 @@ export const UserSchema = z.object({
   company: CompanySchemaForm.optional().nullable(), // 👈 hazlo opcional
 });
 
+export const ForgotPasswordSchema = z.object({
+    email: z.string()   
+            .email( {message: 'Email no válido'}),
+})
+
+export const ResetPassworSchema = z
+  .object({
+    password: z
+      .string()
+      .min(6, { message: "The password is too short, min 6 characters" })
+      .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter",
+      })
+      .regex(/[^A-Za-z0-9]/, {
+        message: "Password must contain at least one special character",
+      }),
+    password_confirmation: z.string(),
+  })
+  .refine((data) => data.password === data.password_confirmation, {
+    message: "The passwords do not match",
+    path: ["password_confirmation"],
+  });
 
 export type User = z.infer<typeof UserSchema>;
 

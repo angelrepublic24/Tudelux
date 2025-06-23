@@ -179,6 +179,15 @@ export type MaterialQuote = {
   price: number;
   sourceStep?: string;
 };
+export type MatarialItemQuote = {
+  material: string;
+  color: string;
+  size: number;
+  qty: number;
+  pricePerInch: number;
+  price: number;
+  sourceStep?: string;
+};
 
 export type CostSummary = {
   materialCost: number;

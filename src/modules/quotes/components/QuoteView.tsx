@@ -61,28 +61,44 @@ export const QuoteView = ({
                     <div className="flex flex-col italic text-sm">
                       {item.product === "Architectural Canopy" && (
                         <>
-                          <small>
-                            Front Width: {item.dimensions?.frontWidth}"
-                          </small>
-                          <small>
-                            Back Width: {item.dimensions?.backWidth}"
-                          </small>
-                          <small>
-                            Middle Width: {item.dimensions?.middleWidth}"
-                          </small>
-                          <small>
-                            Left Projection: {item.dimensions?.leftProjection}"
-                          </small>
-                          <small>
-                            Right Projection: {item.dimensions?.rightProjection}
-                            "
-                          </small>
-                          <small>
-                            Middle Projection:{" "}
-                            {item.dimensions?.middleProjection}"
-                          </small>
+                          {item.dimensions?.width && item.dimensions?.projection && (
+                            <small>{item.dimensions.width}"x{item.dimensions.projection}</small>
+                          )}
+                          {item.dimensions?.frontWidth && (
+                            <small>
+                              Front Width: {item.dimensions.frontWidth}"
+                            </small>
+                          )}
+                          {item.dimensions?.backWidth && (
+                            <small>
+                              Back Width: {item.dimensions.backWidth}"
+                            </small>
+                          )}
+                          {item.dimensions?.middleWidth && (
+                            <small>
+                              Middle Width: {item.dimensions.middleWidth}"
+                            </small>
+                          )}
+                          {item.dimensions?.leftProjection && (
+                            <small>
+                              Left Projection: {item.dimensions.leftProjection}"
+                            </small>
+                          )}
+                          {item.dimensions?.rightProjection && (
+                            <small>
+                              Right Projection:{" "}
+                              {item.dimensions.rightProjection}"
+                            </small>
+                          )}
+                          {item.dimensions?.middleProjection && (
+                            <small>
+                              Middle Projection:{" "}
+                              {item.dimensions.middleProjection}"
+                            </small>
+                          )}
                         </>
                       )}
+
                       {item.product === "Partition Walls" && (
                         <>
                           <span className="text-gray-600">

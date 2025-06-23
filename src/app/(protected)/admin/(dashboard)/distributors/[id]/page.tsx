@@ -19,6 +19,7 @@ export default function DistributorDetailPage() {
 
   if (isLoading) return <Spinner />;
 
+  console.log(distributor);
   return (
     <section className="p-6">
       <h1 className="text-3xl font-bold text-[#ff5100] mb-4">
@@ -29,7 +30,7 @@ export default function DistributorDetailPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <Card title="Company">{distributor?.company?.name || 'N/A'}</Card>
         <Card title="Email">{distributor?.email}</Card>
-        <Card title="Phone">{distributor?.phone || 'N/A'}</Card>
+        <Card title="Phone">{distributor?.company?.phone || 'N/A'}</Card>
         <Card title="Status">{distributor?.status ? 'Active' : 'Inactive'}</Card>
       </div>
 

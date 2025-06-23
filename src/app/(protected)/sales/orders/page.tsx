@@ -5,7 +5,7 @@ import { orders } from '@/shared/data/orderData';
 export default function OrdersPage() {
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Distributor Projects</h2>
+      <h2 className="text-2xl font-bold mb-4">Sales Projects</h2>
 
       {/* Filtros (placeholder) */}
       <div className="grid grid-cols-3 gap-4 mb-6">
