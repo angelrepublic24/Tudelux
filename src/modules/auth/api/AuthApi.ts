@@ -7,10 +7,8 @@ export async function register(formData: RegisterFormType) {
   try {
     const { password_confirmation, ...dataToSend } = formData;
     const { data } = await Api.post("/auth/create-account", dataToSend);
-    console.log(data);
     return data;
   } catch (error) {
-    console.log(error);
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.message);
     }
@@ -74,8 +72,10 @@ export async function login(formData: LoginFormType) {
     });
     return data;
   } catch (error) {
-    console.error(error);
-    throw error;
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error("Unexpected error occurred");
   }
 }
 
@@ -84,7 +84,6 @@ export async function profile() {
     const { data } = await Api.get("/auth/profile", {
       withCredentials: true,
     });
-    console.log(data);
     return data;
   } catch (error) {
     console.log(error);
@@ -126,7 +125,6 @@ export async function findCustomerBySales(limit = 10, page = 1, search = "") {
 
     return data;
   } catch (error) {
-    console.error(error);
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.message);
     }
@@ -173,7 +171,6 @@ export async function createUserToTeam(formData: UserTeam) {
     const { data } = await Api.post("/auth/create-account/team", formData);
     return data;
   } catch (error) {
-    console.log(error);
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.message);
     }
@@ -185,7 +182,6 @@ export async function updateUser(id: number, formData: UserType) {
     const { data } = await Api.patch(`/auth/update/${id}`, formData);
     return data;
   } catch (error) {
-    console.log(error);
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.message);
     }
