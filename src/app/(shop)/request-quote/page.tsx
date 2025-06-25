@@ -74,7 +74,7 @@ export default function RequestQuotePage() {
   }, [materialsData]);
 
   return (
-    <div className="mx-auto container">
+    <div className="mx-auto w-[90%]">
       {/* {renderState && (
         <div className="flex items-center justify-end p-4 sticky top-0 z-50">
           <button

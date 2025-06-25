@@ -19,9 +19,9 @@ export const chooseShape = [
         image:"/RightWall.png",
         render: "",
     },
-    {
-        name:"Custom Shape",
-        image:"/Custom.png",
-        render: "",
-    },
+    // {
+    //     name:"Custom Shape",
+    //     image:"/Custom.png",
+    //     render: "",
+    // },
 ]

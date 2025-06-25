@@ -16,7 +16,7 @@ type Props = {
   setRenderState: React.Dispatch<React.SetStateAction<RenderState>>;
   materials: MaterialItemTable[];
   summary: CostSummary;
-  setMaterialsData: React.Dispatch<React.SetStateAction<MaterialItemTable[]>>; // ✅ nuevo
+  setMaterialsData: React.Dispatch<React.SetStateAction<MaterialItemTable[]>>;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
   setIsRenderOpen?: (open: boolean) => void;
 };
@@ -32,15 +32,11 @@ export const StepComplete = ({
 }: Props) => {
   const addItem = useCartStore.getState().addItem;
   const openCart = useUIStore.getState().openCart;
+  const openQuoteModal = useUIStore.getState().openQuoteModal;
 
-  const handleAddToCart = () => {
-    console.log("HANDLE ADD TO CART DISPARADO");
-    console.log("RenderState:", renderState);
-
-    let newItem: CartItem | null = null;
-
+  const generateNewItem = (): CartItem | null => {
     if (renderState.title === "Architectural Canopy") {
-      newItem = {
+      return {
         id: uuidv4(),
         name: `${renderState.title} - ${renderState.productType}`,
         price: summary.finalTotal,
@@ -54,23 +50,24 @@ export const StepComplete = ({
         productType: renderState.productType,
         shape: renderState.shape,
       };
-    } else if (renderState.title === "Partition Walls") {
-      const unitPrice = renderState.selectedVariant?.pricePerUnit || 0;
-      const finalTotal = unitPrice;
+    }
 
-      newItem = {
+    if (renderState.title === "Partition Walls") {
+      const unitPrice = renderState.selectedVariant?.pricePerUnit || 0;
+
+      return {
         id: uuidv4(),
         name: `${renderState.title} - ${renderState.selectedSTC}`,
-        price: finalTotal,
+        price: unitPrice,
         quantity: 1,
         materials: [],
         costSummary: {
-          materialCost: finalTotal,
+          materialCost: unitPrice,
           cutsCost: 0,
-          combinedCost: finalTotal,
+          combinedCost: unitPrice,
           markup: 0,
           pricePlus15Markup: 0,
-          finalTotal,
+          finalTotal: unitPrice,
           finalMarkup: 0,
         },
         dimensionsWall: {
@@ -80,21 +77,44 @@ export const StepComplete = ({
         image: renderState.renderUrl,
         color: renderState.selectedVariant.color,
         product: renderState.title,
-        selectedSTC: renderState.selectedSTC
+        selectedSTC: renderState.selectedSTC,
       };
     }
 
+    return null;
+  };
+
+  const clearStepState = () => {
+    setRenderState({});
+    setMaterialsData([]);
+    setActiveStep(0);
+    setIsRenderOpen?.(false);
+  };
+
+  const handleAddToCart = () => {
+    const newItem = generateNewItem();
     if (newItem) {
       addItem(newItem);
-      openCart();
-      setRenderState({});
-      setMaterialsData([]);
-      setActiveStep(0);
-      setIsRenderOpen?.(false);
+      openCart(); // ✅ abre el carrito
+      clearStepState();
     } else {
       console.warn("Producto no reconocido para agregar al carrito");
     }
   };
+
+ const handleAddToQuote = () => {
+  const newItem = generateNewItem();
+  if (newItem) {
+    addItem(newItem);
+    openQuoteModal(); // ✅ abre el modal directamente
+          clearStepState();
+
+  } else {
+    console.warn("Producto no reconocido para agregar al carrito");
+  }
+};
+
+
 
   return (
     <section>
@@ -107,17 +127,17 @@ export const StepComplete = ({
           </p>
         </div>
         <div className="flex justify-start space-x-3">
-          <button className=" w-60 rounded-xl px-10 py-5 bg-[#ff5100] border text-[#ece83a] hover:bg-white border-[#ff5100]">
-            <span>Quote</span>
-          </button>
           <button
             onClick={handleAddToCart}
             className="w-60 rounded-xl px-10 py-5 bg-[#ff5100] border text-[#ece83a] hover:border-[#ff5100] hover:bg-white"
           >
             <span>Add to cart</span>
           </button>
-          <button className="w-60 rounded-xl px-10 py-5 border-[#ff5100] bg-white border text-[#ece83a]">
-            <span>Quote</span>
+          <button
+            onClick={handleAddToQuote}
+            className="w-60 rounded-xl px-10 py-5 border-[#ff5100] bg-white border text-[#ece83a] hover:bg-[#ff5100]"
+          >
+            <span>Request Quote</span>
           </button>
         </div>
       </div>

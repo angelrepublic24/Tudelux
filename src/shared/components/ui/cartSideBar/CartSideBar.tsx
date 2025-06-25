@@ -188,67 +188,6 @@ export const CartSideBar = () => {
         />
       )}
 
-      {isQuoteModalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Send Quote</h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-              <Input
-                {...register("customerName")}
-                placeholder="First Name"
-                className="input"
-              />
-              <Input
-                {...register("customerLastName")}
-                placeholder="Last Name"
-                className="input"
-              />
-              <Input
-                {...register("customerEmail")}
-                placeholder="Email"
-                type="email"
-                className="input"
-              />
-              <Input
-                {...register("customerPhone")}
-                placeholder="Phone"
-                className="input"
-              />
-              <Input
-                {...register("address_street")}
-                placeholder="Address"
-                className="input"
-              />
-              <Input
-                {...register("address_city")}
-                placeholder="City"
-                className="input"
-              />
-              <StateSelector control={control} />
-
-              <Input
-                {...register("address_zip")}
-                placeholder="ZIP"
-                className="input"
-              />
-              <button
-                type="submit"
-                className="w-full bg-[#ff5100] text-white py-2 rounded"
-              >
-                Send Quote
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsQuoteModalOpen(false)}
-                className="w-full text-gray-500 mt-2"
-              >
-                Cancel
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-
       <div className="fixed inset-0 bg-black/40 z-40" onClick={closeCart} />
       <aside className="fixed top-0 right-0 w-[400px] h-screen bg-white shadow-2xl z-100 p-6 flex flex-col transition-transform duration-300">
         <div className="flex justify-between items-center mb-6">
@@ -292,28 +231,29 @@ export const CartSideBar = () => {
                     )}
 
                     {/* Breakdown solo si NO es Partition Wall */}
-                    {item.product == "Architectural Canopy" ? (
-                      <button
-                        onClick={() => {
-                          if (item.materials) {
-                            const summary = calculateCostSummary(
-                              item.materials,
-                              item.costSummary.finalMarkup
-                            );
-                            setActiveMaterials(item.materials);
-                            setActiveSummary(summary);
-                            setShowModal(true);
-                          }
-                        }}
-                        className="text-blue-500 hover:underline text-sm mt-1 disabled"
-                      >
-                        {formatCurrency(item.price)} (see breakdown)
-                      </button>
-                    ) : (
-                      <span className="text-gray-500 text-sm mt-1 italic">
-                        {formatCurrency(item.price)}
-                      </span>
-                    )}
+                    {!item.hidePrice &&
+                      (item.product == "Architectural Canopy" ? (
+                        <button
+                          onClick={() => {
+                            if (item.materials) {
+                              const summary = calculateCostSummary(
+                                item.materials,
+                                item.costSummary?.finalMarkup ?? 0
+                              );
+                              setActiveMaterials(item.materials);
+                              setActiveSummary(summary);
+                              setShowModal(true);
+                            }
+                          }}
+                          className="text-blue-500 hover:underline text-sm mt-1"
+                        >
+                          {formatCurrency(item.price)} (see breakdown)
+                        </button>
+                      ) : (
+                        <span className="text-gray-500 text-sm mt-1 italic">
+                          {formatCurrency(item.price)}
+                        </span>
+                      ))}
 
                     {/* Quantity controls */}
                     <div className="flex items-center gap-2 mt-2">
@@ -354,9 +294,11 @@ export const CartSideBar = () => {
                     >
                       <FaTrash size={16} />
                     </button>
-                    <span className="text-sm text-gray-800 font-semibold mt-1">
-                      Total: {formatCurrency(item.price * item.quantity)}
-                    </span>
+                    {!item.hidePrice && (
+                      <span className="text-sm text-gray-800 font-semibold mt-1">
+                        Total: {formatCurrency(item.price * item.quantity)}
+                      </span>
+                    )}
                   </div>
                 </li>
               ))}
@@ -375,6 +317,7 @@ export const CartSideBar = () => {
                 useQuoteStore
                   .getState()
                   .setQuoteData(validItem.materials, validItem.costSummary);
+                useUIStore.getState().openQuoteModal();
                 setIsQuoteModalOpen(true);
               } else {
                 toast.error("No valid data to create a quote");

@@ -1,6 +1,11 @@
 "use client";
 
-import { CartItem, MaterialItem, MaterialItemTable, RenderState } from "@/shared/types";
+import {
+  CartItem,
+  MaterialItem,
+  MaterialItemTable,
+  RenderState,
+} from "@/shared/types";
 import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -10,6 +15,7 @@ import { getOptions } from "@/api/HubspotAPi";
 import { useGetMaterials } from "@/modules/materials/services/material.service";
 import { ContinueButton } from "@/shared/components/ui/continueButton/ContinueButton";
 import { useCartStore } from "@/shared/store/useCartStore";
+import { useUIStore } from "@/shared/store/ui/ui-store";
 
 type Props = {
   setMaterialsData: React.Dispatch<React.SetStateAction<MaterialItemTable[]>>;
@@ -18,12 +24,20 @@ type Props = {
   setIsRenderOpen?: (open: boolean) => void;
 };
 
-export const OptionStep = ({ setMaterialsData, setRenderState, onContinue, }: Props) => {
+export const OptionStep = ({
+  setMaterialsData,
+  setRenderState,
+  onContinue,
+}: Props) => {
   const [sensor, setSensor] = useState<string | null>(null);
   const [automation, setAutomation] = useState<string | null>(null);
   const [additionalRemote, setAdditionalRemote] = useState<string | null>(null);
   const automationRef = useRef<HTMLDivElement>(null);
   const remoteRef = useRef<HTMLDivElement>(null);
+
+  const [sensorAdded, setSensorAdded] = useState(false);
+  const [automationAdded, setAutomationAdded] = useState(false);
+  const [remoteAdded, setRemoteAdded] = useState(false);
 
   const scrollToRef = (ref: React.RefObject<HTMLDivElement>) => {
     if (ref.current) {
@@ -31,35 +45,47 @@ export const OptionStep = ({ setMaterialsData, setRenderState, onContinue, }: Pr
     }
   };
 
-    const addItem = useCartStore.getState().addItem;
-  
+  const addItem = useCartStore.getState().addItem;
+  const openCart = useUIStore.getState().openCart; // 👈 obtiene la función
 
-const addToCart = (option: any) => {
-  if (!option || !option.variants?.[0]) return;
+  const addToCart = (
+    option: any,
+    setAddedFn: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    if (!option || !option.variants?.[0]) return;
 
-  const variant = option.variants[0];
+    const variant = option.variants[0];
 
-  const item: CartItem = {
-  id: option.id,
-  name: option.name,
-  product: option.name, // ✅ Esto es clave
-  productType: "Component", // O puedes usar otro identificador si lo prefieres
-  color: variant.color || "Default",
-  quantity: 1,
-  materials: [],
-  price: variant.pricePerUnit || 0,
-};
+    const cart = useCartStore.getState().items;
 
-  // Agregarlo al store global del carrito
-  addItem(item);
-};
+    const alreadyExists = cart.some(
+      (item) => item.id === option.id || item.name === option.name
+    );
+    if (alreadyExists) {
+      console.log("Item already in cart, skipping...");
+      return;
+    }
+    const item: CartItem = {
+      id: option.id,
+      name: option.name,
+      product: option.name, // ✅ Esto es clave
+      productType: "Component", // O puedes usar otro identificador si lo prefieres
+      color: variant.color || "Default",
+      quantity: 1,
+      materials: [],
+      price: variant.pricePerUnit || 0,
+      hidePrice: true, // 👈 así evitas mostrar el precio
+    };
 
+    // Agregarlo al store global del carrito
+    addItem(item);
+    setAddedFn(true);
+  };
 
   const { data: options, isLoading, isError } = useGetMaterials();
 
   if (isLoading) return "Loading....";
   if (isError) return "Error loading options";
-
 
   const sensorOption = options.find((o) => o.name === "Sensor");
   const automationOption = options.find((o) => o.name === "Automation");
@@ -77,10 +103,10 @@ const addToCart = (option: any) => {
             <button
               onClick={() => {
                 setSensor("yes");
-                addToCart(sensorOption)
+                addToCart(sensorOption, setSensorAdded);
                 setTimeout(() => scrollToRef(automationRef), 300);
               }}
-              className={`border rounded-lg p-2 w-[250px] hover:shadow-md ${
+              className={`relative  border rounded-lg p-2 w-[250px] hover:shadow-md ${
                 sensor === "yes" ? "border-orange-500" : "border-gray-300"
               }`}
             >
@@ -92,6 +118,11 @@ const addToCart = (option: any) => {
                 className="rounded-md object-contain mx-auto"
               />
               <p className="text-center text-sm mt-2">Add Sensor</p>
+              {sensorAdded && (
+                <span className="absolute top-2 right-2 bg-green-100 text-green-700 text-xs px-2 py-1 rounded">
+                  Already added
+                </span>
+              )}
             </button>
           )}
           <button
@@ -117,10 +148,10 @@ const addToCart = (option: any) => {
               <button
                 onClick={() => {
                   setAutomation("yes");
-                  addToCart(automationOption)
+                  addToCart(automationOption, setAutomationAdded);
                   setTimeout(() => scrollToRef(remoteRef), 300);
                 }}
-                className={`border rounded-lg p-2 w-[250px] hover:shadow-md ${
+                className={`relative  border rounded-lg p-2 w-[250px] hover:shadow-md ${
                   automation === "yes" ? "border-orange-500" : "border-gray-300"
                 }`}
               >
@@ -132,6 +163,11 @@ const addToCart = (option: any) => {
                   className="rounded-md object-contain mx-auto"
                 />
                 <p className="text-center text-sm mt-2">Add Automation</p>
+                {automationAdded && (
+                  <span className="absolute top-2 right-2 bg-green-100 text-green-700 text-xs px-2 py-1 rounded">
+                    Already added
+                  </span>
+                )}
               </button>
             )}
             <button
@@ -159,11 +195,10 @@ const addToCart = (option: any) => {
             {remoteOption && (
               <button
                 onClick={() => {
-                  setAdditionalRemote("yes")
-                  addToCart(remoteOption)
+                  setAdditionalRemote("yes");
+                  addToCart(remoteOption, setRemoteAdded);
                 }}
-                
-                className={`border rounded-lg p-2 w-[250px] hover:shadow-md ${
+                className={`relative  border rounded-lg p-2 w-[250px] hover:shadow-md ${
                   additionalRemote === "yes"
                     ? "border-orange-500"
                     : "border-gray-300"
@@ -178,6 +213,11 @@ const addToCart = (option: any) => {
                   className="rounded-md object-contain mx-auto"
                 />
                 <p className="text-center text-sm mt-2">Add Remote</p>
+                {remoteAdded && (
+                  <span className="absolute top-2 right-2 bg-green-100 text-green-700 text-xs px-2 py-1 rounded">
+                    Already added
+                  </span>
+                )}
               </button>
             )}
             <button

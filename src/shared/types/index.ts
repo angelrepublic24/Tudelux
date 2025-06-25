@@ -222,6 +222,7 @@ export type CartItem = {
   productType?: string; // Ej: 'Custom Canopy'
   shape?: string;
   selectedSTC?: string; // ✅ nuevo campo para Partition Walls
+  hidePrice?: boolean; // 👈 nuevo campo opcional
 };
 export interface ConfigState {
   width: string;

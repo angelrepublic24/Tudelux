@@ -13,7 +13,7 @@ export const StepChooseShape = ({ setRenderState, setIsRenderOpen, onContinue }:
   return (
     <section className="py-16">
       <StepTitle step={4} title={'Choose a shape'} />
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-12">
+      <div className="grid grid-cols-2 md:grid-cols-2 gap-12">
         {chooseShape.map((shape, i) => (
           <button
             key={i}

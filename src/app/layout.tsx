@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import { Alexandria } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./provider";
-import {Toaster} from "sonner"
 import ToastNotification from "@/shared/components/ui/toastNotification/ToastNotification";
-
+import { RequestQuoteModal } from "@/shared/components/ui/Modals/RequestQuoteModal/RequestQuoteModal";
 
 
 const alexandria = Alexandria({
@@ -29,6 +28,7 @@ export default function RootLayout({
       >
         <Providers>
           {children}
+          <RequestQuoteModal />
         </Providers>
         <ToastNotification/>
       </body>
