@@ -3,6 +3,23 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* globals.css */
+.scrollbar-thin-modern {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color:  transparent; /* thumb & track */
+
+  /* WebKit */
+}
+.scrollbar-thin-modern::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-thin-modern::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin-modern::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

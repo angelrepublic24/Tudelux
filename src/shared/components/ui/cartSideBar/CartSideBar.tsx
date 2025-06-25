@@ -3,7 +3,7 @@
 import { useUIStore } from "@/shared/store/ui/ui-store";
 import { IoClose } from "react-icons/io5";
 import { useState } from "react";
-import { PricingBreakdownModal } from "../pricingModal/PricingBreakdownModal";
+import { PricingBreakdownModal } from "../Modals/pricingModal/PricingBreakdownModal";
 import { useCartStore } from "@/shared/store/useCartStore";
 import {
   CartItem,

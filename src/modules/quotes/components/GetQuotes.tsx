@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useGetQuote } from '../services/quote.service';
-import { CustomModal } from '@/shared/components/ui/customModal/CustomModal';
+import { CustomModal } from '@/shared/components/ui/Modals/customModal/CustomModal';
 import { QuoteBreakDown } from './QuoteBreakDown';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';

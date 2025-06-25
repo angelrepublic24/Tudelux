@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { HiOutlineUsers } from 'react-icons/hi';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { HiOutlineUsers } from "react-icons/hi";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -10,24 +10,39 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { MoreHorizontal } from 'lucide-react';
-import { CreateModal } from '../utils/CreateModal';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { FaTrash } from 'react-icons/fa6';
+} from "@/components/ui/table";
+import { MoreHorizontal } from "lucide-react";
+import { CreateModal } from "../utils/CreateModal";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { FaTrash } from "react-icons/fa6";
+import { USER_ROLE_OPTIONS, UserRole } from "@/modules/auth/types";
+import { useFindUsersByRoles } from "@/modules/auth/services/auth.service";
+import { Spinner } from "@/shared/components/ui/Spinner/Spinner";
 
-const mockUsers = [
-  { id: 1, name: 'Juan Pérez', email: 'juan@example.com', role: 'ADMIN' },
-  { id: 2, name: 'Ana Rivera', email: 'ana@example.com', role: 'SALES' },
-];
-
-export const UsersSettings = () => {
+interface Props {
+  page: number;
+  limit: number;
+  search: string;
+  onPageChange: (page: number) => void;
+}
+export const UsersSettings = ({ page, limit, search, onPageChange }: Props) => {
   const [open, setOpen] = useState(false);
+  const [editUser, setEditUser] = useState<any>(null);
 
-  const handleCreateUser = (data: Record<string, string>) => {
-    console.log('Creating user...', data);
-    // Aquí puedes hacer tu lógica de creación
-  };
+  const { data, isLoading, error, refetch } = useFindUsersByRoles({
+    roles: [UserRole.ADMIN, UserRole.SALES, UserRole.ROOT, UserRole.BDR],
+    page,
+    limit,
+    search,
+  });
+  console.log(data);
+
+  if (isLoading) return <Spinner />;
 
   return (
     <section className="py-6">
@@ -42,18 +57,20 @@ export const UsersSettings = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[40%]">Name</TableHead>
+              <TableHead className="w-[40%]">Full Name</TableHead>
               <TableHead className="w-[40%]">Email</TableHead>
               <TableHead className="w-[20%]">Role</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {mockUsers.map((user) => (
+            {data.data?.map((user) => (
               <TableRow key={user.id}>
-                <TableCell className="font-medium">{user.name}</TableCell>
+                <TableCell className="font-medium">
+                  {user.name} {user.lName}
+                </TableCell>
                 <TableCell>{user.email}</TableCell>
-                <TableCell>{user.role}</TableCell>
+                <TableCell>{user.roles}</TableCell>
                 <TableCell className="text-right space-x-2">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -61,12 +78,20 @@ export const UsersSettings = () => {
                         <MoreHorizontal className="w-4 h-4" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">                                           
-                      <DropdownMenuItem onClick={() => console.log()}>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem
+                        onClick={() => {
+                          setEditUser(user);
+                          setOpen(true);
+                        }}
+                      >
                         Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => console.log("")} className="text-red-500">
-                        <FaTrash size={20} />
+                      <DropdownMenuItem
+                        onClick={() => console.log("")}
+                        className="text-red-500"
+                      >
+                        Delete
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -75,19 +100,45 @@ export const UsersSettings = () => {
             ))}
           </TableBody>
         </Table>
+        {data && (
+          <div className="flex justify-end mt-4 gap-2">
+            <Button
+              variant="outline"
+              disabled={page === 1}
+              onClick={() => onPageChange(page - 1)}
+            >
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              disabled={page >= data.totalPages}
+              onClick={() => onPageChange(page + 1)}
+            >
+              Next
+            </Button>
+          </div>
+        )}
       </div>
 
-      <CreateModal
-        open={open}
-        onClose={() => setOpen(false)}
-        onSubmit={handleCreateUser}
-        title="Create User"
-        fields={[
-          { name: 'name', label: 'Full Name', type: 'text' },
-          { name: 'email', label: 'Email', type: 'email' },
-          { name: 'role', label: 'Role', type: 'select', options: ['ADMIN', 'SALES', 'DISTRIBUTOR'] },
-        ]}
-      />
+      {open && (
+        <CreateModal
+          open={open}
+          onClose={() => {
+            setOpen(false);
+            setEditUser(null);
+          }}
+          title={editUser ? "Edit User" : "Create User"}
+          onRefetch={refetch} // 👈 nuevo prop
+          user={
+            editUser
+              ? {
+                  ...editUser,
+                  role: editUser.roles?.[0] || "",
+                }
+              : undefined
+          }
+        />
+      )}
     </section>
   );
 };

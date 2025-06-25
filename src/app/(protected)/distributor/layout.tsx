@@ -1,6 +1,6 @@
 import { verifySession } from "@/shared/auth/dal";
-import { DistributorSideBar } from "@/shared/components/ui/distributorMenu/DistributorSideBar";
-import { DistributorTopBar } from "@/shared/components/ui/distributorMenu/DistributorTopBar";
+import { DistributorSideBar } from "@/shared/components/ui/Roles/distributorMenu/DistributorSideBar";
+import { DistributorTopBar } from "@/shared/components/ui/Roles/distributorMenu/DistributorTopBar";
 import { redirect } from "next/navigation";
 
 export default async function DistributorLayout({

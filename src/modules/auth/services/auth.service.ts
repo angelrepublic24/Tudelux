@@ -1,19 +1,23 @@
 "use client";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { LoginFormType, RegisterFormType } from "../types";
+import { IUser, LoginFormType, RegisterFormType, UserRole, UserType } from "../types";
 import {
   confirmAccount,
+  createUserToTeam,
   findCustomerBySales,
+  findUsersByRoles,
   forgotPassword,
   login,
   profile,
   register,
   resetPassword,
+  updateUser,
   validateToken,
 } from "../api/AuthApi";
 import { toast } from "react-toastify";
 import { Api } from "@/shared/global/Global";
+import { UserTeam } from "../schemas/auth.schema";
 
 export const useLogin = () => {
   const router = useRouter();
@@ -79,5 +83,36 @@ export const useValidateToken = () => {
 export const useResetPassword = (token: string) => {
   return useMutation({
     mutationFn: ( password: string ) => resetPassword(token, password),
+  })
+}
+
+export const useFindUsersByRoles = ({
+  roles,
+  page = 1,
+  limit = 10,
+  search = "",
+}: {
+  roles: UserRole[];
+  page?: number;
+  limit?: number;
+  search?: string;
+}) => {
+  return useQuery({
+    queryKey: ["users-by-roles", roles, page, limit, search],
+    queryFn: () => findUsersByRoles({ roles, page, limit, search }),
+  });
+};
+
+export const useCreateUserToTeam = () => {
+  return useMutation({
+    mutationFn: (data: UserTeam) => createUserToTeam(data),
+    onError: (error) => toast.error(error.message)
+  })
+}
+
+export const useUpdateUser = (id: number) => {
+  return useMutation({
+    mutationFn: (data: UserType) => updateUser(id, data),
+    onError: (error) => toast.error(error.message)
   })
 }

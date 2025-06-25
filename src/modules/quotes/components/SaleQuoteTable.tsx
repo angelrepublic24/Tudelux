@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
-import { CustomModal } from "@/shared/components/ui/customModal/CustomModal";
+import { CustomModal } from "@/shared/components/ui/Modals/customModal/CustomModal";
 import { QuoteBreakDown } from "./QuoteBreakDown";
 import {
   Select,

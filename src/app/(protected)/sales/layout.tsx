@@ -1,8 +1,8 @@
 import { verifySession } from "@/shared/auth/dal";
-import { DistributorSideBar } from "@/shared/components/ui/distributorMenu/DistributorSideBar";
-import { DistributorTopBar } from "@/shared/components/ui/distributorMenu/DistributorTopBar";
-import { SalesSideBar } from "@/shared/components/ui/Sales/sales-sidebar";
-import { SalesTopBar } from "@/shared/components/ui/Sales/sales-top-menu";
+import { DistributorSideBar } from "@/shared/components/ui/Roles/distributorMenu/DistributorSideBar";
+import { DistributorTopBar } from "@/shared/components/ui/Roles/distributorMenu/DistributorTopBar";
+import { SalesSideBar } from "@/shared/components/ui/Roles/Sales/sales-sidebar";
+import { SalesTopBar } from "@/shared/components/ui/Roles/Sales/sales-top-menu";
 import { redirect } from "next/navigation";
 
 export default async function DistributorLayout({

@@ -72,6 +72,13 @@ export const UserSchema = z.object({
   company: CompanySchemaForm.optional().nullable(), // 👈 hazlo opcional
 });
 
+export const UserTeamSchema = z.object({
+  name: z.string().min(1),
+  lName: z.string().min(1),
+  email: z.string().email(),
+  roles: z.array(z.string().min(1)).min(1), // asegura que al menos un rol sea enviado
+});
+
 export const ForgotPasswordSchema = z.object({
     email: z.string()   
             .email( {message: 'Email no válido'}),
@@ -96,8 +103,7 @@ export const ResetPassworSchema = z
   });
 
 export type User = z.infer<typeof UserSchema>;
-
-
+export type UserTeam = z.infer<typeof UserTeamSchema >
 export type RegisterDistributorFormType = z.infer<
   typeof RegisterDistributorSchema
 >;

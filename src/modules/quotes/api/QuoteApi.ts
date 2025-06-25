@@ -48,7 +48,7 @@ export async function getQuotes( limit: number, page: number, search = "", statu
 
 export async function getQuoteById(id: number) {
   try {
-    const { data } = await Api.get(`/quotes/${id}`);
+    const { data } = await Api.get(`/quotes/${id}`, {withCredentials: true});
     console.log(data);
     return data;
   } catch (error) {

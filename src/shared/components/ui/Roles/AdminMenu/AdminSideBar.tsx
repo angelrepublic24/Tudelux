@@ -12,12 +12,14 @@ import {
   MdOutlineRequestQuote,
   MdHomeRepairService,
   MdSupportAgent,
+  MdOutlineHandshake,
 } from 'react-icons/md';
 import { Component } from 'lucide-react';
 
 const items = [
   { label: 'Products', href: '/admin/products', icon: <AiOutlineProduct size={22} color='black' /> },
   { label: 'Materials', href: '/admin/materials', icon: <Component size={22} color='black'  /> },
+  {label: "Deals",href: "/admin/deals",icon: <MdOutlineHandshake size={22} color='black'  />},
   { label: 'Quotes', href: '/admin/quotes', icon: <MdOutlineRequestQuote size={22} color='black'  /> },
   { label: 'Installations', href: '/admin/installations', icon: <MdHomeRepairService size={22} color='black'  /> },
   { label: 'Sales', href: '/admin/sales', icon: <AiOutlineShop size={22} color='black'  /> },

@@ -1,6 +1,7 @@
 import axios, { isAxiosError } from "axios";
 import { Api } from "@/shared/global/Global";
-import { LoginFormType, RegisterFormType } from "../types";
+import { IUser, LoginFormType, RegisterFormType, UserRole, UserType } from "../types";
+import { UserTeam } from "../schemas/auth.schema";
 
 export async function register(formData: RegisterFormType) {
   try {
@@ -53,9 +54,11 @@ export async function validateToken(token: string) {
   }
 }
 
-export async function resetPassword(token: string, password: string){
+export async function resetPassword(token: string, password: string) {
   try {
-    const {data} = await Api.post(`/auth/reset-password/${token}`, {password})
+    const { data } = await Api.post(`/auth/reset-password/${token}`, {
+      password,
+    });
     return data;
   } catch (error) {
     if (isAxiosError(error) && error.response) {
@@ -64,29 +67,11 @@ export async function resetPassword(token: string, password: string){
   }
 }
 
-// export async function login(formData: LoginFormType) {
-//   try {
-//     const res = await fetch("/api/auth/login", {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(formData),
-//     });
-
-//     if (!res.ok) {
-//       const error = await res.json();
-//       throw new Error(error.message);
-//     }
-
-//     return await res.json(); // puedes devolver { success: true }
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// }
-
 export async function login(formData: LoginFormType) {
   try {
-    const {data} = await Api.post("/auth/login", formData,{withCredentials: true})
+    const { data } = await Api.post("/auth/login", formData, {
+      withCredentials: true,
+    });
     return data;
   } catch (error) {
     console.error(error);
@@ -146,5 +131,63 @@ export async function findCustomerBySales(limit = 10, page = 1, search = "") {
       throw new Error(error.response.data.message);
     }
     throw new Error("Unexpected error occurred");
+  }
+}
+
+export async function findUsersByRoles({
+  roles,
+  page = 1,
+  limit = 10,
+  search = "",
+}: {
+  roles: UserRole[];
+  page?: number;
+  limit?: number;
+  search?: string;
+}) {
+  try {
+    const params = new URLSearchParams();
+    if (roles.length > 0) params.append("roles", roles.join(","));
+    params.append("page", page.toString());
+    params.append("limit", limit.toString());
+    if (search.trim()) params.append("search", search.trim());
+
+    const { data } = await Api.get(`/auth`, {
+      params,
+      withCredentials: true,
+    });
+    console.log(data);
+
+    return data;
+  } catch (error) {
+    console.error(error);
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error("Unexpected error occurred");
+  }
+}
+
+export async function createUserToTeam(formData: UserTeam) {
+  try {
+    const { data } = await Api.post("/auth/create-account/team", formData);
+    return data;
+  } catch (error) {
+    console.log(error);
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.message);
+    }
+  }
+}
+
+export async function updateUser(id: number, formData: UserType) {
+  try {
+    const { data } = await Api.patch(`/auth/update/${id}`, formData);
+    return data;
+  } catch (error) {
+    console.log(error);
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.message);
+    }
   }
 }

@@ -25,7 +25,7 @@ import {
   useGetMaterials,
 } from "../services/material.service";
 import { toast } from "react-toastify";
-import { ConfirmModal } from "@/shared/components/ui/ConfirmActionModal/ConfirmActionModal";
+import { ConfirmModal } from "@/shared/components/ui/Modals/ConfirmActionModal/ConfirmActionModal";
 
 export const MaterialList = () => {
   const [search, setSearch] = useState("");

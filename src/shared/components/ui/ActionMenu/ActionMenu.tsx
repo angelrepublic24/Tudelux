@@ -2,9 +2,9 @@ import { Menu } from '@headlessui/react';
 import { FaEllipsisV } from 'react-icons/fa';
 
 export function ActionMenu({ onView, onEdit, onDelete, onBreakdown }: {
-  onView: () => void;
   onEdit: () => void;
   onDelete: () => void;
+  onView?: () => void;
   onBreakdown?: () => void;
 }) {
   return (
