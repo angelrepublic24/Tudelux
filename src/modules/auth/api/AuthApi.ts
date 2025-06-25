@@ -95,11 +95,7 @@ export async function profile() {
 
 export async function logout() {
   try {
-    const res = await fetch("/api/auth/logout", {
-      method: "POST",
-    });
-
-    if (!res.ok) throw new Error("Logout failed");
+    await Api.post("/auth/logout"); // Solo esto basta
 
     window.location.href = "/auth/login";
   } catch (error) {

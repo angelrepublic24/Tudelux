@@ -1,9 +1,8 @@
-import { extraFeatures } from '@/shared/data/extraFeatures';
-import { RenderState } from '@/shared/types';
-import React, { useEffect } from 'react'
-import { ChooseProductGrid } from '../grid/ChooseProductGrid';
-import { StepTitle } from '@/shared/components/ui/StepTitle/StepTitle';
-
+import { extraFeatures } from "@/shared/data/extraFeatures";
+import { RenderState } from "@/shared/types";
+import React, { useEffect } from "react";
+import { ChooseProductGrid } from "../grid/ChooseProductGrid";
+import { StepTitle } from "@/shared/components/ui/StepTitle/StepTitle";
 
 type Props = {
   renderState: RenderState;
@@ -15,8 +14,6 @@ type Props = {
   lightingRef: React.RefObject<HTMLElement>;
   supportRef: React.RefObject<HTMLElement>;
 };
-;
-
 export const StepAddiotionalFeatures = ({
   renderState,
   setRenderState,
@@ -25,47 +22,61 @@ export const StepAddiotionalFeatures = ({
   scrollToRef,
   directionRef,
   lightingRef,
-  supportRef
+  supportRef,
 }: Props) => {
   const filteredExtras = extraFeatures.filter((extra) => {
-    if (renderState.productType === "Sunshades" && extra.name.includes("Skylight")) {
+    if (
+      renderState.productType === "Sunshades" &&
+      extra.name.includes("Skylight")
+    ) {
       return false;
     }
     return true;
   });
 
   useEffect(() => {
-    if (renderState.extraF === "Louvers") {
-      setActiveStep(9);
-      scrollToRef(directionRef);
-    } else if (renderState.extraF === "Skylight") {
-      setActiveStep(13);
-      scrollToRef(lightingRef);
-    } else if (renderState.extraF) {
-      setActiveStep(14);
-      scrollToRef(supportRef);
-    }
-  }, [renderState.extraF]);
+  const extra = renderState.extraF?.toLowerCase();
+
+  if (extra === "louvers") {
+    setActiveStep(9);
+    scrollToRef(directionRef);
+  } else if (extra === "skylight") {
+    setActiveStep(13);
+    scrollToRef(lightingRef);
+  } else if (extra === "none") {
+    setActiveStep(14);
+    scrollToRef(supportRef);
+  }
+}, [renderState.extraF]);
   return (
     <section>
-      <StepTitle step={9} title={'Addiotional features'} />
+      <StepTitle step={9} title={"Addiotional features"} />
 
-      <div className='flex flex-col lg:flex-row  justify-center gap-10 mb-4'>
+      <div className="flex flex-col lg:flex-row  justify-center gap-10 mb-4">
         {filteredExtras.map((extra) => (
           <ChooseProductGrid
             key={extra.id}
             product={extra}
             className="w-md"
             handleState={() =>
-              setRenderState((prev) => ({
-                ...prev,
-                extraF: extra.name.split(" ")[1], // por ejemplo "Louvers"
-              }))
+              setRenderState((prev) => {
+                const name = extra.name.toLowerCase();
+                let value = "";
+
+                if (name.includes("louvers")) value = "Louvers";
+                else if (name.includes("skylight")) value = "Skylight";
+                else value = "None";
+
+                return {
+                  ...prev,
+                  extraF: value,
+                };
+              })
             }
           />
         ))}
       </div>
       {/* <ContinueButton onContinue={onContinue}/> */}
     </section>
-  )
-}
+  );
+};
