@@ -47,10 +47,10 @@ export const StepWallColor = ({
     <section>
       <StepTitle step={4} title="Choose your colors" />
 
-      <div className="py-16">
-        <h5>Fabric Color</h5>
+      <div className="py-16 flex flex-col items-center lg:items-start ">
+        <h5 className=" mb-4 font-black">Fabric Color</h5>
 
-        <div className="flex gap-4">
+        <div className="flex flex-col lg:flex-row  gap-4">
           {groupColors.filter((c) => c.colorName !== "Snow").map((color) => (
             <button
               className="flex flex-col items-center w-62"

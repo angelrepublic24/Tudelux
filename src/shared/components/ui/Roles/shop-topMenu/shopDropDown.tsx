@@ -10,13 +10,13 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { AlignJustify } from 'lucide-react';
 
-export function ShopDropdown() {
+export function ShopDropdown({isHome}) {
   const router = useRouter();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="text-white hover:bg-white/10">
+        <Button variant="ghost" className={`${isHome ? "text-white" : "text-black"} hover:bg-white/10`}>
           <AlignJustify className="h-5 w-5" />
         </Button>
       </DropdownMenuTrigger>

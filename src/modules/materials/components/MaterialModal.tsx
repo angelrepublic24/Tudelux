@@ -25,6 +25,7 @@ interface Props {
   onClose: () => void;
   defaultValues?: MaterialFormType & { id?: number };
   isEditing?: boolean;
+  isReadOnly?: boolean;
 }
 
 export const MaterialModal = ({
@@ -32,6 +33,7 @@ export const MaterialModal = ({
   onClose,
   defaultValues,
   isEditing,
+  isReadOnly,
 }: Props) => {
   const {
     register,
@@ -44,8 +46,8 @@ export const MaterialModal = ({
   });
 
   const handleClose = () => {
-    reset(); // Limpia el formulario
-    onClose(); // Luego cierra el modal
+    reset();
+    onClose();
   };
 
   const { fields, append, remove } = useFieldArray({
@@ -75,7 +77,6 @@ export const MaterialModal = ({
         toast.success("Material created successfully");
         handleClose();
       }
-      onClose();
     } catch (err: any) {
       toast.error(err?.response?.data?.message || "Error saving material");
     }
@@ -83,15 +84,23 @@ export const MaterialModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-3xl">
+      <DialogContent className="max-w-3xl h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {isEditing ? "Edit Material" : "Create New Material"}
+            {isReadOnly
+              ? "View Material"
+              : isEditing
+              ? "Edit Material"
+              : "Create New Material"}
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <Input placeholder="Material name" {...register("name")} />
+          <Input
+            placeholder="Material name"
+            {...register("name")}
+            disabled={isReadOnly}
+          />
           {errors.name && (
             <p className="text-sm text-red-500">{errors.name.message}</p>
           )}
@@ -99,12 +108,14 @@ export const MaterialModal = ({
           <Textarea
             placeholder="Description (optional)"
             {...register("description")}
+            disabled={isReadOnly}
           />
 
           <select
             multiple
             {...register("compatibleWith")}
             className="w-full border border-gray-300 rounded px-3 py-2 bg-white"
+            disabled={isReadOnly}
           >
             <option value="Canopies">Canopies</option>
             <option value="Partitions">Partitions</option>
@@ -125,13 +136,15 @@ export const MaterialModal = ({
                   <Input
                     {...register(`variants.${index}.color`)}
                     placeholder="e.g. Black"
+                    disabled={isReadOnly}
                   />
                 </div>
                 <div className="flex flex-col">
-                  <label className="text-xs text-gray-500 mb-1">Unit</label>
+                  <label className="text-xs text-gray-500 mb-1">Size</label>
                   <Input
                     {...register(`variants.${index}.unit`)}
                     placeholder="in / ft"
+                    disabled={isReadOnly}
                   />
                 </div>
                 <div className="flex flex-col">
@@ -142,50 +155,61 @@ export const MaterialModal = ({
                       valueAsNumber: true,
                     })}
                     placeholder="0"
+                    disabled={isReadOnly}
                   />
                 </div>
-                <div className="flex flex-col">
-                  <label className="text-xs text-gray-500 mb-1">Unit ($)</label>
+                <div className="flex flex-col w-full">
+                  <label className="text-xs text-gray-500 mb-1">
+                    Unit ($)
+                  </label>
                   <Input
+                  className="w-32"
                     type="number"
                     {...register(`variants.${index}.pricePerUnit`, {
                       valueAsNumber: true,
                     })}
                     placeholder="0"
+                    disabled={isReadOnly}
                   />
                 </div>
-                <div className="flex flex-col justify-end">
-                  <Button
-                    type="button"
-                    onClick={() => remove(index)}
-                    variant="destructive"
-                  >
-                    Remove
-                  </Button>
-                </div>
+                {!isReadOnly && (
+                  <div className="flex flex-col justify-end">
+                    <Button
+                      type="button"
+                      onClick={() => remove(index)}
+                      variant="destructive"
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                )}
               </div>
             ))}
 
-            <Button
-              type="button"
-              onClick={() =>
-                append({
-                  color: "",
-                  unit: "in",
-                  stock: 0,
-                  pricePerUnit: 0,
-                })
-              }
-            >
-              + Add Variant
-            </Button>
+            {!isReadOnly && (
+              <Button
+                type="button"
+                onClick={() =>
+                  append({
+                    color: "",
+                    unit: "in",
+                    stock: 0,
+                    pricePerUnit: 0,
+                  })
+                }
+              >
+                + Add Variant
+              </Button>
+            )}
           </div>
 
-          <DialogFooter>
-            <Button type="submit" disabled={creating || updating}>
-              {isEditing ? "Update" : "Create"}
-            </Button>
-          </DialogFooter>
+          {!isReadOnly && (
+            <DialogFooter>
+              <Button type="submit" disabled={creating || updating}>
+                {isEditing ? "Update" : "Create"}
+              </Button>
+            </DialogFooter>
+          )}
         </form>
       </DialogContent>
     </Dialog>

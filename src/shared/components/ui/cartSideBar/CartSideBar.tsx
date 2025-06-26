@@ -189,7 +189,7 @@ export const CartSideBar = () => {
       )}
 
       <div className="fixed inset-0 bg-black/40 z-40" onClick={closeCart} />
-      <aside className="fixed top-0 right-0 w-[400px] h-screen bg-white shadow-2xl z-100 p-6 flex flex-col transition-transform duration-300">
+      <aside className="fixed top-0 right-0 w-[90vw] md:w-[400px] h-screen bg-white shadow-2xl z-100 p-6 flex flex-col transition-transform duration-300 overflow-hidden">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-bold">Your Cart</h2>
           <button onClick={closeCart}>
@@ -197,7 +197,7 @@ export const CartSideBar = () => {
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto scrollbar-thin-modern">
           {items.length === 0 ? (
             <p className="text-gray-500">Your cart is empty.</p>
           ) : (
@@ -306,31 +306,34 @@ export const CartSideBar = () => {
           )}
         </div>
 
-        <div>
-          <button
-            onClick={() => {
-              const validItem = items.find(
-                (item) => item.materials && item.costSummary
-              );
+        {/* Footer fijo */}
+        {items.length > 0 && (
+          <div className="shrink-0 mt-4">
+            <button
+              onClick={() => {
+                const validItem = items.find(
+                  (item) => item.materials && item.costSummary
+                );
+                if (validItem) {
+                  useQuoteStore
+                    .getState()
+                    .setQuoteData(validItem.materials, validItem.costSummary);
+                  useUIStore.getState().openQuoteModal();
+                  setIsQuoteModalOpen(true);
+                } else {
+                  toast.error("No valid data to create a quote");
+                }
+              }}
+              className="w-full bg-[#ff5100] text-white py-2 rounded shadow hover:bg-orange-600 transition"
+            >
+              Create Quote
+            </button>
 
-              if (validItem) {
-                useQuoteStore
-                  .getState()
-                  .setQuoteData(validItem.materials, validItem.costSummary);
-                useUIStore.getState().openQuoteModal();
-                setIsQuoteModalOpen(true);
-              } else {
-                toast.error("No valid data to create a quote");
-              }
-            }}
-            className="mt-4 w-full bg-[#ff5100] text-white py-2 rounded shadow hover:bg-orange-600 transition"
-          >
-            Create Quote
-          </button>
-        </div>
-        <div className="mt-6 text-right font-semibold text-lg">
-          Total: {formatCurrency(total)}
-        </div>
+            <div className="mt-6 pb-2 text-right font-semibold text-lg">
+              Total: {formatCurrency(total)}
+            </div>
+          </div>
+        )}
       </aside>
     </>
   );

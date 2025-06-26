@@ -103,7 +103,7 @@ export default function HomeItem() {
           <div className="swiper-wrapper">
             {videos.map((item) => (
               <div key={item.id} className="swiper-slide group w-[90vw]">
-                <div className="relative overflow-hidden rounded-xl shadow-lg h-[70vh]">
+                <div className="relative overflow-hidden rounded-xl shadow-lg lg:h-[70vh]">
                   <video
                     muted
                     loop
@@ -117,7 +117,7 @@ export default function HomeItem() {
                     <div className="flex justify-center py-4">
                       <a
                         href={item.link}
-                        className="inline-block text-[#ece83a] bg-[#ff5100] font-bold px-5 py-3 rounded-xl hover:bg-orange-600 transition"
+                        className="inline-block text-[#ece83a] bg-[#ff5100] font-bold px-5 py-3 rounded-xl hover:bg-orange-600 transition text-xs lg:text-base"
                         aria-label={`Go to ${item.product_name}`}
                       >
                         {item.button_text}

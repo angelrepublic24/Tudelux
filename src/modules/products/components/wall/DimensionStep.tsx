@@ -68,10 +68,10 @@ export default function DimensionStep({
         Help Me Measure
       </a>
 
-      <div className="flex justify-around">
+      <div className="flex flex-col lg:flex-row lg:justify-around space-y-8 lg:space-y-0">
         {/* Width */}
-        <div className="flex justify-around">
-          <p className="text-xl font-medium w-1/3">
+        <div className="flex flex-col lg:flex-row items-center lg:justify-around">
+          <p className="text-xl font-medium lg:w-1/3">
             The <span className="text-orange-500">overall linear</span> width of
             my opening is
           </p>
@@ -100,8 +100,8 @@ export default function DimensionStep({
         </div>
 
         {/* Height */}
-        <div className=" border-l border-gray-300 pl-6 flex justify-between">
-          <p className="text-xl font-medium w-1/3">
+        <div className=" lg:border-l border-gray-300 lg:pl-6 flex flex-col lg:flex-row items-center lg:justify-between">
+          <p className="text-xl font-medium lg:w-1/3">
             The <span className="text-orange-500">overall vertical</span> height
             of my opening is
           </p>

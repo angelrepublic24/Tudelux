@@ -56,7 +56,7 @@ export default function LoginForm() {
 
         <input
           type="submit"
-          value="Iniciar Sesión"
+          value="Sign In"
           className="bg-[#ff5100] hover:opacity-80 w-full p-3 rounded-lg text-white font-black  text-xl cursor-pointer"
         />
       </form>

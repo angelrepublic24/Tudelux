@@ -92,7 +92,7 @@ export default function RequestQuotePage() {
 
       <section className="">
         <div className="grid grid-cols-1 md:grid-cols-2 py-16">
-          <div className="flex items-center w-1/2">
+          <div className="flex items-center md:w-1/2">
             <Title
               title="Let’s get your Instant Estimate"
               subTitle="Take two easy measurements, click through a few simple choices, and get a free instant estimate for your custom Tudelü wall."

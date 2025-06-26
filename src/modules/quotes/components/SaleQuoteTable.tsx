@@ -28,6 +28,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGetAssignedQuotes } from "../services/quote.service";
+import { formatCurrency } from "@/shared/utils/formatCurency";
 
 interface Props {
   limit: number;
@@ -88,7 +89,7 @@ const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefin
                 <TableCell>{quote.customerLastName}</TableCell>
                 <TableCell>{quote.customerEmail}</TableCell>
                 <TableCell>{quote.customerPhone}</TableCell>
-                <TableCell>${quote.total.toFixed(2)}</TableCell>
+                <TableCell>{formatCurrency(quote.total)}</TableCell>
                 <TableCell>{capitalize(quote.status)}</TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>

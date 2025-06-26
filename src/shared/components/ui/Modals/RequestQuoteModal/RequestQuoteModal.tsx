@@ -59,7 +59,7 @@ export const RequestQuoteModal = () => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm lg:max-w-md">
         <h2 className="text-xl font-bold mb-4">Send Quote</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
           <Input {...register("customerName")} placeholder="First Name" />

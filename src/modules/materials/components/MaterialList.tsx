@@ -36,6 +36,8 @@ export const MaterialList = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [materialToDelete, setMaterialToDelete] = useState<number | null>(null);
+  const [isReadOnly, setIsReadOnly] = useState(false);
+
 
   const { data: materials = [], isLoading } = useGetMaterials();
   const { mutateAsync: deleteMaterial } = useDeleteMaterial();
@@ -47,8 +49,16 @@ export const MaterialList = () => {
   const handleEdit = (material: any) => {
     setSelectedMaterial(material);
     setIsEditing(true);
+    setIsReadOnly(false);
     setModalOpen(true);
   };
+
+  const handleView = (material: any) => {
+  setSelectedMaterial(material);
+  setIsEditing(false);
+  setIsReadOnly(true);
+  setModalOpen(true);
+};
 
   const handleCreate = () => {
     setSelectedMaterial(null);
@@ -119,7 +129,7 @@ export const MaterialList = () => {
                       <DropdownMenuItem onClick={() => handleEdit(mat)}>
                         Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => alert("Coming soon")}>
+                      <DropdownMenuItem onClick={() => handleView(mat)}>
                         View
                       </DropdownMenuItem>
                       <DropdownMenuItem
@@ -143,6 +153,8 @@ export const MaterialList = () => {
         onClose={() => setModalOpen(false)}
         defaultValues={selectedMaterial ?? undefined}
         isEditing={isEditing}
+        isReadOnly={isReadOnly}
+
       />
 
       <ConfirmModal

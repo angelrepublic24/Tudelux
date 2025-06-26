@@ -75,12 +75,12 @@ export const STCStep = ({
       {isLoading ? (
         <p className="text-center text-lg">Loading materials...</p>
       ) : (
-        <div className="hidden md:flex justify-center space-x-4 mt-4 md:mt-0">
+        <div className="flex justify-center space-x-4 mt-4 md:mt-0">
           {stcOption.map((stc, i) => (
             <button
               key={i}
               onClick={() => handleSelectSTC(stc.name)}
-              className="px-8 py-6 font-semibold bg-gray-200 rounded-2xl w-full hover:bg-gray-300 text-xl focus:bg-[#ff5100] focus:text-[#ece83a]"
+              className="px-4 py-3 lg:px-8 lg:py-6 font-semibold bg-gray-200 rounded-2xl w-full hover:bg-gray-300 text-base lg:text-xl focus:bg-[#ff5100] focus:text-[#ece83a]"
             >
               {stc.name}
             </button>

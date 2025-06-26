@@ -3,17 +3,17 @@ import { useEffect, useRef } from "react";
 
 export const Banner = () => {
   return (
-    <section className="h-[80vh] relative flex">
+    <section className="lg:h-[80vh] relative flex flex-col lg:flex-row mb-2">
       {/* Content */}
-      <div className="w-[35%] lg:ml-16 px-6 py-32 ">
+      <div className="w-full lg:w-[35%] lg:ml-16 px-6 py-8 lg:py-32 ">
         <div className="mb-6 space-y-2">
-          <h2 className="text-3xl md:text-5xl font-bold leading-tight">
+          <h2 className="text-3xl lg:text-5xl font-bold leading-tight">
             Design it in real time.
           </h2>
-          <h2 className="text-3xl md:text-5xl font-bold leading-tight">
+          <h2 className="text-3xl lg:text-5xl font-bold leading-tight">
             Quote it in no time.
           </h2>
-          <h2 className="text-3xl md:text-5xl font-bold leading-tight text-[#ff5100]">
+          <h2 className="text-3xl lg:text-5xl font-bold leading-tight text-[#ff5100]">
             Get it Right On Time.
           </h2>
         </div>
@@ -51,7 +51,7 @@ export const Banner = () => {
         </div>
       </div>
       {/* Background videos */}
-        <div className=" p-16 w-[65%]">
+        <div className=" p-4 lg:p-16 w-full lg:w-[65%]">
           <video
             muted
             playsInline
