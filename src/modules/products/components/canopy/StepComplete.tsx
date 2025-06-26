@@ -19,6 +19,7 @@ type Props = {
   setMaterialsData: React.Dispatch<React.SetStateAction<MaterialItemTable[]>>;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
   setIsRenderOpen?: (open: boolean) => void;
+  salesCode?: string | null; // <- AÑADIR ESTO
 };
 
 export const StepComplete = ({
@@ -29,6 +30,7 @@ export const StepComplete = ({
   setMaterialsData,
   setActiveStep,
   setIsRenderOpen,
+  salesCode, // <- AÑADIR ESTO
 }: Props) => {
   const addItem = useCartStore.getState().addItem;
   const openCart = useUIStore.getState().openCart;
@@ -49,6 +51,7 @@ export const StepComplete = ({
         product: renderState.title,
         productType: renderState.productType,
         shape: renderState.shape,
+        salesCode,
       };
     }
 
@@ -78,6 +81,7 @@ export const StepComplete = ({
         color: renderState.selectedVariant.color,
         product: renderState.title,
         selectedSTC: renderState.selectedSTC,
+        salesCode,
       };
     }
 
@@ -102,19 +106,16 @@ export const StepComplete = ({
     }
   };
 
- const handleAddToQuote = () => {
-  const newItem = generateNewItem();
-  if (newItem) {
-    addItem(newItem);
-    openQuoteModal(); // ✅ abre el modal directamente
-          clearStepState();
-
-  } else {
-    console.warn("Producto no reconocido para agregar al carrito");
-  }
-};
-
-
+  const handleAddToQuote = () => {
+    const newItem = generateNewItem();
+    if (newItem) {
+      addItem(newItem);
+      openQuoteModal(); // ✅ abre el modal directamente
+      clearStepState();
+    } else {
+      console.warn("Producto no reconocido para agregar al carrito");
+    }
+  };
 
   return (
     <section>

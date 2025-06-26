@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import { AssignQuoteModal } from './AssignQuoteModal';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { formatCurrency } from '@/shared/utils/formatCurency';
 
 interface Props {
   limit: number;
@@ -71,7 +72,7 @@ export const GetQuotes = ({ limit, page, setPage, search }: Props) => {
                 <TableCell>{quote.customerLastName}</TableCell>
                 <TableCell>{quote.customerEmail}</TableCell>
                 <TableCell>{quote.customerPhone}</TableCell>
-                <TableCell>${quote.total.toFixed(2)}</TableCell>
+                <TableCell>{formatCurrency(quote.total.toFixed(2))}</TableCell>
                 <TableCell>{capitalize(quote.status.toString())}</TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>

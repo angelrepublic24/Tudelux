@@ -6,6 +6,7 @@ import { DistributorTopBar } from "@/shared/components/ui/Roles/distributorMenu/
 import { SalesSideBar } from "@/shared/components/ui/Roles/Sales/sales-sidebar";
 import { SalesTopBar } from "@/shared/components/ui/Roles/Sales/sales-top-menu";
 import { redirect } from "next/navigation";
+import { BusinessDevWrapper } from "./businessdev-wrapper";
 
 export default async function DistributorLayout({
   children,
@@ -24,9 +25,7 @@ export default async function DistributorLayout({
 
       <div className="flex-1 overflow-auto ">
         <BusinessDevTopBar user={user} />
-        <div className="ml-[70px]">
-          <main className="pt-16 px-6">{children}</main>
-        </div>
+        <BusinessDevWrapper>{children}</BusinessDevWrapper>
       </div>
     </div>
   );

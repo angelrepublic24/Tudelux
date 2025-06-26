@@ -2,6 +2,7 @@ import { verifySession } from "@/shared/auth/dal";
 import { DistributorSideBar } from "@/shared/components/ui/Roles/distributorMenu/DistributorSideBar";
 import { DistributorTopBar } from "@/shared/components/ui/Roles/distributorMenu/DistributorTopBar";
 import { redirect } from "next/navigation";
+import { DistributorWrapper } from "./distributor-wrapper";
 
 export default async function DistributorLayout({
   children,
@@ -19,12 +20,9 @@ export default async function DistributorLayout({
     <div className="flex h-screen">
       <DistributorSideBar />
 
-      <div className="flex-1 overflow-auto pl-[280px]">
+      <div className="flex-1 overflow-auto">
         <DistributorTopBar user={user} />
-
-        <main className="pt-16 px-6">
-          {children}
-        </main>
+        <DistributorWrapper>{children}</DistributorWrapper>
       </div>
     </div>
   );

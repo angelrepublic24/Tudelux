@@ -7,7 +7,8 @@ import { uniq } from "lodash";
 
 export function generateQuotePayload(
   formData: QuoteClientInfoPayload,
-  items: CartItem[]
+  items: CartItem[],
+  salesCode?: string
 ) {
   const itemsToSend: CreateQuotePayload[] = items.map((item) => {
     const isPartitionWall = item.product === "Partition Walls";
@@ -111,6 +112,7 @@ export function generateQuotePayload(
     address_state: formData.address_state,
     address_zip: formData.address_zip,
     total: itemsToSend.reduce((acc, item) => acc + item.total, 0),
+    salesCode,
     items: itemsToSend,
   };
 

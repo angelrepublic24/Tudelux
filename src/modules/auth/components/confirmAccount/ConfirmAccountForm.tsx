@@ -19,7 +19,7 @@ export default function ConfirmAccountForm() {
       mutate(token, {
         onSuccess: () => {
           toast.success("Account confirmed!");
-          router.push("/login");
+          router.push("/auth/login");
         },
         onError: (error) => {
           toast.error(error.message || "Invalid token");

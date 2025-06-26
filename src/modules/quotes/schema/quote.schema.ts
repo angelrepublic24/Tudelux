@@ -27,7 +27,6 @@ export const QuoteSchema = z.object({
   additionalInfo: z.record(z.any()).optional(),
 });
 
-
 export const QuoteClientInfoSchema = z.object({
   customerName: z.string(),
   customerLastName: z.string(),
@@ -41,6 +40,7 @@ export const QuoteClientInfoSchema = z.object({
 export const QuoteToSendSchema = z.object({
   date: z.string(), // ISO
   total: z.number(),
+  salesCode: z.string().optional(), // ✅ aquí
   customer: QuoteClientInfoSchema.extend({
     address: z.object({
       street: z.string().optional(),
@@ -57,4 +57,3 @@ export type QuoteToSendPayload = z.infer<typeof QuoteToSendSchema>;
 export type QuoteClientInfoPayload = z.infer<typeof QuoteClientInfoSchema>;
 
 export type CreateQuotePayload = z.infer<typeof QuoteSchema>;
-

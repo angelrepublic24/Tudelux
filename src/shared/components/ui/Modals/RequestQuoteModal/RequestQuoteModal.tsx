@@ -16,11 +16,14 @@ import { toast } from "react-toastify";
 import { Input } from "@/components/ui/input";
 import { StateSelector } from "@/shared/components/LocationInput/StateSelector";
 import { generateQuotePayload } from "@/shared/utils/quote/generateQuotePayload";
+import { useQuoteStore } from "@/shared/store/ui/useQuoteStore";
 
 export const RequestQuoteModal = () => {
   const isOpen = useUIStore((s) => s.isQuoteModalOpen);
   const close = useUIStore((s) => s.closeQuoteModal);
   const clearCart = useCartStore((s) => s.clearCart);
+  const salesCode = useQuoteStore((s) => s.salesCode);
+
 
 
   const items = useCartStore((s) => s.items);
@@ -43,14 +46,16 @@ export const RequestQuoteModal = () => {
     },
   });
 
+
+  console.log("From modal " + salesCode);
   const onSubmit = (formData: QuoteClientInfoPayload) => {
     if (items.length === 0) {
       toast.error("Cart is empty");
       return;
     }
 
-    const finalQuoteToSend = generateQuotePayload(formData, items);
-    console.log(finalQuoteToSend); // Solo para depuración
+    const finalQuoteToSend = generateQuotePayload(formData, items, salesCode);
+    console.log({finalQuoteToSend}); // Solo para depuración
 
     quoteMutation.mutate(finalQuoteToSend);
   };

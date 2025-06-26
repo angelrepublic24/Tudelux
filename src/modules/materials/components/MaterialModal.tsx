@@ -19,6 +19,7 @@ import {
   useCreateMaterial,
   useUpdateMaterial,
 } from "../services/material.service";
+import { formatCurrency } from "@/shared/utils/formatCurency";
 
 interface Props {
   isOpen: boolean;
@@ -130,7 +131,7 @@ export const MaterialModal = ({
           <div className="space-y-4">
             <p className="font-semibold">Variants</p>
             {fields.map((field, index) => (
-              <div key={field.id} className="grid grid-cols-5 gap-4 items-end">
+              <div key={field.id} className="grid grid-cols-5 gap-2 items-end">
                 <div className="flex flex-col">
                   <label className="text-xs text-gray-500 mb-1">Color</label>
                   <Input
@@ -158,14 +159,14 @@ export const MaterialModal = ({
                     disabled={isReadOnly}
                   />
                 </div>
-                <div className="flex flex-col w-full">
+                <div className="flex flex-col w-22">
                   <label className="text-xs text-gray-500 mb-1">
                     Unit ($)
                   </label>
                   <Input
-                  className="w-32"
+                    className="remove-arrow"
                     type="number"
-                    {...register(`variants.${index}.pricePerUnit`, {
+                    {...register((`variants.${index}.pricePerUnit`), {
                       valueAsNumber: true,
                     })}
                     placeholder="0"

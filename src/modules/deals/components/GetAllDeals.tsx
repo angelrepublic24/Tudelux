@@ -17,6 +17,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "
 import { useGetAssignedQuotes, useGetQuote } from "@/modules/quotes/services/quote.service";
 import { FaCircle, FaTrash } from "react-icons/fa6";
 import Link from "next/link";
+import { formatCurrency } from "@/shared/utils/formatCurency";
 
 interface Props {
   limit: number;
@@ -82,7 +83,7 @@ export const GetAllDeals = ({ limit, page, setPage }: Props) => {
                 <TableCell><Link href={`deals/${quote.id}`}>{quote.customerEmail}</Link></TableCell>
                 <TableCell>{quote.customerPhone}</TableCell>
                 <TableCell>{capitalize(quote.status)}</TableCell>
-                <TableCell>${quote.total.toFixed(2)}</TableCell>
+                <TableCell>{formatCurrency(quote.total)}</TableCell>
                 <TableCell className="text-right">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

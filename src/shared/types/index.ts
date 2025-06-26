@@ -223,6 +223,7 @@ export type CartItem = {
   shape?: string;
   selectedSTC?: string; // ✅ nuevo campo para Partition Walls
   hidePrice?: boolean; // 👈 nuevo campo opcional
+  salesCode?: string;
 };
 export interface ConfigState {
   width: string;

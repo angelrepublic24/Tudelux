@@ -58,3 +58,16 @@ export async function createSales(formData: RegisterSaleFormType) {
     }
   }
 }
+
+export async function findSalesByCode(code:string) {
+  try {
+    const { data } = await Api.get(`auth/sales-by-code/${code}`);
+    return data;
+  } catch (error) {
+    console.error(error);
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error("Unexpected error occurred");
+  }
+}

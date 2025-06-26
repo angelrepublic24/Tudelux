@@ -20,6 +20,8 @@ export default function RequestQuotePage() {
     (typeof chooseProduct)[0] | null
   >(null);
   const [isRenderOpen, setIsRenderOpen] = useState(false);
+  const [salesCode, setSalesCode] = useState<string | null>(null);
+  const [showStep2, setShowStep2] = useState(false);
   const [renderState, setRenderState] = useState<RenderState>({});
   const [activeStep, setActiveStep] = useState(0);
   const [materialsData, setMaterialsData] = useState<MaterialItemTable[]>([]);
@@ -99,7 +101,7 @@ export default function RequestQuotePage() {
             />
           </div>
           <div className="">
-            <video muted autoPlay loop className="rounded-xl" >
+            <video muted autoPlay loop className="rounded-xl">
               <source src="https://tudelu.com/hubfs/PROOF%20CONTENT(1).mp4#t=0.5" />
             </video>
           </div>
@@ -107,7 +109,15 @@ export default function RequestQuotePage() {
 
         {/* Paso 1 */}
         <StepRole
-          onContinue={() => {
+          onReset={() => {
+            setActiveStep(0);
+            setSelectedProduct(null);
+            setRenderState({});
+            setIsRenderOpen(false);
+            setSalesCode(null); // <-- resetea también el código
+          }}
+          onContinue={(codeFromSalesRep?: string) => {
+            if (codeFromSalesRep) setSalesCode(codeFromSalesRep); // <-- guarda el código
             setActiveStep(1);
             scrollToRef(chooseProductRef);
           }}
@@ -181,6 +191,7 @@ export default function RequestQuotePage() {
               setMaterialsData={setMaterialsData}
               setActiveStep={setActiveStep}
               setIsRenderOpen={setIsRenderOpen}
+              salesCode={salesCode} 
             />
           )}
         </div>

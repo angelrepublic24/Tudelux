@@ -4,8 +4,9 @@ import { DistributorTopBar } from "@/shared/components/ui/Roles/distributorMenu/
 import { SalesSideBar } from "@/shared/components/ui/Roles/Sales/sales-sidebar";
 import { SalesTopBar } from "@/shared/components/ui/Roles/Sales/sales-top-menu";
 import { redirect } from "next/navigation";
+import { SalesWrapper } from "./sales-wrapper";
 
-export default async function DistributorLayout({
+export default async function SalesLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -16,15 +17,14 @@ export default async function DistributorLayout({
     redirect("auth/login");
   }
 
-  return (
+ return (
     <div className="flex h-screen">
       <SalesSideBar />
 
-      <div className="flex-1 overflow-auto ">
+      {/* Contenedor principal donde el client wrapper irá */}
+      <div className="flex-1 overflow-auto">
         <SalesTopBar user={user} />
-        <div className="ml-[70px]">
-          <main className="pt-16 px-6">{children}</main>
-        </div>
+        <SalesWrapper>{children}</SalesWrapper>
       </div>
     </div>
   );

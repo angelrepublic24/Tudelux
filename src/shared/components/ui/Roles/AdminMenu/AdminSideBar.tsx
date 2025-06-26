@@ -1,52 +1,112 @@
-'use client';
-
-import Link from 'next/link';
-import { useState } from 'react';
-import {
-  IoTicketOutline,
-} from 'react-icons/io5';
-import { HiOutlineUsers } from 'react-icons/hi';
-import { AiOutlineProduct, AiOutlineShop } from 'react-icons/ai';
-import { FaWarehouse } from 'react-icons/fa6';
+'use client'
+import Link from "next/link";
+import { useState } from "react";
+import { IoTicketOutline } from "react-icons/io5";
+import { HiOutlineUsers } from "react-icons/hi";
+import { AiOutlineProduct, AiOutlineShop } from "react-icons/ai";
+import { FaWarehouse } from "react-icons/fa6";
 import {
   MdOutlineRequestQuote,
   MdHomeRepairService,
   MdSupportAgent,
   MdOutlineHandshake,
-} from 'react-icons/md';
-import { Component } from 'lucide-react';
+} from "react-icons/md";
+import {
+  Component,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { useSidebarStore } from "@/shared/store/ui/ui-sidebar-store";
 
 const items = [
-  { label: 'Products', href: '/admin/products', icon: <AiOutlineProduct size={22} color='black' /> },
-  { label: 'Materials', href: '/admin/materials', icon: <Component size={22} color='black'  /> },
-  {label: "Deals",href: "/admin/deals",icon: <MdOutlineHandshake size={22} color='black'  />},
-  { label: 'Quotes', href: '/admin/quotes', icon: <MdOutlineRequestQuote size={22} color='black'  /> },
-  { label: 'Installations', href: '/admin/installations', icon: <MdHomeRepairService size={22} color='black'  /> },
-  { label: 'Sales', href: '/admin/sales', icon: <AiOutlineShop size={22} color='black'  /> },
-  { label: 'Distributors', href: '/admin/distributors', icon: <FaWarehouse size={22} color='black'  /> },
-  { label: 'Customers', href: '/admin/customers', icon: <HiOutlineUsers size={22} color='black'  /> },
-  { label: 'Orders', href: '/admin/orders', icon: <IoTicketOutline size={22} color='black'  /> },
-  { label: 'AI Agent', href: '/admin/ai-agent-chat', icon: <MdSupportAgent size={22} color='black'  /> },
+  {
+    label: "Products",
+    href: "/admin/products",
+    icon: <AiOutlineProduct size={22} />,
+  },
+  {
+    label: "Materials",
+    href: "/admin/materials",
+    icon: <Component size={22} />,
+  },
+  {
+    label: "Deals",
+    href: "/admin/deals",
+    icon: <MdOutlineHandshake size={22} />,
+  },
+  {
+    label: "Quotes",
+    href: "/admin/quotes",
+    icon: <MdOutlineRequestQuote size={22} />,
+  },
+  {
+    label: "Installations",
+    href: "/admin/installations",
+    icon: <MdHomeRepairService size={22} />,
+  },
+  { label: "Sales", href: "/admin/sales", icon: <AiOutlineShop size={22} /> },
+  {
+    label: "Distributors",
+    href: "/admin/distributors",
+    icon: <FaWarehouse size={22} />,
+  },
+  {
+    label: "Customers",
+    href: "/admin/customers",
+    icon: <HiOutlineUsers size={22} />,
+  },
+  {
+    label: "Orders",
+    href: "/admin/orders",
+    icon: <IoTicketOutline size={22} />,
+  },
+  {
+    label: "AI Agent",
+    href: "/admin/ai-agent-chat",
+    icon: <MdSupportAgent size={22} />,
+  },
 ];
 
 export const AdminSideBar = () => {
   const [hovered, setHovered] = useState<string | null>(null);
+  const expanded = useSidebarStore((s) => s.expanded);
+    const toggle = useSidebarStore((s) => s.toggle);  
 
   return (
-    <aside className="fixed left-0 top-0 w-[72px] h-screen bg-gray-50 flex flex-col items-center py-6 z-50">
-      <div className="text-[#ff5100] font-bold text-2xl mb-10">A</div>
+    <aside
+      className={`fixed left-0 top-0 h-screen bg-gray-50 flex flex-col justify-between items-start py-6 z-50 
+  transition-[width] duration-300 ease-in-out ${
+    expanded ? "w-44" : "w-[72px]"
+  }`}
+    >
+      <div className="w-full flex flex-col items-center gap-10">
+        <div className="text-[#ff5100] font-bold text-2xl">
+          {expanded ? "Tudelu" : "A"}
+        </div>
 
-      <div className="flex flex-col gap-6 w-full items-center">
-        {items.map((item) => (
-          <SidebarIcon
-            key={item.href}
-            {...item}
-            isHovered={hovered === item.label}
-            onHover={() => setHovered(item.label)}
-            onLeave={() => setHovered(null)}
-          />
-        ))}
+        <div className="flex flex-col gap-6 w-full">
+          {items.map((item) => (
+            <SidebarIcon
+              key={item.href}
+              {...item}
+              isHovered={hovered === item.label}
+              expanded={expanded}
+              onHover={() => setHovered(item.label)}
+              onLeave={() => setHovered(null)}
+            />
+          ))}
+        </div>
       </div>
+
+      {/* Toggle Button */}
+      <button
+        className={`b-4 text-gray-700 hover:text-[#ff5100] w-full px-2 flex transition ${
+          expanded ? " justify-end" : " justify-center"
+        }`}
+        onClick={() => toggle()}
+      >
+        {expanded ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
+      </button>
     </aside>
   );
 };
@@ -58,6 +118,7 @@ const SidebarIcon = ({
   isHovered,
   onHover,
   onLeave,
+  expanded,
 }: {
   href: string;
   icon: React.ReactNode;
@@ -65,24 +126,35 @@ const SidebarIcon = ({
   isHovered: boolean;
   onHover: () => void;
   onLeave: () => void;
+  expanded: boolean;
 }) => {
   return (
     <div
-      className="relative w-full flex justify-center"
+      className={`relative flex items-center gap-2 transition-all duration-200 px-4 ${
+        expanded ? "justify-start" : "justify-center"
+      }`}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
     >
-      <Link
-        href={href}
-        className="w-10 h-10 flex items-center justify-center rounded-md hover:bg-gray-700 transition-colors"
-      >
-        <div className="text-white">{icon}</div>
-      </Link>
-      {isHovered && (
-        <div className="absolute left-16 top-1/2 -translate-y-1/2 bg-black text-white text-xs rounded px-2 py-1 shadow-md whitespace-nowrap z-50">
+      <Link href={href} className="flex items-center gap-4 relative">
+        <span>{icon}</span>
+
+        {/* Label (visible only if expanded) */}
+        <span
+          className={`text-black text-sm whitespace-nowrap overflow-hidden transition-all duration-300
+            ${expanded ? "opacity-100 max-w-[140px]" : "opacity-0 max-w-0"}`
+          }
+        >
           {label}
-        </div>
-      )}
+        </span>
+
+        {/* Tooltip on hover when not expanded */}
+        {!expanded && isHovered && (
+          <span className="absolute left-full top-1/2 -translate-y-1/2 ml-2 bg-black text-white text-xs px-2 py-1 rounded shadow transition-opacity duration-300 whitespace-nowrap z-50">
+            {label}
+          </span>
+        )}
+      </Link>
     </div>
   );
 };
