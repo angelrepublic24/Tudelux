@@ -1,5 +1,3 @@
-import { BaseProduct, ParsedAddOn, RenderState } from "@/shared/types";
-import { chooseProduct } from "@/shared/utils/chooseProduct";
 import clsx from "clsx";
 import Image from "next/image";
 import React from "react";

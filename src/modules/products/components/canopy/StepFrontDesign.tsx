@@ -10,6 +10,8 @@ import { StepTitle } from "@/shared/components/ui/StepTitle/StepTitle";
 import { ChooseProductGrid } from "../grid/ChooseProductGrid";
 import { ImageRender } from "@/shared/components/Render/3dRender";
 import { AddOnTooltip } from "@/shared/components/AddOnTooltip";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 interface Props {
   setRenderState: React.Dispatch<React.SetStateAction<RenderState>>;
@@ -26,6 +28,7 @@ export const StepFrontDesign = ({
   onContinue,
   setIsRenderOpen,
 }: Props) => {
+    const [selected, setSelected] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAddOnName, setSelectedAddOnName] = useState<string | null>(
     null
@@ -130,25 +133,39 @@ export const StepFrontDesign = ({
     <section className="py-16 relative">
       <StepTitle step={6} title="Will your canopy have a front design?" />
       <div className="flex flex-col lg:flex-row justify-center gap-10 px-4">
-        {chooseDesign.map((chooseDesign, index) => (
-          <ChooseProductGrid
+        {chooseDesign.map((design, index) => (
+          <div
             key={index}
-            product={chooseDesign}
-            onSelect={() => {
-              setRenderState((prev) => ({
-                ...prev,
-                frontDesign: chooseDesign.name,
-              }));
-              setIsRenderOpen?.(true);
+            className="flex flex-col items-center text-center w-full lg:w-1/4 shadow-lg rounded-xl py-6"
+          >
+            <Image 
+              src={design.image}
+              alt={design.name}
+              width={300}
+              height={300}
+            />
 
-              if (chooseDesign.name === "Design Front") {
-                setIsModalOpen(true);
-              } else {
-                onContinue(chooseDesign.name);
-              }
-            }}
-            className="flex flex-col items-center text-center w-full lg:w-1/4"
-          />
+            <Button
+             className={`px-8 py-6 font-semibold rounded-2xl  text-xl ${
+              selected === design.name
+                ? "bg-[#ff5100] text-[#ece83a]"
+                : "bg-gray-200 hover:bg-gray-300"
+            }`}
+              onClick={() => {
+                setRenderState((prev) => ({
+                  ...prev,
+                  frontDesign: design.name,
+                }));
+                setIsRenderOpen?.(true);
+
+                if (design.name === "Design Front") {
+                  setIsModalOpen(true);
+                } else {
+                  onContinue(design.name);
+                }
+              }}
+            >Go {design.name}</Button>
+          </div>
         ))}
       </div>
 
@@ -193,11 +210,7 @@ export const StepFrontDesign = ({
                     }}
                     className={`w-1/2 py-4 rounded text-center border flex flex-col items-center gap-2 hover:shadow-md shadow-[#ff5100] `}
                   >
-                    <img
-                      src={image}
-                      alt={type}
-                      className="w-full h-14"
-                    />
+                    <img src={image} alt={type} className="w-full h-14" />
                     <span className="font-small text-sm">Add {type}</span>
                   </button>
                 ))}

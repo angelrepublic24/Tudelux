@@ -1,6 +1,5 @@
 "use client";
-import { BaseProduct, ParsedAddOn, RenderState } from "@/shared/types";
-import { chooseProduct } from "@/shared/utils/chooseProduct";
+import { ParsedAddOn } from "@/shared/types";
 import Image from "next/image";
 import React, { useState } from "react";
 import { IoCheckmark } from "react-icons/io5";

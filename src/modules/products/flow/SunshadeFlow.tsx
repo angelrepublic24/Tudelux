@@ -17,9 +17,9 @@ import {
   StepStandardColorOptions,
   StepSupport,
 } from "@/modules/products/components";
-import { chooseProduct } from "@/shared/utils/chooseProduct";
 import { CostSummary, MaterialItemTable, RenderState } from "@/shared/types";
 import { useRef } from "react";
+import { ProductFormType } from "../schema/product.schema";
 
 type Props = {
   renderState: RenderState;
@@ -33,7 +33,7 @@ type Props = {
   costSummary: CostSummary;
   scrollToRef: (ref: React.RefObject<HTMLDivElement>) => void;
   completeSectionRef: React.RefObject<HTMLDivElement>;
-  selectedProduct: (typeof chooseProduct)[0];
+  selectedProduct: ProductFormType & {id: number};
   kindOfProductStartRef: React.RefObject<HTMLDivElement>;
 };
 
@@ -70,9 +70,9 @@ export const SunshadeFlow = ({
   return (
     <>
       <div ref={kindOfProductStartRef}>
-        {activeStep >= 2 && selectedProduct?.type.length > 0 && (
+        {activeStep >= 2 && selectedProduct?.variants.length > 0 && (
           <StepKindOfProduct
-            productType={selectedProduct}
+            productVariant={selectedProduct}
             setRenderState={setRenderState}
             setIsRenderOpen={setIsRenderOpen}
             onContinue={() => {

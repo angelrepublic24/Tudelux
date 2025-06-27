@@ -1,11 +1,11 @@
 import { CostSummary, MaterialItemTable, RenderState } from "@/shared/types";
-import { chooseProduct } from "@/shared/utils/chooseProduct";
 import React, { useRef } from "react";
 import DimensionStep from "../components/wall/DimensionStep";
 import { StepWallAddons, StepWallColor } from "../components";
 import { STCStep } from "../components/wall/STCStep";
 import { OptionStep } from "../components/wall/OptionStep";
 import { StepHousingColor } from "../components/wall/StepHousingColor";
+import { ProductFormType } from "../schema/product.schema";
 
 type Props = {
   renderState: RenderState;
@@ -19,7 +19,7 @@ type Props = {
   costSummary: CostSummary;
   scrollToRef: (ref: React.RefObject<HTMLDivElement>) => void;
   completeSectionRef: React.RefObject<HTMLDivElement>;
-  selectedProduct: (typeof chooseProduct)[0];
+  selectedProduct: ProductFormType & {id: number};
 };
 
 const PartitionWallFlow = ({

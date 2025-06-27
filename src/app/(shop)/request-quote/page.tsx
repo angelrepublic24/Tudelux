@@ -70,21 +70,7 @@ export default function RequestQuotePage() {
 
   return (
     <div className="mx-auto w-[90%]">
-      {/* {renderState && (
-        <div className="flex items-center justify-end p-4 sticky top-0 z-50">
-          <button
-            onClick={() => setIsRenderOpen(!isRenderOpen)}
-            className="bg-[#ff5100] text-white px-4 py-2 rounded hover:bg-orange-600 transition"
-          >
-            {isRenderOpen ? "Hide preview" : "Show preview"}
-          </button>
-        </div>
-      )} */}
-
-      {/* {renderState && isRenderOpen && (
-        <RenderHeader renderState={renderState} onToggle={() => setIsRenderOpen(false)} />
-      )} */}
-
+  
       <section className="">
         <div className="grid grid-cols-1 md:grid-cols-2 py-16">
           <div className="flex items-center md:w-1/2">

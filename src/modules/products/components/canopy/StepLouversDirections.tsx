@@ -1,8 +1,9 @@
 import { RenderState } from "@/shared/types";
-import React from "react";
+import React, { useState } from "react";
 import { ChooseProductGrid } from "../grid/ChooseProductGrid";
 import { StepTitle } from "@/shared/components/ui/StepTitle/StepTitle";
 import { ContinueButton } from "@/shared/components/ui/continueButton/ContinueButton";
+import { Button } from "@headlessui/react";
 
 type Props = {
   setRenderState: React.Dispatch<React.SetStateAction<RenderState>>;
@@ -14,40 +15,10 @@ const louversDirectionData = [
   {
     id: 1,
     name: "On Width",
-    description:
-      "Tudelü: Closure is the easiest way to beautify your space while creating the calm, focused environment you need for any task.",
-    image: "",
-    render:
-      "https://24116371.fs1.hubspotusercontent-na1.net/hubfs/24116371/Modulux%20C8SR00.glb",
-    about: {
-      text: "Louver is:",
-      benefits: [
-        "Retractable",
-        "Occlusive",
-        "Remote-controlled",
-        "Single sided decor finish",
-      ],
-    },
-    cta: "On  Width",
   },
   {
     id: 1,
     name: "On Projection",
-    description:
-      "Tudelü: Closure is the easiest way to beautify your space while creating the calm, focused environment you need for any task.",
-    image: "",
-    render:
-      "https://24116371.fs1.hubspotusercontent-na1.net/hubfs/24116371/Modulux%20C8SR00.glb",
-    about: {
-      text: "Louver is:",
-      benefits: [
-        "Retractable",
-        "Occlusive",
-        "Remote-controlled",
-        "Single sided decor finish",
-      ],
-    },
-    cta: "On  Projection",
   },
 ];
 
@@ -56,23 +27,30 @@ export const StepLouversDirections = ({
   onContinue,
   setIsRenderOpen,
 }: Props) => {
+  const [selected, setSelected] = useState("");
+
   return (
     <section>
       <StepTitle step={10} title={"Louvers direction"} />
       <div className="lg:max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row  justify-center gap-10 mb-5">
           {louversDirectionData.map((louverD) => (
-            <ChooseProductGrid
-              product={louverD}
-              className="lg:w-1/3"
-              onContinue={onContinue}
-              handleState={() =>
+            <Button
+              className={`px-8 py-6 font-semibold rounded-2xl w-full text-xl ${
+                selected === louverD.name
+                  ? "bg-[#ff5100] text-[#ece83a]"
+                  : "bg-gray-200 hover:bg-gray-300"
+              }`}
+              onClick={() => {
                 setRenderState((prev) => ({
                   ...prev,
                   directions: louverD.name.split(" ")[1],
-                }))
-              }
-            />
+                }));
+                onContinue();
+              }}
+            >
+              {louverD.name}
+            </Button>
           ))}
         </div>
       </div>

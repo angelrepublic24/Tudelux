@@ -87,13 +87,17 @@ export const Footer = () => {
       <div className="w-[90%] mx-auto">
         <div className="flex items-center space-x-4 border-b border-b-[#ff5100] py-4">
           <Link href="https://www.aiany.org/resources/continuing-education/" target="_blank" rel="noreferrer">
-            <Image src="https://res.cloudinary.com/dd3wigmdk/image/upload/v1741010699/AIA-Partner_fpmxxd.png" alt="AIA" className="lg:h-24" width={50} height={50} />
+            <Image className="lg:h-24 w-32"
+            src="https://res.cloudinary.com/dd3wigmdk/image/upload/v1741010699/AIA-Partner_fpmxxd.png" alt="AIA" width={50} height={50} />
           </Link>
           <Link href="https://www.arcat.com/arcatcos/cos51/arc51492.html" target="_blank" rel="noreferrer">
-            <Image src="https://res.cloudinary.com/dd3wigmdk/image/upload/v1741010621/ARCATLogo_ax4zbr.png" alt="ARCAT" className="lg:h-20" width={50} height={50} />
+            <Image className="lg:h-20 w-32"
+             src="https://res.cloudinary.com/dd3wigmdk/image/upload/v1741010621/ARCATLogo_ax4zbr.png" alt="ARCAT"  width={50} height={50} />
           </Link>
-          <Image src="https://22465736.fs1.hubspotusercontent-na1.net/hubfs/22465736/pngkey.com-eco-friendly-png-465219.png" alt="Eco-Friendly" className="lg:h-20" width={50} height={50} />
-          <Image src="https://22465736.fs1.hubspotusercontent-na1.net/hubfs/22465736/MadeInUSA.png" alt="Made in USA" className="lg:h-24" width={50} height={50} />
+          <Image className="lg:h-24 w-28" 
+          src="https://22465736.fs1.hubspotusercontent-na1.net/hubfs/22465736/pngkey.com-eco-friendly-png-465219.png" alt="Eco-Friendly" width={50} height={50} />
+          <Image className="lg:h-24 w-28"
+          src="https://22465736.fs1.hubspotusercontent-na1.net/hubfs/22465736/MadeInUSA.png" alt="Made in USA" width={50} height={50} />
         </div>
 
         <div className="py-4 mx-auto flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 space-y-4 md:space-y-0">
