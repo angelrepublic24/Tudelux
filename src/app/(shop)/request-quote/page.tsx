@@ -1,24 +1,17 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { chooseProduct } from "@/shared/utils/chooseProduct";
 import { CostSummary, MaterialItemTable, RenderState } from "@/shared/types";
-import Image from "next/image";
 import {
   StepChooseProduct,
   StepRole,
-  StepWallColor,
-  StepWallAddons,
   StepComplete,
 } from "@/modules/products/components";
-import { RenderHeader } from "@/shared/components/Render/RenderHeader";
 import { Title } from "@/shared/components/ui/title/Title";
 import { CanopyFlow } from "@/modules/products/flow/CanopyFlow";
 import PartitionWallFlow from "@/modules/products/flow/PartitionWallFlow";
 
 export default function RequestQuotePage() {
-  const [selectedProduct, setSelectedProduct] = useState<
-    (typeof chooseProduct)[0] | null
-  >(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [isRenderOpen, setIsRenderOpen] = useState(false);
   const [salesCode, setSalesCode] = useState<string | null>(null);
   const [showStep2, setShowStep2] = useState(false);
@@ -132,7 +125,7 @@ export default function RequestQuotePage() {
                 setRenderState((prev) => ({
                   ...prev,
                   title: product.name,
-                  renderUrl: product.type?.[0]?.render || "",
+                  type: product.variants ?? [],
                 }));
                 setIsRenderOpen(true);
                 setActiveStep(2);

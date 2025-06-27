@@ -3,36 +3,23 @@ import { StepTitle } from "@/shared/components/ui/StepTitle/StepTitle";
 import { RenderState } from "@/shared/types";
 import Image from "next/image";
 import { useState } from "react";
+import { ProductFormType} from "../../schema/product.schema";
 
 type Props = {
-  productType: {
-    name: string;
-    type: {
-      name: string;
-      description: string;
-      image: string;
-      render: string;
-      about: {
-        text: string;
-        benefits: string[];
-      };
-    }[];
-  };
+  productVariant: ProductFormType & {id: number};
   setRenderState: React.Dispatch<React.SetStateAction<RenderState>>;
   setIsRenderOpen: (open: boolean) => void;
   onContinue: () => void;
 };
 
 export const StepKindOfProduct = ({
-  productType,
+  productVariant,
   setRenderState,
   setIsRenderOpen,
   onContinue,
 }: Props) => {
-  const [selectedType, setSelectedType] = useState<
-    (typeof productType.type)[0] | null
-  >(null);
-  const howManyTypes = productType.type.length;
+  const [selectedType, setSelectedType] = useState<(typeof productVariant) | null>(null);
+  console.log(productVariant);
 
   return (
     <section className="py-16">
@@ -40,7 +27,7 @@ export const StepKindOfProduct = ({
       <div
         className={`flex flex-col lg:flex-row justify-center items-center gap-10 px-4`}
       >
-        {productType.type.map((product, index) => (
+        {productVariant.variants.map((product, index) => (
           <div
             key={index}
             className="flex flex-col items-center text-center w-full lg:w-1/4"
@@ -57,15 +44,13 @@ export const StepKindOfProduct = ({
                   />
                 )}
 
-                {!product.image && product.render && (
-                  <video
-                    src={product.render}
-                    muted
-                    autoPlay
-                    loop
-                    playsInline
-                    className="w-full h-full object-contain z-10"
-                  />
+                {!product.image && (
+                 <Image 
+                  src={product.image}
+                  alt={product.name}
+                  width={300}
+                  height={300}
+                 />
                 )}
                 <svg
                   width="60"
@@ -98,10 +83,10 @@ export const StepKindOfProduct = ({
               </p>
               <div className="bg-white w-full h-[1px]"></div>
               <p className="text-[#ff5100] text-[19px] text-left font-semibold mb-1 py-4">
-                {product.about.text} {product.name}
+                {product.name} is:
               </p>
               <ul className="text-sm text-gray-700 space-y-1">
-                {product.about.benefits.map((benefit, idx) => (
+                {product.benefits.map((benefit, idx) => (
                   <li key={idx} className="text-[19px] text-left">
                     {benefit}
                   </li>
@@ -112,7 +97,6 @@ export const StepKindOfProduct = ({
                   setRenderState((prev) => ({
                     ...prev,
                     productType: product.name,
-                    renderUrl: product.render,
                   }));
                   setIsRenderOpen(true);
                   onContinue();

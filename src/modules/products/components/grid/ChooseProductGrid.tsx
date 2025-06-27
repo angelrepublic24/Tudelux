@@ -1,38 +1,33 @@
-import { BaseProduct, RenderState } from "@/shared/types";
-import { chooseProduct } from "@/shared/utils/chooseProduct";
-import Image from "next/image";
 import React from "react";
+import { ProductFormType } from "../../schema/product.schema";
 
-type Props<T extends BaseProduct> = {
-  product: T;
+type Props = {
+  product: ProductFormType & { id: number };
   handleState?: () => void;
-  onSelect?: (product: T) => void;
+  onSelect?: (product: ProductFormType & { id: number }) => void;
   isSelected?: boolean;
   className?: string;
-  onContinue?: () => void
+  onContinue?: () => void;
 };
 
-export function ChooseProductGrid<T extends BaseProduct>({
+export function ChooseProductGrid({
   product,
   handleState,
   onSelect,
   isSelected,
   className,
-  onContinue
-}: Props<T>) {
+  onContinue,
+}: Props) {
+  const cta = product.name.split(" ")[1];
 
   return (
     <div className={`flex flex-col items-center text-center ${className}`}>
       <div className="mb-12 bg-white w-full flex flex-col items-center justify-start h-[320px] overflow-visible relative rounded-lg shadow">
         <div className="relative w-full bg-[#f0f0f0] h-[320px] flex items-center justify-center">
-          {product.image && (
-            <Image
-              src={product.image}
-              alt={product.name}
-              width={300}
-              height={200}
-              className="w-full h-full object-contain z-10"
-            />
+          {product.video && (
+            <video autoPlay loop muted className="h-full">
+              <source src={product.video} />
+            </video>
           )}
           <svg
             width="60"
@@ -59,31 +54,28 @@ export function ChooseProductGrid<T extends BaseProduct>({
         {product.name}
       </div>
 
-      <div className="bg-gray-100 border border-gray-300 p-8  w-full h-full space-y-6  rounded-b-2xl">
-        <p className=" text-black mb-2 text-[19px] py-8 text-left">
-          {product.description}
-        </p>
+      <div className="bg-gray-100 border border-gray-300 p-8 w-full h-full flex flex-col justify-between rounded-b-2xl">
+        <p className=" text-black mb-2 py-8 text-left">{product.description}</p>
         <div className="bg-white w-full h-[1px]"></div>
-        <p className="text-[#ff5100] text-[19px] text-left font-semibold mb-1 py-4">
-          {product.about.text}
+        <p className="text-[#ff5100] text-left font-semibold mb-1 py-4">
+          {product.name} are:
         </p>
-        <ul className="text-sm text-gray-700 space-y-1">
-          {product.about.benefits.map((benefit, idx) => (
-            <li key={idx} className="text-[19px] text-left">
+        <ul className="text-gray-700 space-y-1">
+          {product.benefits.map((benefit, idx) => (
+            <li key={idx} className="text-left">
               {benefit}
             </li>
           ))}
         </ul>
         <button
           onClick={() => {
-             onSelect?.(product);
-             handleState && handleState();
-             onContinue?.()
-            }
-          }
-          className="mt-6 bg-[#ff5100] w-[70%] text-white font-semibold py-6 px-10 rounded-2xl hover:opacity-80 transition focus:bg-[#ece83a] focus:text-[#ff5100]"
+            onSelect?.(product);
+            handleState && handleState();
+            onContinue?.();
+          }}
+          className="mt-6 bg-[#ff5100] w-[70%] text-white hover:text-[#ff5100] font-semibold py-4 px-6 rounded-2xl hover:opacity-80 transition hover:bg-[#ece83a] focus:bg-[#ece83a] focus:text-[#ff5100]"
         >
-          {product.cta}
+          Go {cta}
         </button>
       </div>
     </div>
