@@ -9,7 +9,7 @@ export default function Logo() {
       width={0}
       height={0}
       priority
-      className="w-full"
+      className="w-1/2 lg:w-full"
     />
   );
 }
